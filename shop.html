@@ -1,0 +1,291 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物車</title>
+    <link rel="stylesheet" href="shop.css">
+    <script src="database.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="image/PTCG head.jpg" alt="網站標誌">
+                <h1>PTCG卡包商城</h1>
+            </div>
+            <div class="nav-right">
+                <div class="search-bar">
+                    <input type="text" placeholder="你想查詢甚麼相關商品?" id="searchInput">
+                    <button onclick="performSearch()">🔍</button>
+                </div>
+                <div class="member-section" id="memberSection">
+                    <a href="member.html" id="memberLink">
+                        <img src="image/images__1_-removebg-preview.png" alt="會員圖示">
+                        <span id="memberStatus">登入</span>
+                    </a>
+                </div>
+                <a href="shop.html">
+                    <img src="image/be1d7df358f8dbc9336c5d88403c38c7-removebg-preview.png" alt="購物車圖示">
+                </a>
+            </div>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="card.html">單卡</a></li>
+                <li><a href="card box.html">卡盒</a></li>
+                <li><a href="card periphery.html">卡片周邊商品</a></li>
+                <li><a href="special.html">特別商品</a></li>
+                <li><a href="help.html">服務中心</a></li>
+                <li><a href="about.html">關於我們</a></li>
+                <li><a href="member_area.html">會員專區</a></li>
+                <li><a href="message_board.html">留言板</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="cart-container">
+        <div class="cart-header">
+            <h2><i class="cart-icon">🛒</i> 我的購物車</h2>
+            <div class="cart-actions">
+                <button class="clear-cart-btn" onclick="clearCart()">清空購物車</button>
+                <a href="card.html" class="continue-shopping-btn">繼續購物</a>
+            </div>
+        </div>
+
+        <!-- 空購物車狀態 -->
+        <div class="empty-cart" id="emptyCart" style="display: none;">
+            <div class="empty-cart-icon">🛒</div>
+            <h3>您的購物車是空的</h3>
+            <p>快去選購您喜愛的PTCG卡片吧！</p>
+            <a href="card.html" class="continue-shopping-btn">開始購物</a>
+        </div>
+
+        <!-- 購物車商品列表 -->
+        <div class="cart-content" id="cartContent">
+            <div class="cart-items" id="cartItems">
+                <!-- 購物車項目將動態顯示在這裡 -->
+            </div>
+
+            <div class="cart-summary">
+                <div class="summary-content">
+                    <div class="summary-details">
+                        <div class="summary-row">
+                            <span>商品小計：</span>
+                            <span id="subtotal">NT$ 0</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>運費：</span>
+                            <span id="shipping">NT$ 100</span>
+                        </div>
+                        <hr>
+                        <div class="summary-row total">
+                            <span>總計：</span>
+                            <span id="totalPrice">NT$ 0</span>
+                        </div>
+                    </div>
+                    <div class="checkout-actions">
+                        <button class="checkout-btn" onclick="completeOrder(event)">
+                            <i class="checkout-icon">💳</i>
+                            立即結帳
+                        </button>
+                        <p class="secure-note">🔒 安全結帳，您的資料受到保護</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 PTCG卡包商城. 版權所有.</p>
+    </footer>
+
+    <script>
+        // 讀取購物車並顯示商品
+        function loadCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartItemsContainer = document.getElementById('cartItems');
+            const emptyCart = document.getElementById('emptyCart');
+            const cartContent = document.getElementById('cartContent');
+
+            if (cart.length === 0) {
+                emptyCart.style.display = 'block';
+                cartContent.style.display = 'none';
+                return;
+            }
+
+            emptyCart.style.display = 'none';
+            cartContent.style.display = 'block';
+
+            let subtotal = 0;
+            cartItemsContainer.innerHTML = '';
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `
+                    <div class="item-image">
+                        <img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/100'">
+                    </div>
+                    <div class="item-details">
+                        <h3>${escapeHtml(item.name)}</h3>
+                        <p class="item-price">單價: NT$ ${item.price.toLocaleString()}</p>
+                        <div class="item-actions">
+                            <button class="favorite-btn" onclick="addToFavorites('${item.id}')" title="加入收藏">
+                                <i class="heart-icon">🤍</i>
+                            </button>
+                            <button class="remove-btn" onclick="removeItem('${item.id}')" title="移除商品">
+                                <i class="remove-icon">🗑️</i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity('${item.id}', -1)">-</button>
+                        <input type="number" value="${item.quantity}" min="1" class="quantity-input" 
+                               onchange="updateQuantityInput('${item.id}', this.value)" readonly>
+                        <button class="quantity-btn" onclick="updateQuantity('${item.id}', 1)">+</button>
+                    </div>
+                    <div class="item-total">
+                        <span class="total-label">小計</span>
+                        <span class="total-amount">NT$ ${itemTotal.toLocaleString()}</span>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(cartItem);
+            });
+
+            updateSummary(subtotal);
+        }
+
+        // 更新總計摘要
+        function updateSummary(subtotal) {
+            const shipping = subtotal >= 1000 ? 0 : 100; // 滿1000免運費
+            const total = subtotal + shipping;
+
+            document.getElementById('subtotal').textContent = `NT$ ${subtotal.toLocaleString()}`;
+            document.getElementById('shipping').textContent = subtotal >= 1000 ? 'NT$ 0 (免運費)' : `NT$ ${shipping}`;
+            document.getElementById('totalPrice').textContent = `NT$ ${total.toLocaleString()}`;
+        }
+
+        // 更新商品數量
+        function updateQuantity(id, delta) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const item = cart.find(item => item.id === id);
+
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity < 1) item.quantity = 1;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCart();
+            }
+        }
+
+        // 直接輸入數量更新
+        function updateQuantityInput(id, newQuantity) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const item = cart.find(item => item.id === id);
+
+            if (item) {
+                item.quantity = Math.max(1, parseInt(newQuantity) || 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCart();
+            }
+        }
+
+        // 移除商品
+        function removeItem(id) {
+            if (confirm('確定要移除此商品嗎？')) {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cart = cart.filter(item => item.id !== id);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCart();
+            }
+        }
+
+        // 清空購物車
+        function clearCart() {
+            if (confirm('確定要清空整個購物車嗎？')) {
+                localStorage.removeItem('cart');
+                loadCart();
+            }
+        }
+
+        // 加入收藏
+        function addToFavorites(productId) {
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            const product = window.mockDB.getProductById(productId);
+
+            if (product && !favorites.find(fav => fav.id === productId)) {
+                favorites.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    category: product.category,
+                    dateAdded: new Date().toISOString()
+                });
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+
+                // 視覺反饋
+                event.target.closest('.favorite-btn').innerHTML = '<i class="heart-icon">❤️</i>';
+                setTimeout(() => {
+                    event.target.closest('.favorite-btn').innerHTML = '<i class="heart-icon">🤍</i>';
+                }, 2000);
+
+                alert('商品已加入收藏！');
+            } else {
+                alert('商品已在收藏列表中！');
+            }
+        }
+
+        // 搜索功能
+        function performSearch() {
+            const query = sanitizeInput(document.getElementById('searchInput').value);
+            if (query.trim()) {
+                localStorage.setItem('searchQuery', query);
+                window.location.href = 'search_results.html';
+            }
+        }
+
+        // 監聽搜索框回車事件
+        document.getElementById('searchInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // 確認下單
+        function completeOrder(event) {
+            event.preventDefault();
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            if (cart.length === 0) {
+                alert('購物車是空的！');
+                return;
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            const shipping = subtotal >= 1000 ? 0 : 100;
+            const total = subtotal + shipping;
+
+            localStorage.setItem('checkoutTotal', total);
+            localStorage.setItem('checkoutDetails', JSON.stringify({
+                subtotal,
+                shipping,
+                items: cart
+            }));
+
+            window.location.href = 'checkout page.html';
+        }
+
+        // 頁面加載時加載購物車內容
+        window.onload = loadCart;
+    </script>
+</body>
+
+</html>

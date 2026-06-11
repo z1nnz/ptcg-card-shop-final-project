@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PTCG Card Pack</title>
+    <link rel="stylesheet" href="card1.css">
+</head>
+
+<body>
+    <div class="header-container">
+        <div class="logo">
+            <img src="image/PTCG head.jpg" alt="網站標誌">
+            <a href="card1.html"></a>
+            <h1>PTCG卡包商城</h1>
+        </div>
+        <div class="nav-right">
+            <div class="search-bar">
+                <input type="text" placeholder="你想查詢甚麼相關商品?" id="searchInput">
+                <button onclick="performSearch()">🔍</button>
+            </div>
+            <div class="member-section" id="memberSection">
+                <a href="member.html" id="memberLink">
+                    <img src="image/images__1_-removebg-preview.png" alt="會員圖示">
+                    <span id="memberStatus">登入</span>
+                </a>
+            </div>
+            <a href="shop.html">
+                <img src="image/be1d7df358f8dbc9336c5d88403c38c7-removebg-preview.png" alt="購物車圖示">
+            </a>
+        </div>
+    </div>
+    <nav class="nav-menu">
+        <ul>
+            <li><a href="index.html">首頁</a></li>
+            <li><a href="card.html">單卡</a></li>
+            <li><a href="card box.html">卡盒</a></li>
+            <li><a href="card periphery.html">卡片周邊商品</a></li>
+            <li><a href="special.html">特別商品</a></li>
+            <li><a href="help.html">服務中心</a></li>
+            <li><a href="about.html">關於我們</a></li>
+            <li><a href="member_area.html">會員專區</a></li>
+            <li><a href="message_board.html">留言板</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="product-details">
+            <div id="product-image">
+                <img src="image/cp_img3.jpg" alt="卡片展示架" style="max-width: 300px; border-radius: 8px;">
+            </div>
+            <div id="product-info">
+                <h2>卡片展示架</h2>
+                <p><strong>價格:</strong>$450</p>
+                <p>
+                    <strong>評分:</strong>
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    (5.0)
+                </p>
+                <label for="quantity">數量:</label>
+                <input type="number" id="quantity" name="quantity" value="1" min="1" max="10" style="width: 50px;">
+                <button id="add-to-cart">加入購物車</button>
+            </div>
+        </section>
+
+        <section id="product-description">
+            <h3>介紹</h3>
+            <p>專為寶可夢 PTCG 設計的高質感透明壓克力展示架！能完美襯托您的愛卡，提供絕佳的保護與絕美的展示效果。四角磁吸設計，讓替換卡片更加輕鬆方便，是展示高價鑑定卡或心愛收藏的不二之選。</p>
+        </section>
+
+        <section id="reviews-section">
+            <h3>回饋</h3>
+            <div id="review-list">
+                <p>留言板</p>
+            </div>
+            <div id="review-form">
+                <h4>留下評論</h4>
+                <form id="reviewForm">
+                    <label for="rating">評分:</label>
+                    <div id="star-rating" class="star-rating">
+                        <span class="star" data-rating="1">☆</span>
+                        <span class="star" data-rating="2">☆</span>
+                        <span class="star" data-rating="3">☆</span>
+                        <span class="star" data-rating="4">☆</span>
+                        <span class="star" data-rating="5">☆</span>
+                    </div>
+                    <input type="hidden" id="rating" name="rating" value="">
+                    <p id="rating-text" class="rating-feedback">請選擇評分</p><br>
+                    <label for="comment">評論:</label><br>
+                    <textarea id="comment" name="comment" rows="4" cols="50" placeholder="留下評論..."></textarea><br>
+                    <button type="submit">送出評論</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2026 PTCG Collectibles</p>
+    </footer>
+    <script src="card.js" defer></script>
+    <script src="star-rating.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            initStarRating();
+
+            const reviewForm = document.getElementById('reviewForm');
+            if (reviewForm) {
+                reviewForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    if (!validateRating()) {
+                        alert('請選擇評分（1-5星）');
+                        return;
+                    }
+
+                    const comment = document.getElementById('comment').value.trim();
+                    if (!comment) {
+                        alert('請輸入評論內容');
+                        return;
+                    }
+
+                    alert('評論已提交！');
+                    this.reset();
+                    resetStarRating();
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

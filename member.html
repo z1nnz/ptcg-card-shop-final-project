@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員登入 - PTCG卡包商城</title>
+    <link rel="stylesheet" href="member.css">
+    <script src="database.js"></script>
+</head>
+
+<body>
+    <!-- 背景裝飾 -->
+    <div class="background-decoration">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+
+    <!-- 主要內容 -->
+    <div class="auth-container">
+        <!-- 左側：品牌資訊 -->
+        <div class="brand-section">
+            <div class="brand-content">
+                <div class="logo-section">
+                    <img src="image/PTCG head.jpg" alt="PTCG卡包商城" class="brand-logo">
+                    <h1>PTCG卡包商城</h1>
+                </div>
+                <div class="brand-description">
+                    <h2>歡迎回來！</h2>
+                    <p>登入您的帳戶，探索最新的PTCG卡片收藏</p>
+                    <div class="features">
+                        <div class="feature-item">
+                            <span class="feature-icon">✨</span>
+                            <span>正版PTCG卡片</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🎁</span>
+                            <span>會員專屬優惠</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🚚</span>
+                            <span>快速配送服務</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">💎</span>
+                            <span>限量收藏品</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右側：登入表單 -->
+        <div class="form-section">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>會員登入</h2>
+                    <p>請輸入您的帳戶資訊</p>
+                </div>
+
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="input-group">
+                        <label for="email">
+                            <span class="input-icon">📧</span>
+                            電子郵件
+                        </label>
+                        <input type="email" id="email" name="email" placeholder="請輸入您的電子郵件" required>
+                        <div class="input-error" id="emailError"></div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password">
+                            <span class="input-icon">🔒</span>
+                            密碼
+                        </label>
+                        <div class="password-input">
+                            <input type="password" id="password" name="password" placeholder="請輸入您的密碼" required>
+                            <button type="button" class="toggle-password" onclick="togglePassword()">
+                                <span id="toggleIcon">👁️</span>
+                            </button>
+                        </div>
+                        <div class="input-error" id="passwordError"></div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" id="rememberMe">
+                            <span class="checkmark"></span>
+                            記住我
+                        </label>
+                        <a href="#" class="forgot-password" onclick="showForgotPassword()">忘記密碼？</a>
+                    </div>
+
+                    <button type="submit" class="login-btn" id="loginBtn">
+                        <span class="btn-text">登入</span>
+                        <div class="btn-loading" style="display: none;">
+                            <div class="spinner"></div>
+                        </div>
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <span>或</span>
+                </div>
+
+                <div class="social-login">
+                    <button class="social-btn google-btn" onclick="socialLogin('google')">
+                        <span class="social-icon">🎯</span>
+                        使用 Google 登入
+                    </button>
+                    <button class="social-btn facebook-btn" onclick="socialLogin('facebook')">
+                        <span class="social-icon">📘</span>
+                        使用 Facebook 登入
+                    </button>
+                </div>
+
+                <div class="register-link">
+                    <p>還沒有帳號嗎？ <a href="Registered member.html">立即註冊</a></p>
+                </div>
+
+                <div class="demo-section">
+                    <details>
+                        <summary>測試帳號</summary>
+                        <div class="demo-accounts">
+                            <div class="demo-account" onclick="fillDemoAccount('admin')">
+                                <strong>管理員帳號</strong>
+                                <small>admin@ptcg.com / admin123</small>
+                            </div>
+                            <div class="demo-account" onclick="fillDemoAccount('user')">
+                                <strong>一般會員</strong>
+                                <small>user@ptcg.com / user123</small>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 訊息通知 -->
+    <div id="notification" class="notification"></div>
+
+    <!-- 忘記密碼彈窗 -->
+    <div id="forgotPasswordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>重設密碼</h3>
+                <button class="close-btn" onclick="closeForgotPassword()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>請輸入您的電子郵件地址，我們將發送重設密碼的連結給您。</p>
+                <div class="input-group">
+                    <input type="email" id="resetEmail" placeholder="請輸入您的電子郵件">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeForgotPassword()">取消</button>
+                <button class="btn-primary" onclick="sendResetEmail()">發送重設連結</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 返回首頁按鈕 -->
+    <a href="index.html" class="back-home">
+        <span class="back-icon">🏠</span>
+        返回首頁
+    </a>
+
+    <script>
+        // 全域變數
+        let loginAttempts = 0;
+        const maxAttempts = 5;
+
+        // 頁面載入時檢查登入狀態
+        document.addEventListener('DOMContentLoaded', async function () {
+            await checkLoginStatus();
+            initializeForm();
+        });
+
+        // 檢查登入狀態
+        async function checkLoginStatus() {
+            const currentUser = await window.api.refreshCurrentUser();
+            if (currentUser) {
+                if (currentUser.role === 'admin') {
+                    window.location.href = 'admin_panel.html';
+                } else {
+                    window.location.href = 'index.html'; // 普通用戶跳轉到首頁
+                }
+            }
+        }
+
+        // 初始化表單
+        function initializeForm() {
+            // 檢查是否有記住的帳號
+            const rememberedEmail = localStorage.getItem('rememberedEmail');
+            if (rememberedEmail) {
+                document.getElementById('email').value = rememberedEmail;
+                document.getElementById('rememberMe').checked = true;
+            }
+
+            // 檢查登入嘗試次數
+            const attempts = localStorage.getItem('loginAttempts');
+            if (attempts) {
+                loginAttempts = parseInt(attempts);
+            }
+        }
+
+        // 處理登入
+        async function handleLogin(event) {
+            event.preventDefault();
+
+            // 檢查是否超過最大嘗試次數
+            if (loginAttempts >= maxAttempts) {
+                showNotification('登入嘗試次數過多，請稍後再試', 'error');
+                return;
+            }
+
+            const email = sanitizeInput(document.getElementById('email').value);
+            const password = sanitizeInput(document.getElementById('password').value);
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            // 清除錯誤訊息
+            clearErrors();
+
+            // 驗證輸入
+            if (!validateInput(email, password)) {
+                return;
+            }
+
+            setLoading(true);
+
+            try {
+                const user = await window.api.login(email, password);
+                handleLoginSuccess(user, rememberMe);
+            } catch (error) {
+                handleLoginFailure(error.message || '電子郵件或密碼錯誤');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // 驗證輸入
+        function validateInput(email, password) {
+            let isValid = true;
+
+            if (!email) {
+                showFieldError('emailError', '請輸入電子郵件');
+                isValid = false;
+            } else if (!isValidEmail(email)) {
+                showFieldError('emailError', '請輸入有效的電子郵件格式');
+                isValid = false;
+            }
+
+            if (!password) {
+                showFieldError('passwordError', '請輸入密碼');
+                isValid = false;
+            } else if (password.length < 6) {
+                showFieldError('passwordError', '密碼長度至少6個字元');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // 登入成功處理
+        function handleLoginSuccess(user, rememberMe) {
+            // 儲存登入狀態
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            localStorage.setItem('loginTime', new Date().toISOString());
+
+            // 記住帳號
+            if (rememberMe) {
+                localStorage.setItem('rememberedEmail', user.email);
+            } else {
+                localStorage.removeItem('rememberedEmail');
+            }
+
+            // 重設登入嘗試次數
+            loginAttempts = 0;
+            localStorage.removeItem('loginAttempts');
+
+            showNotification('登入成功！正在跳轉...', 'success');
+
+            // 跳轉到相應頁面
+            setTimeout(() => {
+                if (user.role === 'admin') {
+                    window.location.href = 'admin_panel.html';
+                } else {
+                    window.location.href = 'index.html'; // 普通用戶跳轉到首頁
+                }
+            }, 1500);
+        }
+
+        // 登入失敗處理
+        function handleLoginFailure(message) {
+            loginAttempts++;
+            localStorage.setItem('loginAttempts', loginAttempts.toString());
+
+            if (loginAttempts >= maxAttempts) {
+                showNotification('登入嘗試次數過多，請稍後再試', 'error');
+            } else {
+                showNotification(`${message} (剩餘嘗試次數: ${maxAttempts - loginAttempts})`, 'error');
+            }
+        }
+
+        // 社群登入
+        function socialLogin(provider) {
+            showNotification(`${provider} 登入功能開發中...`, 'info');
+        }
+
+        // 切換密碼顯示
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.textContent = '👁️';
+            }
+        }
+
+        // 填入測試帳號
+        function fillDemoAccount(type) {
+            if (type === 'admin') {
+                document.getElementById('email').value = 'admin@ptcg.com';
+                document.getElementById('password').value = 'admin123';
+            } else {
+                document.getElementById('email').value = 'user@ptcg.com';
+                document.getElementById('password').value = 'user123';
+            }
+        }
+
+        // 忘記密碼
+        function showForgotPassword() {
+            document.getElementById('forgotPasswordModal').style.display = 'flex';
+        }
+
+        function closeForgotPassword() {
+            document.getElementById('forgotPasswordModal').style.display = 'none';
+            document.getElementById('resetEmail').value = '';
+        }
+
+        function sendResetEmail() {
+            const email = document.getElementById('resetEmail').value;
+            if (!email) {
+                showNotification('請輸入電子郵件地址', 'error');
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                showNotification('請輸入有效的電子郵件格式', 'error');
+                return;
+            }
+
+            showNotification('密碼重設連結已發送到您的信箱', 'success');
+            closeForgotPassword();
+        }
+
+        // 工具函數
+        function setLoading(loading) {
+            const btn = document.getElementById('loginBtn');
+            const btnText = btn.querySelector('.btn-text');
+            const btnLoading = btn.querySelector('.btn-loading');
+
+            if (loading) {
+                btnText.style.display = 'none';
+                btnLoading.style.display = 'flex';
+                btn.disabled = true;
+            } else {
+                btnText.style.display = 'block';
+                btnLoading.style.display = 'none';
+                btn.disabled = false;
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        function showFieldError(fieldId, message) {
+            const errorElement = document.getElementById(fieldId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function clearErrors() {
+            const errorElements = document.querySelectorAll('.input-error');
+            errorElements.forEach(element => {
+                element.style.display = 'none';
+            });
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function sanitizeInput(input) {
+            return input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+        }
+
+        // 鍵盤事件
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeForgotPassword();
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>

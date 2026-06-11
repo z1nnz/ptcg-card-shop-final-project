@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訂單成功</title>
+    <link rel="stylesheet" href="finish.css">
+</head>
+
+<body>
+    <div class="success-container">
+        <h1>訂單提交成功！</h1>
+        <p>感謝您的購買，我們正在處理您的訂單。</p>
+        <p class="redirect-message">頁面將在 <span id="countdown">20</span> 秒後跳轉至首頁。</p>
+        <p><a href="index.html">立即返回首頁</a></p>
+    </div>
+
+    <script>
+        // 倒數計時並跳轉首頁
+        let countdown = 20;
+        const countdownElement = document.getElementById('countdown');
+
+        const interval = setInterval(() => {
+            countdown -= 1;
+            countdownElement.textContent = countdown;
+
+            if (countdown <= 0) {
+                clearInterval(interval);
+                window.location.href = 'index.html'; // 跳轉到首頁
+            }
+        }, 1000);
+    </script>
+</body>
+
+</html>

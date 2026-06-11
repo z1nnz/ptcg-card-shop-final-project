@@ -1,0 +1,734 @@
+:root {
+    --header-bg: #003da5; /* 標題欄藍色背景 */
+    --text-color: white; /* 標題文字白色 */
+    --search-bg: #ffffff; /* 搜尋欄背景顏色 */
+    --search-border: #cccccc; /* 搜尋欄邊框顏色 */
+    --search-placeholder: #888888; /* 搜尋欄占位文字顏色 */
+    --search-button-bg: #ffffff; /* 搜尋按鈕背景顏色 */
+    --search-button-color: white; /* 搜尋按鈕文字顏色 */
+    --divider-color: #e0e0e0; /* 分隔線顏色 */
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9; /* 淺灰背景 */
+}
+
+.header-container {
+    display: flex;
+    justify-content: center; /* LOGO 和店名置中 */
+    align-items: center; /* 垂直居中 */
+    padding: 10px 20px;
+    background-color: var(--header-bg);
+    color: var(--text-color);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative; /* 使右側圖示可以絕對定位 */
+    z-index: 1002; /* 確保下拉選單不會被 nav-menu 遮擋 */
+}
+
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* LOGO 和標題間距 */
+}
+
+.logo img {
+    height: 40px; /* LOGO 尺寸 */
+    border-radius: 50%;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+}
+
+/* 右側會員和購物車圖示 */
+.nav-right {
+    position: absolute;
+    top: 50%;
+    right: 20px; /* 靠右對齊 */
+    transform: translateY(-50%);
+    display: flex;
+    gap: 40px; /* 增大圖示之間的間距 */
+}
+
+.nav-right a img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+/* 分類導航樣式 */
+.nav-menu {
+    background-color: var(--nav-bg);
+    padding: 15px 0;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-menu {
+    animation: fadeInDown 1s ease-in-out;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.nav-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.nav-menu ul li a {
+    color: var(--nav-text-color);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 5px 15px;
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    transition: all 0.4s ease; /* ✨加這行 */
+
+    /* 可選：初始陰影淡淡的 */
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.05);
+}
+
+.nav-menu ul li a:hover {
+    transform: scale(1.1) rotate(-1deg); /* ✨加這行：微放大並旋轉 */
+    text-shadow: 0 0 8px rgba(0, 61, 165, 0.6), 0 0 16px rgba(0, 61, 165, 0.4); /* ✨加這行：閃光感 */
+}
+
+
+.nav-menu ul li a::after {
+    content: '';
+    position: absolute;
+    left: -100%;
+    bottom: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #00c3ff, #003da5); /* ✨更酷的底線漸層 */
+    transform: skewX(-20deg);
+    transition: all 0.4s ease; /* ✨更滑順 */
+}
+
+.nav-menu ul li a:hover::after {
+    left: 0; /* ✨底線滑入動畫 */
+}
+
+
+.nav-menu ul li a:hover::after {
+    transform: scaleX(1); /* 展開底線 */
+    transform-origin: left;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+}
+
+.search-bar input {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px 0 0 4px;
+    outline: none;
+    width: 250px;
+}
+
+.search-bar button {
+    padding: 8px 12px;
+    background-color: #fff;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    border-left: 1px solid #ddd;
+}
+
+
+
+/* 會員下拉選單樣式 */
+.member-section {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.member-section a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+}
+
+.member-section a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.member-section span {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.member-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.member-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.member-info:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    min-width: 160px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 8px 0;
+    margin-top: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1001;
+}
+
+.member-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 12px 16px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f8f9fa;
+    color: #003da5;
+}
+
+
+
+/* Hero Banner */
+.hero-banner {
+    position: relative;
+    width: 100%;
+    height: 400px; /* 控制橫幅高度 */
+    background-image: url('image/hero_pocket.jpg'); /* 替換為背景圖片路徑 */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: #fff;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+
+.hero-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 黑色遮罩 */
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 20px;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+}
+
+.btn-limited {
+    display: inline-block;
+    background-color: #ffd700;
+    color: #333;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.btn-limited:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* 動態廣告區 */
+.dynamic-ad {
+    background-color: #000;
+    padding: 2rem 0;
+}
+
+.ad-container {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ad-content {
+    text-align: center;
+}
+
+.ad-content img {
+    max-width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.ad-content p {
+    color: white;
+    margin-top: 1rem;
+    font-size: 1.1rem;
+}
+
+.ad-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255,255,255,0.8);
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.ad-nav:hover {
+    background-color: rgba(255,255,255,1);
+}
+
+.ad-nav.left {
+    left: 20px;
+}
+
+.ad-nav.right {
+    right: 20px;
+}
+
+/* 消息廣告板 */
+.announcement-board {
+    background-color: white;
+    padding: 2rem 0;
+}
+
+.announcement-board .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.announcement-board h2 {
+    text-align: center;
+    color: #003da5;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.announcements {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.announcement-item {
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #003da5;
+    transition: transform 0.3s;
+}
+
+.announcement-item:hover {
+    transform: translateX(5px);
+}
+
+.announcement-badge {
+    background-color: #003da5;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-right: 1rem;
+    min-width: 60px;
+    text-align: center;
+}
+
+.announcement-text {
+    color: #333;
+    font-size: 1rem;
+}
+
+/* 網站統計 */
+.site-stats {
+    background-color: #f8f9fa;
+    padding: 2rem 0;
+}
+
+.site-stats .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.stat-item {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+}
+
+.stat-item h3 {
+    font-size: 2.5rem;
+    color: #003da5;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.stat-item p {
+    color: #666;
+    font-size: 1rem;
+}
+
+/* 會員介紹區 */
+.member-intro {
+    background-color: white;
+    padding: 3rem 0;
+}
+
+.member-intro .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.member-intro h2 {
+    text-align: center;
+    color: #003da5;
+    margin-bottom: 3rem;
+    font-size: 2rem;
+}
+
+.member-benefits {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.benefit-item {
+    text-align: center;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    transition: transform 0.3s;
+}
+
+.benefit-item:hover {
+    transform: translateY(-5px);
+}
+
+.benefit-item img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1rem;
+    border-radius: 50%;
+}
+
+.benefit-item h3 {
+    color: #003da5;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.benefit-item p {
+    color: #666;
+    line-height: 1.6;
+}
+
+.member-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-member, .btn-register, .btn-intro {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.btn-member {
+    background-color: #003da5;
+    color: white;
+}
+
+.btn-register {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-intro {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.btn-member:hover, .btn-register:hover, .btn-intro:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Container通用樣式 */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.cookie-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 9999;
+    font-family: Arial, sans-serif;
+  }
+  
+  .cookie-bar-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #111;
+  }
+  
+  .cookie-bar-text {
+    margin: 8px 0 0;
+    font-size: 14px;
+    color: #333;
+    max-width: 800px;
+  }
+  
+  .cookie-bar-content {
+    flex: 1;
+  }
+  
+  .cookie-bar-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .cookie-btn-outline {
+    background: white;
+    color: #0066ff;
+    border: 1px solid #0066ff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .cookie-btn-outline:hover {
+    background: #f0f6ff;
+  }
+  
+  .cookie-btn-primary {
+    background: #0066ff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .cookie-btn-primary:hover {
+    background: #0052cc;
+  }
+  
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .nav-menu ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-menu li {
+        margin: 0.5rem;
+    }
+
+    .search-bar input {
+        width: 200px;
+    }
+
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .ad-nav {
+        display: none;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+
+    .stat-item {
+        padding: 1rem;
+    }
+
+    .stat-item h3 {
+        font-size: 2rem;
+    }
+
+    .member-benefits {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .member-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-member, .btn-register, .btn-intro {
+        width: 200px;
+        text-align: center;
+    }
+
+    .announcements {
+        padding: 0 1rem;
+    }
+
+    .announcement-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+
+    .announcement-badge {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .member-intro {
+        padding: 2rem 0;
+    }
+
+    .announcement-board {
+        padding: 1rem 0;
+    }
+}
+
+
+

@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>留言板 - PTCG卡包商城</title>
+    <link rel="stylesheet" href="message_board.css">
+    <script src="database.js"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="image/PTCG head.jpg" alt="網站標誌">
+                <h1>PTCG卡包商城</h1>
+            </div>
+            <div class="nav-right">
+                <div class="search-bar">
+                    <input type="text" placeholder="你想查詢甚麼相關商品?" id="searchInput">
+                    <button onclick="performSearch()">🔍</button>
+                </div>
+                <div class="member-section" id="memberSection">
+                    <a href="member.html" id="memberLink">
+                        <img src="image/images__1_-removebg-preview.png" alt="會員圖示">
+                        <span id="memberStatus">登入</span>
+                    </a>
+                </div>
+                <a href="shop.html">
+                    <img src="image/be1d7df358f8dbc9336c5d88403c38c7-removebg-preview.png" alt="購物車圖示">
+                </a>
+            </div>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="card.html">單卡</a></li>
+                <li><a href="card box.html">卡盒</a></li>
+                <li><a href="card periphery.html">卡片周邊商品</a></li>
+                <li><a href="special.html">特別商品</a></li>
+                <li><a href="help.html">服務中心</a></li>
+                <li><a href="about.html">關於我們</a></li>
+                <li><a href="member_area.html">會員專區</a></li>
+                <li><a href="message_board.html">留言板</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="message-board-container">
+        <div class="container">
+            <h1>客戶留言板</h1>
+
+            <!-- 新增留言表單 -->
+            <div class="add-message-form">
+                <h3>發表留言</h3>
+                <form id="messageForm" onsubmit="addMessage(event)">
+                    <div class="form-group">
+                        <label for="userName">姓名：</label>
+                        <input type="text" id="userName" name="userName" required maxlength="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="messageContent">留言內容：</label>
+                        <textarea id="messageContent" name="messageContent" required maxlength="500"
+                            rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">發表留言</button>
+                </form>
+            </div>
+
+            <!-- 留言列表 -->
+            <div class="messages-section">
+                <h3>用戶留言</h3>
+                <div id="messagesList" class="messages-list">
+                    <!-- 留言將動態加載在這裡 -->
+                </div>
+            </div>
+
+            <!-- 網頁訪問計數器 -->
+            <div class="visit-counter">
+                <h4>網站統計</h4>
+                <p>總訪問次數: <span id="visitCount">0</span></p>
+                <p>最後訪問: <span id="lastVisit">未知</span></p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 PTCG卡包商城. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // 頁面加載時初始化
+        document.addEventListener('DOMContentLoaded', async function () {
+            await loadMessages();
+            await updateVisitCounter();
+        });
+
+        // 載入留言
+        async function loadMessages() {
+            const messages = await window.api.refreshMessages();
+            const messagesList = document.getElementById('messagesList');
+
+            if (messages.length === 0) {
+                messagesList.innerHTML = '<p class="no-messages">目前沒有留言</p>';
+                return;
+            }
+
+            messagesList.innerHTML = messages.map(message => `
+                <div class="message-item">
+                    <div class="message-header">
+                        <span class="message-user">${escapeHtml(message.user)}</span>
+                        <span class="message-date">${formatDate(message.date)}</span>
+                    </div>
+                    <div class="message-content">
+                        ${escapeHtml(message.content)}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 添加新留言
+        async function addMessage(event) {
+            event.preventDefault();
+
+            const userName = sanitizeInput(document.getElementById('userName').value);
+            const messageContent = sanitizeInput(document.getElementById('messageContent').value);
+
+            if (!userName || !messageContent) {
+                alert('請填寫所有必填欄位！');
+                return;
+            }
+
+            if (messageContent.length > 500) {
+                alert('留言內容不能超過500個字符！');
+                return;
+            }
+
+            try {
+                await window.api.createMessage(userName, messageContent);
+                document.getElementById('messageForm').reset();
+                await loadMessages();
+                alert('留言發表成功！');
+            } catch (error) {
+                alert(error.message || '留言發表失敗');
+            }
+        }
+
+        // 格式化日期
+        function formatDate(date) {
+            const d = new Date(date);
+            return `${d.getFullYear()}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getDate().toString().padStart(2, '0')} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+        }
+
+        // 更新訪問計數器
+        async function updateVisitCounter() {
+            const stats = await window.api.refreshStats();
+            const visitCount = stats.visitCount;
+            const lastVisit = stats.lastVisit ? new Date(stats.lastVisit).toLocaleString('zh-TW') : '首次訪問';
+
+            document.getElementById('visitCount').textContent = visitCount;
+            document.getElementById('lastVisit').textContent = lastVisit;
+        }
+
+        // 搜索功能
+        function performSearch() {
+            const query = sanitizeInput(document.getElementById('searchInput').value);
+            if (query.trim()) {
+                localStorage.setItem('searchQuery', query);
+                window.location.href = 'search_results.html';
+            }
+        }
+
+        // 監聽搜索框回車事件
+        document.getElementById('searchInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    </script>
+
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-content">
+            <h3>我們重視您的隱私</h3>
+            <p>我們使用 Cookie 來提升您的瀏覽體驗，投放個人化廣告或內容，並分析我們的流量。點擊「接受」即表示您同意使用 Cookie。</p>
+        </div>
+        <div class="cookie-actions">
+            <button class="btn-outline" id="rejectCookies">拒絕</button>
+            <button class="btn-primary" id="acceptCookies">接受</button>
+        </div>
+    </div>
+
+</body>
+
+</html>

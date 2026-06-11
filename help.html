@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服務中心 - PTCG卡包商城</title>
+    <link rel="stylesheet" href="help.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="image/PTCG head.jpg" alt="網站標誌">
+                <h1>PTCG卡包商城</h1>
+            </div>
+            <div class="nav-right">
+                <div class="search-bar">
+                    <input type="text" placeholder="你想查詢甚麼相關商品?" id="searchInput">
+                    <button onclick="performSearch()">🔍</button>
+                </div>
+                <div class="member-section" id="memberSection">
+                    <a href="member.html" id="memberLink">
+                        <img src="image/images__1_-removebg-preview.png" alt="會員圖示">
+                        <span id="memberStatus">登入</span>
+                    </a>
+                </div>
+                <a href="shop.html">
+                    <img src="image/be1d7df358f8dbc9336c5d88403c38c7-removebg-preview.png" alt="購物車圖示">
+                </a>
+            </div>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="card.html">單卡</a></li>
+                <li><a href="card box.html">卡盒</a></li>
+                <li><a href="card periphery.html">卡片周邊商品</a></li>
+                <li><a href="special.html">特別商品</a></li>
+                <li><a href="help.html">服務中心</a></li>
+                <li><a href="about.html">關於我們</a></li>
+                <li><a href="member_area.html">會員專區</a></li>
+                <li><a href="message_board.html">留言板</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1 class="page-title">服務中心</h1>
+
+        <!-- 幫助分類 -->
+        <div class="help-categories">
+            <div class="help-category">
+                <span class="category-icon">❓</span>
+                <h3>常見問題</h3>
+                <p>查看最常遇到的問題及解答，快速找到您需要的幫助。</p>
+                <a href="faq.html" class="learn-more">查看詳情</a>
+            </div>
+
+            <div class="help-category">
+                <span class="category-icon">📦</span>
+                <h3>訂單追蹤</h3>
+                <p>了解如何追蹤您的訂單狀態，查看配送進度。</p>
+                <a href="faq.html" class="learn-more">查看詳情</a>
+            </div>
+
+            <div class="help-category">
+                <span class="category-icon">🔄</span>
+                <h3>退換貨服務</h3>
+                <p>了解我們的退換貨政策和流程，保障您的購物權益。</p>
+                <a href="return.html" class="learn-more">查看詳情</a>
+            </div>
+
+            <div class="help-category">
+                <span class="category-icon">💰</span>
+                <h3>優惠活動</h3>
+                <p>查看最新的優惠碼和促銷活動，享受更多購物優惠。</p>
+                <a href="faq.html" class="learn-more">查看詳情</a>
+            </div>
+        </div>
+
+        <!-- FAQ 區域 -->
+        <div class="faq-section">
+            <h2>常見問題快速解答</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">如何聯絡客服？</div>
+                    <div class="faq-answer">
+                        您可以透過以下方式聯絡我們：<br>
+                        電話：0800-123-456<br>
+                        信箱：service@ptcgcard.com<br>
+                        LINE：@ptcgcard
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">訂單多久會到貨？</div>
+                    <div class="faq-answer">
+                        一般商品約3-5個工作天到貨，特殊商品可能需要7-14個工作天。我們會在商品出貨時發送通知。
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">可以退貨嗎？</div>
+                    <div class="faq-answer">
+                        商品到貨7天內，如有品質問題或不符需求，可申請退貨。請保持商品完整包裝。
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">有哪些付款方式？</div>
+                    <div class="faq-answer">
+                        我們提供信用卡、ATM轉帳、貨到付款等多種付款方式，方便您選擇。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 聯絡資訊 -->
+        <div class="contact-info">
+            <h2>聯絡我們</h2>
+            <div class="contact-methods">
+                <div class="contact-method">
+                    <span class="icon">📞</span>
+                    <h3>客服電話</h3>
+                    <p>0800-123-456<br>服務時間：09:00-18:00</p>
+                </div>
+
+                <div class="contact-method">
+                    <span class="icon">✉️</span>
+                    <h3>電子信箱</h3>
+                    <p>service@ptcgcard.com<br>24小時內回覆</p>
+                </div>
+
+                <div class="contact-method">
+                    <span class="icon">💬</span>
+                    <h3>LINE客服</h3>
+                    <p>@ptcgcard<br>即時線上客服</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 PTCG卡包商城. 版權所有.</p>
+        <div class="footer-links">
+            <a href="about.html">關於我們</a>
+            <a href="help.html">服務中心</a>
+            <a href="return.html">退貨政策</a>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ 展開/收合功能
+        document.addEventListener('DOMContentLoaded', function () {
+            const faqQuestions = document.querySelectorAll('.faq-question');
+
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', function () {
+                    const answer = this.nextElementSibling;
+                    const isActive = this.classList.contains('active');
+
+                    // 關閉所有其他FAQ
+                    faqQuestions.forEach(q => {
+                        q.classList.remove('active');
+                        q.nextElementSibling.classList.remove('active');
+                    });
+
+                    // 切換當前FAQ
+                    if (!isActive) {
+                        this.classList.add('active');
+                        answer.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

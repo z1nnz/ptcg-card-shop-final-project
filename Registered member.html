@@ -1,0 +1,701 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員註冊 - PTCG卡包商城</title>
+    <link rel="stylesheet" href="Register member.css">
+    <script src="database.js"></script>
+</head>
+
+<body>
+    <!-- 背景裝飾 -->
+    <div class="background-decoration">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+
+    <!-- 主要內容 -->
+    <div class="auth-container">
+        <!-- 左側：註冊表單 -->
+        <div class="form-section">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>加入會員</h2>
+                    <p>開始您的PTCG卡片收藏之旅</p>
+                </div>
+
+                <form id="registerForm" onsubmit="handleRegister(event)">
+                    <!-- 個人基本資訊 -->
+                    <div class="form-section-title">
+                        <span class="section-icon">👤</span>
+                        個人基本資訊
+                    </div>
+
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="firstName">
+                                <span class="input-icon">📝</span>
+                                姓氏
+                            </label>
+                            <input type="text" id="firstName" name="firstName" placeholder="請輸入您的姓氏" required>
+                            <div class="input-error" id="firstNameError"></div>
+                        </div>
+                        <div class="input-group">
+                            <label for="lastName">
+                                <span class="input-icon">📝</span>
+                                名字
+                            </label>
+                            <input type="text" id="lastName" name="lastName" placeholder="請輸入您的名字" required>
+                            <div class="input-error" id="lastNameError"></div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="email">
+                            <span class="input-icon">📧</span>
+                            電子郵件
+                        </label>
+                        <input type="email" id="email" name="email" placeholder="請輸入您的電子郵件" required>
+                        <div class="input-error" id="emailError"></div>
+                        <div class="input-help">我們將發送驗證郵件到此信箱</div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="phone">
+                                <span class="input-icon">📱</span>
+                                手機號碼
+                            </label>
+                            <input type="tel" id="phone" name="phone" placeholder="09XXXXXXXX" required>
+                            <div class="input-error" id="phoneError"></div>
+                        </div>
+                        <div class="input-group">
+                            <label for="birthday">
+                                <span class="input-icon">🎂</span>
+                                生日
+                            </label>
+                            <input type="date" id="birthday" name="birthday" required>
+                            <div class="input-error" id="birthdayError"></div>
+                        </div>
+                    </div>
+
+                    <!-- 帳戶安全 -->
+                    <div class="form-section-title">
+                        <span class="section-icon">🔐</span>
+                        帳戶安全
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password">
+                            <span class="input-icon">🔒</span>
+                            密碼
+                        </label>
+                        <div class="password-input">
+                            <input type="password" id="password" name="password" placeholder="請設定您的密碼" required>
+                            <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                                <span id="passwordToggleIcon">👁️</span>
+                            </button>
+                        </div>
+                        <div class="password-strength" id="passwordStrength"></div>
+                        <div class="input-error" id="passwordError"></div>
+                        <div class="input-help">密碼至少8個字元，包含英文字母和數字</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="confirmPassword">
+                            <span class="input-icon">🔒</span>
+                            確認密碼
+                        </label>
+                        <div class="password-input">
+                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="請再次輸入密碼" required>
+                            <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">
+                                <span id="confirmPasswordToggleIcon">👁️</span>
+                            </button>
+                        </div>
+                        <div class="input-error" id="confirmPasswordError"></div>
+                    </div>
+
+                    <!-- 收貨地址 -->
+                    <div class="form-section-title">
+                        <span class="section-icon">🏠</span>
+                        收貨地址
+                    </div>
+
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="city">
+                                <span class="input-icon">🏙️</span>
+                                縣市
+                            </label>
+                            <select id="city" name="city" onchange="updateDistricts()" required>
+                                <option value="">請選擇縣市</option>
+                                <option value="台北市">台北市</option>
+                                <option value="新北市">新北市</option>
+                                <option value="桃園市">桃園市</option>
+                                <option value="台中市">台中市</option>
+                                <option value="台南市">台南市</option>
+                                <option value="高雄市">高雄市</option>
+                            </select>
+                            <div class="input-error" id="cityError"></div>
+                        </div>
+                        <div class="input-group">
+                            <label for="district">
+                                <span class="input-icon">🏘️</span>
+                                區域
+                            </label>
+                            <select id="district" name="district" required>
+                                <option value="">請選擇區域</option>
+                            </select>
+                            <div class="input-error" id="districtError"></div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="address">
+                            <span class="input-icon">📍</span>
+                            詳細地址
+                        </label>
+                        <input type="text" id="address" name="address" placeholder="請輸入詳細地址" required>
+                        <div class="input-error" id="addressError"></div>
+                    </div>
+
+                    <!-- 服務條款 -->
+                    <div class="form-section-title">
+                        <span class="section-icon">📋</span>
+                        服務條款
+                    </div>
+
+                    <div class="checkbox-group">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="agreeTerms" required>
+                            <span class="checkmark"></span>
+                            我已閱讀並同意
+                            <a href="#" onclick="showTerms()">服務條款</a>
+                            和
+                            <a href="#" onclick="showPrivacy()">隱私政策</a>
+                        </label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="agreeNewsletter">
+                            <span class="checkmark"></span>
+                            我願意接收最新商品資訊和優惠通知
+                        </label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="agreeAge" required>
+                            <span class="checkmark"></span>
+                            我確認本人已年滿18歲
+                        </label>
+                    </div>
+
+                    <button type="submit" class="register-btn" id="registerBtn">
+                        <span class="btn-text">立即註冊</span>
+                        <div class="btn-loading" style="display: none;">
+                            <div class="spinner"></div>
+                        </div>
+                    </button>
+                </form>
+
+                <div class="login-link">
+                    <p>已經有帳號了嗎？ <a href="member.html">立即登入</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右側：品牌資訊 -->
+        <div class="brand-section">
+            <div class="brand-content">
+                <div class="logo-section">
+                    <img src="image/PTCG head.jpg" alt="PTCG卡包商城" class="brand-logo">
+                    <h1>PTCG卡包商城</h1>
+                </div>
+                <div class="brand-description">
+                    <h2>會員專屬權益</h2>
+                    <div class="benefits">
+                        <div class="benefit-item">
+                            <span class="benefit-icon">🎁</span>
+                            <div class="benefit-text">
+                                <h3>首購優惠</h3>
+                                <p>新會員專享300元折價券</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">💎</span>
+                            <div class="benefit-text">
+                                <h3>會員專屬商品</h3>
+                                <p>限量卡片優先購買權</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">🎂</span>
+                            <div class="benefit-text">
+                                <h3>生日驚喜</h3>
+                                <p>生日當月特別優惠</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">🚚</span>
+                            <div class="benefit-text">
+                                <h3>免運優惠</h3>
+                                <p>滿千元免運費</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">⭐</span>
+                            <div class="benefit-text">
+                                <h3>VIP服務</h3>
+                                <p>專屬客服快速響應</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 訊息通知 -->
+    <div id="notification" class="notification"></div>
+
+    <!-- 服務條款彈窗 -->
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>服務條款</h3>
+                <button class="close-btn" onclick="closeTerms()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="terms-content">
+                    <h4>1. 服務內容</h4>
+                    <p>PTCG卡包商城提供正版PTCG卡片及相關商品的線上購物服務...</p>
+                    
+                    <h4>2. 會員權利與義務</h4>
+                    <p>會員享有購買商品、參與活動等權利，同時需遵守平台使用規範...</p>
+                    
+                    <h4>3. 商品與服務</h4>
+                    <p>所有商品均為正版授權，提供品質保證...</p>
+                    
+                    <h4>4. 付款與配送</h4>
+                    <p>支援多種付款方式，提供安全便利的配送服務...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="acceptTerms()">我同意</button>
+                <button class="btn-secondary" onclick="closeTerms()">關閉</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 隱私政策彈窗 -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>隱私政策</h3>
+                <button class="close-btn" onclick="closePrivacy()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="terms-content">
+                    <h4>個人資料收集與使用</h4>
+                    <p>我們重視您的隱私權，所收集的個人資料僅用於提供服務...</p>
+                    
+                    <h4>資料安全保護</h4>
+                    <p>採用業界標準的安全措施保護您的個人資料...</p>
+                    
+                    <h4>第三方服務</h4>
+                    <p>在必要情況下，可能與合作夥伴分享部分資料...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="acceptPrivacy()">我同意</button>
+                <button class="btn-secondary" onclick="closePrivacy()">關閉</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 返回首頁按鈕 -->
+    <a href="index.html" class="back-home">
+        <span class="back-icon">🏠</span>
+        返回首頁
+    </a>
+
+    <script>
+        // 區域資料
+        const cityDistricts = {
+            '台北市': ['中正區', '大同區', '中山區', '松山區', '大安區', '萬華區', '信義區', '士林區', '北投區', '內湖區', '南港區', '文山區'],
+            '新北市': ['板橋區', '三重區', '中和區', '永和區', '新莊區', '新店區', '樹林區', '鶯歌區', '三峽區', '淡水區', '汐止區', '瑞芳區'],
+            '桃園市': ['桃園區', '中壢區', '大溪區', '楊梅區', '蘆竹區', '大園區', '龜山區', '八德區', '龍潭區', '平鎮區', '新屋區', '觀音區'],
+            '台中市': ['中區', '東區', '南區', '西區', '北區', '北屯區', '西屯區', '南屯區', '太平區', '大里區', '霧峰區', '烏日區'],
+            '台南市': ['中西區', '東區', '南區', '北區', '安平區', '安南區', '永康區', '歸仁區', '新化區', '左鎮區', '玉井區', '楠西區'],
+            '高雄市': ['新興區', '前金區', '苓雅區', '鹽埕區', '鼓山區', '旗津區', '前鎮區', '三民區', '楠梓區', '小港區', '左營區', '仁武區']
+        };
+
+        // 頁面載入時初始化
+        document.addEventListener('DOMContentLoaded', async function() {
+            await initializeForm();
+            setupPasswordValidation();
+        });
+
+        // 初始化表單
+        async function initializeForm() {
+            const currentUser = await window.api.refreshCurrentUser();
+            if (currentUser) {
+                window.location.href = 'member_area.html';
+            }
+        }
+
+        // 更新區域選項
+        function updateDistricts() {
+            const citySelect = document.getElementById('city');
+            const districtSelect = document.getElementById('district');
+            const selectedCity = citySelect.value;
+
+            // 清空區域選項
+            districtSelect.innerHTML = '<option value="">請選擇區域</option>';
+
+            if (selectedCity && cityDistricts[selectedCity]) {
+                cityDistricts[selectedCity].forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district;
+                    option.textContent = district;
+                    districtSelect.appendChild(option);
+                });
+            }
+        }
+
+        // 密碼強度檢查
+        function setupPasswordValidation() {
+            const passwordInput = document.getElementById('password');
+            const strengthIndicator = document.getElementById('passwordStrength');
+
+            passwordInput.addEventListener('input', function() {
+                const password = passwordInput.value;
+                const strength = checkPasswordStrength(password);
+                
+                strengthIndicator.innerHTML = `
+                    <div class="strength-bar">
+                        <div class="strength-fill ${strength.class}" style="width: ${strength.percentage}%"></div>
+                    </div>
+                    <span class="strength-text">${strength.text}</span>
+                `;
+            });
+        }
+
+        // 檢查密碼強度
+        function checkPasswordStrength(password) {
+            let score = 0;
+            let feedback = [];
+
+            if (password.length >= 8) score += 1;
+            else feedback.push('至少8個字元');
+
+            if (/[a-z]/.test(password)) score += 1;
+            else feedback.push('包含小寫字母');
+
+            if (/[A-Z]/.test(password)) score += 1;
+            else feedback.push('包含大寫字母');
+
+            if (/[0-9]/.test(password)) score += 1;
+            else feedback.push('包含數字');
+
+            if (/[^A-Za-z0-9]/.test(password)) score += 1;
+            else feedback.push('包含特殊字元');
+
+            const strengthLevels = [
+                { class: 'weak', text: '密碼強度：弱', percentage: 20 },
+                { class: 'weak', text: '密碼強度：弱', percentage: 20 },
+                { class: 'fair', text: '密碼強度：普通', percentage: 40 },
+                { class: 'good', text: '密碼強度：良好', percentage: 60 },
+                { class: 'strong', text: '密碼強度：強', percentage: 80 },
+                { class: 'very-strong', text: '密碼強度：非常強', percentage: 100 }
+            ];
+
+            return strengthLevels[score] || strengthLevels[0];
+        }
+
+        // 切換密碼顯示
+        function togglePassword(fieldId) {
+            const passwordInput = document.getElementById(fieldId);
+            const toggleIcon = document.getElementById(fieldId + 'ToggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.textContent = '👁️';
+            }
+        }
+
+        // 處理註冊
+        function handleRegister(event) {
+            event.preventDefault();
+            
+            // 清除錯誤訊息
+            clearErrors();
+            
+            // 收集表單資料
+            const formData = collectFormData();
+            
+            // 驗證表單
+            if (!validateForm(formData)) {
+                return;
+            }
+            
+            // 顯示載入狀態
+            setLoading(true);
+            
+            setTimeout(async () => {
+                await processRegistration(formData);
+                setLoading(false);
+            }, 600);
+        }
+
+        // 收集表單資料
+        function collectFormData() {
+            return {
+                firstName: sanitizeInput(document.getElementById('firstName').value),
+                lastName: sanitizeInput(document.getElementById('lastName').value),
+                email: sanitizeInput(document.getElementById('email').value),
+                phone: sanitizeInput(document.getElementById('phone').value),
+                birthday: document.getElementById('birthday').value,
+                password: document.getElementById('password').value,
+                confirmPassword: document.getElementById('confirmPassword').value,
+                city: document.getElementById('city').value,
+                district: document.getElementById('district').value,
+                address: sanitizeInput(document.getElementById('address').value),
+                agreeTerms: document.getElementById('agreeTerms').checked,
+                agreeNewsletter: document.getElementById('agreeNewsletter').checked,
+                agreeAge: document.getElementById('agreeAge').checked
+            };
+        }
+
+        // 驗證表單
+        function validateForm(data) {
+            let isValid = true;
+
+            // 姓名驗證
+            if (!data.firstName.trim()) {
+                showFieldError('firstNameError', '請輸入姓氏');
+                isValid = false;
+            }
+
+            if (!data.lastName.trim()) {
+                showFieldError('lastNameError', '請輸入名字');
+                isValid = false;
+            }
+
+            // 電子郵件驗證
+            if (!data.email) {
+                showFieldError('emailError', '請輸入電子郵件');
+                isValid = false;
+            } else if (!isValidEmail(data.email)) {
+                showFieldError('emailError', '請輸入有效的電子郵件格式');
+                isValid = false;
+            }
+
+            // 手機號碼驗證
+            if (!data.phone) {
+                showFieldError('phoneError', '請輸入手機號碼');
+                isValid = false;
+            } else if (!isValidPhone(data.phone)) {
+                showFieldError('phoneError', '請輸入有效的手機號碼格式');
+                isValid = false;
+            }
+
+            // 生日驗證
+            if (!data.birthday) {
+                showFieldError('birthdayError', '請選擇生日');
+                isValid = false;
+            } else if (!isValidAge(data.birthday)) {
+                showFieldError('birthdayError', '必須年滿18歲才能註冊');
+                isValid = false;
+            }
+
+            // 密碼驗證
+            if (!data.password) {
+                showFieldError('passwordError', '請輸入密碼');
+                isValid = false;
+            } else if (!isValidPassword(data.password)) {
+                showFieldError('passwordError', '密碼至少8個字元，包含英文字母和數字');
+                isValid = false;
+            }
+
+            if (data.password !== data.confirmPassword) {
+                showFieldError('confirmPasswordError', '兩次輸入的密碼不一致');
+                isValid = false;
+            }
+
+            // 地址驗證
+            if (!data.city) {
+                showFieldError('cityError', '請選擇縣市');
+                isValid = false;
+            }
+
+            if (!data.district) {
+                showFieldError('districtError', '請選擇區域');
+                isValid = false;
+            }
+
+            if (!data.address.trim()) {
+                showFieldError('addressError', '請輸入詳細地址');
+                isValid = false;
+            }
+
+            // 服務條款驗證
+            if (!data.agreeTerms) {
+                showNotification('請同意服務條款和隱私政策', 'error');
+                isValid = false;
+            }
+
+            if (!data.agreeAge) {
+                showNotification('請確認您已年滿18歲', 'error');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // 處理註冊
+        async function processRegistration(data) {
+            try {
+                await window.api.register({
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    email: data.email,
+                    phone: data.phone,
+                    birthday: data.birthday,
+                    password: data.password,
+                    address: `${data.city}${data.district}${data.address}`,
+                    agreeNewsletter: data.agreeNewsletter
+                });
+
+                showNotification('註冊成功！正在跳轉到登入頁面...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'member.html';
+                }, 1500);
+            } catch (error) {
+                showFieldError('emailError', error.message || '註冊失敗');
+                showNotification(`註冊失敗：${error.message || '請稍後再試'}`, 'error');
+            }
+        }
+
+        // 驗證函數
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function isValidPhone(phone) {
+            const phoneRegex = /^09\d{8}$/;
+            return phoneRegex.test(phone);
+        }
+
+        function isValidPassword(password) {
+            return password.length >= 8 && /[a-zA-Z]/.test(password) && /[0-9]/.test(password);
+        }
+
+        function isValidAge(birthday) {
+            const today = new Date();
+            const birth = new Date(birthday);
+            const age = today.getFullYear() - birth.getFullYear();
+            const monthDiff = today.getMonth() - birth.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                return age - 1 >= 18;
+            }
+            return age >= 18;
+        }
+
+        function isEmailExists(email) {
+            const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+            return users.some(user => user.email === email);
+        }
+
+        // 顯示服務條款
+        function showTerms() {
+            document.getElementById('termsModal').style.display = 'flex';
+        }
+
+        function closeTerms() {
+            document.getElementById('termsModal').style.display = 'none';
+        }
+
+        function acceptTerms() {
+            document.getElementById('agreeTerms').checked = true;
+            closeTerms();
+        }
+
+        // 顯示隱私政策
+        function showPrivacy() {
+            document.getElementById('privacyModal').style.display = 'flex';
+        }
+
+        function closePrivacy() {
+            document.getElementById('privacyModal').style.display = 'none';
+        }
+
+        function acceptPrivacy() {
+            closePrivacy();
+        }
+
+        // 工具函數
+        function setLoading(loading) {
+            const btn = document.getElementById('registerBtn');
+            const btnText = btn.querySelector('.btn-text');
+            const btnLoading = btn.querySelector('.btn-loading');
+            
+            if (loading) {
+                btnText.style.display = 'none';
+                btnLoading.style.display = 'flex';
+                btn.disabled = true;
+            } else {
+                btnText.style.display = 'block';
+                btnLoading.style.display = 'none';
+                btn.disabled = false;
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        function showFieldError(fieldId, message) {
+            const errorElement = document.getElementById(fieldId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function clearErrors() {
+            const errorElements = document.querySelectorAll('.input-error');
+            errorElements.forEach(element => {
+                element.style.display = 'none';
+            });
+        }
+
+        function sanitizeInput(input) {
+            return input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+        }
+
+        // 鍵盤事件
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeTerms();
+                closePrivacy();
+            }
+        });
+    </script>
+</body>
+
+</html>

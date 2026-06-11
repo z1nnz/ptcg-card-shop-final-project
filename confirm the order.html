@@ -1,0 +1,369 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訂單確認 - PTCG卡包商城</title>
+    <link rel="stylesheet" href="confirm the order.css">
+    <script src="database.js"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="image/PTCG head.jpg" alt="網站標誌">
+                <h1>PTCG卡包商城</h1>
+            </div>
+            <div class="nav-right">
+                <div class="search-bar">
+                    <input type="text" placeholder="你想查詢甚麼相關商品?" id="searchInput">
+                    <button onclick="performSearch()">🔍</button>
+                </div>
+                <div class="member-section" id="memberSection">
+                    <a href="member.html" id="memberLink">
+                        <img src="image/images__1_-removebg-preview.png" alt="會員圖示">
+                        <span id="memberStatus">登入</span>
+                    </a>
+                </div>
+                <a href="shop.html">
+                    <img src="image/be1d7df358f8dbc9336c5d88403c38c7-removebg-preview.png" alt="購物車圖示">
+                </a>
+            </div>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="card.html">單卡</a></li>
+                <li><a href="card box.html">卡盒</a></li>
+                <li><a href="card periphery.html">卡片周邊商品</a></li>
+                <li><a href="special.html">特別商品</a></li>
+                <li><a href="help.html">服務中心</a></li>
+                <li><a href="about.html">關於我們</a></li>
+                <li><a href="member_area.html">會員專區</a></li>
+                <li><a href="message_board.html">留言板</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- 成功圖示和標題 -->
+        <div class="success-header">
+            <div class="success-icon">✅</div>
+            <h1>訂單確認成功！</h1>
+            <p>感謝您的購買，我們已收到您的訂單</p>
+            <div class="order-number">
+                <span>訂單編號：</span>
+                <span id="orderNumber">PTCG2024123456789</span>
+            </div>
+        </div>
+
+        <div class="confirmation-container">
+            <!-- 左側：訂單資訊 -->
+            <div class="order-info-section">
+                <h2>📋 訂單資訊</h2>
+
+                <!-- 收件資訊 -->
+                <div class="info-card">
+                    <h3>👤 收件資訊</h3>
+                    <div class="info-content">
+                        <p><strong>收件人：</strong><span id="customerName">-</span></p>
+                        <p><strong>聯絡電話：</strong><span id="customerPhone">-</span></p>
+                        <p><strong>電子郵件：</strong><span id="customerEmail">-</span></p>
+                        <p><strong>收件地址：</strong><span id="customerAddress">-</span></p>
+                    </div>
+                </div>
+
+                <!-- 配送資訊 -->
+                <div class="info-card">
+                    <h3>🚚 配送資訊</h3>
+                    <div class="info-content">
+                        <p><strong>配送方式：</strong><span id="deliveryMethod">-</span></p>
+                        <p><strong>預計送達：</strong><span id="estimatedDelivery">-</span></p>
+                        <p><strong>運費：</strong><span id="shippingFee">-</span></p>
+                    </div>
+                </div>
+
+                <!-- 付款資訊 -->
+                <div class="info-card">
+                    <h3>💳 付款資訊</h3>
+                    <div class="info-content">
+                        <p><strong>付款方式：</strong><span id="paymentMethod">-</span></p>
+                        <p><strong>付款狀態：</strong><span class="status pending">處理中</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右側：訂單摘要 -->
+            <div class="order-summary-section">
+                <h2>🛒 訂單明細</h2>
+
+                <!-- 商品清單 -->
+                <div class="items-list" id="orderItems">
+                    <!-- 商品項目將動態載入 -->
+                </div>
+
+                <!-- 金額摘要 -->
+                <div class="amount-summary">
+                    <div class="summary-row">
+                        <span>商品小計</span>
+                        <span id="subtotalAmount">NT$ 0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>運費</span>
+                        <span id="shippingAmount">NT$ 0</span>
+                    </div>
+                    <div class="summary-row discount-row" style="display: none;">
+                        <span>優惠折扣</span>
+                        <span id="discountAmount">-NT$ 0</span>
+                    </div>
+                    <hr>
+                    <div class="summary-row total-row">
+                        <span>總計</span>
+                        <span id="totalAmount">NT$ 0</span>
+                    </div>
+                </div>
+
+                <!-- 下一步按鈕 -->
+                <div class="action-buttons">
+                    <button class="btn-primary" onclick="completeOrder()">
+                        <span class="btn-icon">🎉</span>
+                        完成訂購
+                    </button>
+                    <a href="index.html" class="btn-secondary">
+                        <span class="btn-icon">🏠</span>
+                        返回首頁
+                    </a>
+                    <button class="btn-outline" onclick="printOrder()">
+                        <span class="btn-icon">🖨️</span>
+                        列印訂單
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 後續步驟說明 -->
+        <div class="next-steps">
+            <h2>📢 後續步驟</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-icon">📧</div>
+                    <h3>確認郵件</h3>
+                    <p>我們將發送訂單確認郵件至您的信箱</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">📦</div>
+                    <h3>商品準備</h3>
+                    <p>我們將在1-2個工作天內為您準備商品</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">🚚</div>
+                    <h3>出貨通知</h3>
+                    <p>商品出貨時會發送物流追蹤資訊</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">✨</div>
+                    <h3>收貨完成</h3>
+                    <p>請確認商品無誤，有問題請聯絡客服</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 PTCG卡包商城. 版權所有.</p>
+    </footer>
+
+    <script>
+        // 頁面載入時初始化
+        document.addEventListener('DOMContentLoaded', function () {
+            loadOrderData();
+        });
+
+        // 載入訂單資料
+        function loadOrderData() {
+            const orderData = JSON.parse(localStorage.getItem('currentOrder'));
+
+            if (!orderData) {
+                // 如果沒有訂單資料，重定向到首頁
+                alert('找不到訂單資料');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            document.getElementById('orderNumber').textContent = orderData.id;
+
+            // 填入收件資訊
+            document.getElementById('customerName').textContent = orderData.customerInfo.name || '-';
+            document.getElementById('customerPhone').textContent = orderData.customerInfo.phone || '-';
+            document.getElementById('customerEmail').textContent = orderData.customerInfo.email || '-';
+            document.getElementById('customerAddress').textContent = orderData.customerInfo.address || '-';
+
+            // 填入配送資訊
+            const deliveryText = getDeliveryText(orderData.delivery);
+            document.getElementById('deliveryMethod').textContent = deliveryText;
+            document.getElementById('estimatedDelivery').textContent = getEstimatedDelivery(orderData.delivery);
+
+            // 填入付款資訊
+            document.getElementById('paymentMethod').textContent = getPaymentText(orderData.payment);
+
+            // 載入商品清單
+            loadOrderItems(orderData.items || []);
+
+            // 填入金額資訊
+            document.getElementById('subtotalAmount').textContent = `NT$ ${Number(orderData.subtotal || 0).toLocaleString()}`;
+
+            const shippingFee = Number(orderData.shippingFee || getShippingFee(orderData.delivery));
+            document.getElementById('shippingAmount').textContent = shippingFee === 0 ? '免運費' : `NT$ ${shippingFee}`;
+            document.getElementById('shippingFee').textContent = shippingFee === 0 ? '免運費' : `NT$ ${shippingFee}`;
+
+            // 處理優惠券折扣
+            const discount = Number(orderData.discountAmount || 0);
+            if (discount > 0) {
+                document.querySelector('.discount-row').style.display = 'flex';
+                document.getElementById('discountAmount').textContent = `-NT$ ${discount.toLocaleString()}`;
+            }
+
+            const total = Number(orderData.totalAmount || 0);
+            document.getElementById('totalAmount').textContent = `NT$ ${total.toLocaleString()}`;
+        }
+
+        // 載入商品項目
+        function loadOrderItems(items) {
+            const container = document.getElementById('orderItems');
+
+            container.innerHTML = items.map(item => `
+                <div class="order-item">
+                    <img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/80'">
+                    <div class="item-details">
+                        <h4>${escapeHtml(item.name)}</h4>
+                        <p>數量：${item.quantity}</p>
+                        <p>單價：NT$ ${item.price.toLocaleString()}</p>
+                    </div>
+                    <div class="item-total">NT$ ${(item.price * item.quantity).toLocaleString()}</div>
+                </div>
+            `).join('');
+        }
+
+        // 獲取配送方式文字
+        function getDeliveryText(delivery) {
+            const deliveryMap = {
+                'home': '宅配到府',
+                'store': '超商取貨',
+                'self': '門市自取'
+            };
+            return deliveryMap[delivery] || '宅配到府';
+        }
+
+        // 獲取付款方式文字
+        function getPaymentText(payment) {
+            const paymentMap = {
+                'credit': '信用卡',
+                'bank': '銀行轉帳',
+                'cod': '貨到付款'
+            };
+            return paymentMap[payment] || '信用卡';
+        }
+
+        // 獲取預計送達時間
+        function getEstimatedDelivery(delivery) {
+            const now = new Date();
+            let days = 3; // 預設3天
+
+            switch (delivery) {
+                case 'home':
+                    days = 3;
+                    break;
+                case 'store':
+                    days = 4;
+                    break;
+                case 'self':
+                    days = 1;
+                    break;
+            }
+
+            const deliveryDate = new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
+            return deliveryDate.toLocaleDateString('zh-TW');
+        }
+
+        // 獲取運費
+        function getShippingFee(delivery) {
+            const feeMap = {
+                'home': 100,
+                'store': 60,
+                'self': 0
+            };
+            return feeMap[delivery] || 100;
+        }
+
+        // 獲取優惠券折扣
+        function getCouponDiscount(couponCode) {
+            if (!couponCode) return 0;
+
+            const discountMap = {
+                'WELCOME10': 100,
+                'SAVE200': 200,
+                'PTCG2024': 150,
+                'FIRST': 300,
+                'VIP50': 50,
+                'CARD100': 100
+            };
+            return discountMap[couponCode.toUpperCase()] || 0;
+        }
+
+        // 完成訂購
+        function completeOrder() {
+            // 清除訂單資料
+            localStorage.removeItem('currentOrder');
+            localStorage.removeItem('checkoutDetails');
+            localStorage.removeItem('cart');
+
+            // 顯示完成訊息
+            alert('🎉 訂單處理完成！感謝您的購買！');
+
+            // 重定向到首頁
+            window.location.href = 'index.html';
+        }
+
+        // 列印訂單
+        function printOrder() {
+            window.print();
+        }
+
+        // 搜索功能
+        function performSearch() {
+            const query = sanitizeInput(document.getElementById('searchInput').value);
+            if (query.trim()) {
+                localStorage.setItem('searchQuery', query);
+                window.location.href = 'search_results.html';
+            }
+        }
+
+        // 監聽搜索框回車事件
+        document.getElementById('searchInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // 安全處理函數
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function (m) { return map[m]; });
+        }
+
+        function sanitizeInput(input) {
+            return input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理員面板 - PTCG卡包商城</title>
+    <script src="database.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            background: #f5f6fa;
+            color: #333;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #0066ff 0%, #0066ff 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(196, 31, 51, 0.2);
+        }
+
+        .admin-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-header p {
+            opacity: 0.9;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            float: right;
+            margin-top: -3rem;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0066ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .admin-content {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .admin-nav {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .nav-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: #e9ecef;
+        }
+
+        .nav-item.active {
+            background: white;
+            border-bottom-color: #0066ff;
+            color: #0066ff;
+        }
+
+        .admin-panel {
+            padding: 2rem;
+            min-height: 500px;
+        }
+
+        .panel {
+            display: none;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .data-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #0066ff;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .home-btn {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: #0066ff;
+            color: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(196, 31, 51, 0.3);
+        }
+
+        .home-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(196, 31, 51, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .admin-container {
+                padding: 1rem;
+            }
+
+            .admin-nav {
+                flex-wrap: wrap;
+            }
+
+            .nav-item {
+                flex: 1;
+                text-align: center;
+                padding: 0.8rem;
+            }
+
+            .home-btn {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin: 1rem auto;
+                display: block;
+                text-align: center;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>管理員面板</h1>
+            <p>歡迎使用PTCG卡包商城管理系統</p>
+            <button class="logout-btn" onclick="logout()">登出</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-number" id="userCount">0</div>
+                <div class="stat-label">註冊會員</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📦</div>
+                <div class="stat-number" id="totalOrdersCount">0</div>
+                <div class="stat-label">總訂單數</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-number" id="totalRevenueAmount">NT$ 0</div>
+                <div class="stat-label">總營收</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-number">4.8</div>
+                <div class="stat-label">平均評分</div>
+            </div>
+        </div>
+
+        <div class="admin-content">
+            <div class="admin-nav">
+                <div class="nav-item active" onclick="showPanel('users')">會員管理</div>
+                <div class="nav-item" onclick="showPanel('orders')">訂單管理</div>
+                <div class="nav-item" onclick="showPanel('products')">商品管理</div>
+                <div class="nav-item" onclick="showPanel('reports')">報告分析</div>
+            </div>
+
+            <div class="admin-panel">
+                <div id="users" class="panel active">
+                    <h3>會員管理</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>會員ID</th>
+                                <th>姓名</th>
+                                <th>電子郵件</th>
+                                <th>註冊日期</th>
+                                <th>狀態</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userTableBody">
+                            <!-- 動態載入會員資料 -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="orders" class="panel">
+                    <h3>訂單管理</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>訂單編號</th>
+                                <th>會員</th>
+                                <th>商品</th>
+                                <th>金額</th>
+                                <th>狀態</th>
+                                <th>日期</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderTableBody">
+                            <!-- 動態載入訂單資料 -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="products" class="panel">
+                    <h3>商品管理</h3>
+                    <p>商品數量統計：</p>
+                    <ul
+                        style="margin: 1rem 0; line-height: 1.8; list-style: disc inside; padding-left: 0; color: #444; font-size: 15px;">
+                        <li>卡盒商品：8 種</li>
+                        <li>周邊商品：5 種</li>
+                        <li>特別商品：5 種</li>
+                        <li>單卡商品：10 種</li>
+                    </ul>
+
+                    <p style="color: #666;">詳細商品管理功能正在開發中...</p>
+                </div>
+
+                <div id="reports" class="panel">
+                    <h3>報告分析</h3>
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 1rem 0;">
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px;">
+                            <h4>本月銷售</h4>
+                            <p style="font-size: 1.5rem; color: #c41f33; margin: 0.5rem 0;">NT$ 18,500</p>
+                            <p style="color: #28a745;">▲ 15.3% 相較上月</p>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px;">
+                            <h4>熱門商品</h4>
+                            <p>1. 寶可夢 25週年黃金紀念盒</p>
+                            <p>2. 高透加厚卡片保護套</p>
+                            <p>3. 寶可夢 劍／盾 擴充包盒</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="index.html" class="home-btn">返回首頁</a>
+
+    <script>
+        // 頁面載入時檢查權限
+        document.addEventListener('DOMContentLoaded', async function () {
+            const allowed = await checkAdminPermission();
+            if (!allowed) return;
+            await loadUserData();
+            await loadAllOrders();
+        });
+
+        // 檢查管理員權限
+        async function checkAdminPermission() {
+            const currentUser = await window.api.refreshCurrentUser();
+            if (!currentUser || currentUser.role !== 'admin') {
+                alert('您沒有權限訪問此頁面');
+                window.location.href = 'member.html';
+                return false;
+            }
+            return true;
+        }
+
+        // 載入會員資料
+        async function loadUserData() {
+            const registeredUsers = await window.api.adminUsers();
+            const userTableBody = document.getElementById('userTableBody');
+            const userCount = document.getElementById('userCount');
+
+            // 更新會員數量
+            userCount.textContent = registeredUsers.length;
+
+            // 清空表格
+            userTableBody.innerHTML = '';
+
+            // 加入會員資料
+            registeredUsers.forEach(user => {
+                const row = document.createElement('tr');
+                const joinDate = new Date(user.joinDate).toLocaleDateString('zh-TW');
+
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${escapeHtml(user.name)}</td>
+                    <td>${escapeHtml(user.email)}</td>
+                    <td>${joinDate}</td>
+                    <td style="color: #28a745;">${user.role === 'admin' ? '管理員' : '正常'}</td>
+                `;
+
+                userTableBody.appendChild(row);
+            });
+        }
+
+        // 載入所有訂單
+        async function loadAllOrders() {
+            const [summary, allOrders] = await Promise.all([
+                window.api.adminSummary(),
+                window.api.adminOrders()
+            ]);
+            
+            // 更新統計數據
+            const orderCountEl = document.getElementById('totalOrdersCount');
+            const revenueEl = document.getElementById('totalRevenueAmount');
+            if (orderCountEl && revenueEl) {
+                orderCountEl.textContent = summary.totalOrders;
+                revenueEl.textContent = 'NT$ ' + Number(summary.totalRevenue || 0).toLocaleString();
+            }
+
+            // 更新訂單表格
+            const tableBody = document.getElementById('orderTableBody');
+            if (!tableBody) return;
+            tableBody.innerHTML = '';
+            
+            allOrders.forEach(order => {
+                const dateStr = new Date(order.orderDate).toLocaleDateString('zh-TW');
+                const itemNames = (order.items || []).map(i => escapeHtml(i.name)).join(', ');
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${escapeHtml(order.customerName || order.userId || 'Guest')}</td>
+                    <td>${itemNames}</td>
+                    <td>${order.totalAmountText || ('NT$ ' + Number(order.totalAmount || 0).toLocaleString())}</td>
+                    <td style="color: #28a745;">${order.status || '處理中'}</td>
+                    <td>${dateStr}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // 安全處理函數
+        function escapeHtml(text) {
+            if (!text) return '';
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function (m) { return map[m]; });
+        }
+
+        // 切換面板
+        function showPanel(panelId) {
+            // 隱藏所有面板
+            const panels = document.querySelectorAll('.panel');
+            panels.forEach(panel => panel.classList.remove('active'));
+
+            // 移除所有導航項目的活躍狀態
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+
+            // 顯示指定面板
+            document.getElementById(panelId).classList.add('active');
+
+            // 設置對應導航項目為活躍
+            event.target.classList.add('active');
+        }
+
+        // 登出
+        async function logout() {
+            if (confirm('確定要登出嗎？')) {
+                await window.api.logout();
+                window.location.href = 'member.html';
+            }
+        }
+    </script>
+</body>
+
+</html>

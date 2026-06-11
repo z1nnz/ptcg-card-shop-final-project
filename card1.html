@@ -1,0 +1,313 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PTCG Card Pack</title>
+    <link rel="stylesheet" href="card1.css">
+    <script src="database.js"></script>
+</head>
+
+<body>
+    <div class="header-container">
+        <div class="logo">
+            <img src="image/PTCG head.jpg" alt="網站標誌">
+            <a href="card1.html"></a>
+            <h1>PTCG卡包商城</h1>
+        </div>
+        <div class="nav-right">
+            <div class="search-bar">
+                <input type="text" placeholder="你想查詢甚麼相關商品?" id="searchInput">
+                <button onclick="performSearch()">🔍</button>
+            </div>
+            <div class="member-section" id="memberSection">
+                <a href="member.html" id="memberLink">
+                    <img src="image/images__1_-removebg-preview.png" alt="會員圖示">
+                    <span id="memberStatus">登入</span>
+                </a>
+            </div>
+            <a href="shop.html">
+                <img src="image/be1d7df358f8dbc9336c5d88403c38c7-removebg-preview.png" alt="購物車圖示">
+            </a>
+        </div>
+    </div>
+    <nav class="nav-menu">
+        <ul>
+            <li><a href="index.html">首頁</a></li>
+            <li><a href="card.html">單卡</a></li>
+            <li><a href="card box.html">卡盒</a></li>
+            <li><a href="card periphery.html">卡片周邊商品</a></li>
+            <li><a href="special.html">特別商品</a></li>
+            <li><a href="help.html">服務中心</a></li>
+            <li><a href="about.html">關於我們</a></li>
+            <li><a href="member_area.html">會員專區</a></li>
+            <li><a href="message_board.html">留言板</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section id="product-details">
+            <div id="product-image">
+                <img src="image/c_img8.jpg" alt="Yao Ming card" style="max-width: 300px; border-radius: 8px;">
+            </div>
+            <div id="product-info">
+                <h2>皮卡丘 (Pikachu) VMAX</h2>
+                <p><strong>價格:</strong>$1500</p>
+                <p>
+                    <strong>評分:</strong>
+                    <span id="product-rating" class="stars"></span>
+                    <span id="rating-text">(暫無評分)</span>
+                </p>
+                <label for="quantity">數量:</label>
+                <input type="number" id="quantity" name="quantity" value="1" min="1" max="10" style="width: 50px;">
+                <button id="add-to-cart">加入購物車</button>
+            </div>
+        </section>
+
+        <section id="product-description">
+            <h3>介紹</h3>
+            <p>最具代表性的電系寶可夢皮卡丘，以震撼的 VMAX 姿態霸氣登場！<br>極巨化的強大招式不僅能對對手造成毀滅性打擊，這張卡更是每位收藏家的必備經典。</p>
+        </section>
+
+        <section id="reviews-section">
+            <h3>回饋</h3>
+            <div id="review-list">
+                <div id="reviews-display">
+                    <!-- 留言將顯示在這裡 -->
+                </div>
+            </div>
+            <div id="review-form">
+                <h4>留下評論</h4>
+                <form id="reviewForm">
+                    <label for="rating">評分:</label>
+                    <div id="star-rating" class="star-rating">
+                        <span class="star" data-rating="1">☆</span>
+                        <span class="star" data-rating="2">☆</span>
+                        <span class="star" data-rating="3">☆</span>
+                        <span class="star" data-rating="4">☆</span>
+                        <span class="star" data-rating="5">☆</span>
+                    </div>
+                    <input type="hidden" id="rating" name="rating" value="">
+                    <p id="review-rating-text" class="rating-feedback">請選擇評分</p><br>
+                    <label for="comment">評論:</label><br>
+                    <textarea id="comment" name="comment" rows="4" cols="50" placeholder="留下評論..."></textarea><br>
+                    <button type="submit">送出評論</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2026 PTCG Collectibles</p>
+    </footer>
+    <script src="card.js" defer></script>
+    <script>
+        // 留言板功能
+        let currentProductId = '1';
+
+        // 更新產品評分顯示
+        function updateProductRating() {
+            if (typeof database === 'undefined') {
+                return;
+            }
+
+            const reviews = database.getProductReviews(currentProductId);
+            const ratingElement = document.getElementById('product-rating');
+            const ratingTextElement = document.getElementById('rating-text');
+
+            if (reviews.length === 0) {
+                ratingElement.innerHTML = '☆☆☆☆☆';
+                ratingTextElement.textContent = '(暫無評分)';
+                return;
+            }
+
+            // 計算平均評分
+            const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+            const averageRating = totalRating / reviews.length;
+            const roundedRating = Math.round(averageRating * 10) / 10; // 四捨五入到小數點後一位
+
+            // 顯示星星（實心表示整星，空心表示空星）
+            const fullStars = Math.floor(averageRating);
+            const hasHalfStar = averageRating - fullStars >= 0.5;
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+            let starsHtml = '★'.repeat(fullStars);
+            if (hasHalfStar) {
+                starsHtml += '☆'; // 可以用半星符號，但這裡用空星代替
+            }
+            starsHtml += '☆'.repeat(emptyStars);
+
+            ratingElement.innerHTML = starsHtml;
+            ratingTextElement.textContent = `(${roundedRating}/5.0, ${reviews.length}則評論)`;
+        }
+
+        // 載入留言
+        function loadProductReviews() {
+            if (typeof database === 'undefined') {
+                console.error('Database not loaded');
+                return;
+            }
+
+            const reviews = database.getProductReviews(currentProductId);
+            const reviewsDisplay = document.getElementById('reviews-display');
+
+            // 更新產品評分顯示
+            updateProductRating();
+
+            if (reviews.length === 0) {
+                reviewsDisplay.innerHTML = '<p>暫無評論，成為第一個留言的人吧！</p>';
+                return;
+            }
+
+            reviewsDisplay.innerHTML = reviews.map(review => `
+                <div class="review-item" style="border: 1px solid #ddd; padding: 1rem; margin-bottom: 1rem; border-radius: 5px;">
+                    <div class="review-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <strong style="color: #c41f33;">${database.escapeHtml(review.username)}</strong>
+                        <span style="color: #666; font-size: 0.9rem;">${new Date(review.date).toLocaleString('zh-TW')}</span>
+                    </div>
+                    <div class="review-rating" style="margin-bottom: 0.5rem;">
+                        評分: ${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}
+                    </div>
+                    <div class="review-content" style="color: #333;">
+                        ${database.escapeHtml(review.comment)}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 星星評分功能
+        function initStarRating() {
+            const stars = document.querySelectorAll('.star');
+            const ratingInput = document.getElementById('rating');
+            const ratingText = document.getElementById('review-rating-text');
+            let selectedRating = 0;
+
+            // 為每個星星添加點擊事件
+            stars.forEach((star, index) => {
+                star.addEventListener('click', function () {
+                    selectedRating = parseInt(this.getAttribute('data-rating'));
+                    ratingInput.value = selectedRating;
+                    updateStars(selectedRating);
+                    updateRatingText(selectedRating);
+                });
+
+                // 添加懸停效果
+                star.addEventListener('mouseenter', function () {
+                    const hoverRating = parseInt(this.getAttribute('data-rating'));
+                    updateStars(hoverRating);
+                });
+            });
+
+            // 鼠標離開星星區域時恢復到選中狀態
+            const starRating = document.getElementById('star-rating');
+            starRating.addEventListener('mouseleave', function () {
+                updateStars(selectedRating);
+            });
+
+            function updateStars(rating) {
+                stars.forEach((star, index) => {
+                    if (index < rating) {
+                        star.textContent = '★';
+                        star.style.color = '#ffd700';
+                    } else {
+                        star.textContent = '☆';
+                        star.style.color = '#ddd';
+                    }
+                });
+            }
+
+            function updateRatingText(rating) {
+                const texts = ['', '很差', '不好', '普通', '好', '很好'];
+                ratingText.textContent = `${rating} 星 - ${texts[rating]}`;
+                ratingText.style.color = '#c41f33';
+            }
+        }
+
+        // 提交留言
+        function submitReview(event) {
+            event.preventDefault();
+
+            if (typeof database === 'undefined') {
+                alert('系統錯誤，請稍後再試');
+                return;
+            }
+
+            const currentUser = database.getCurrentUser();
+            if (!currentUser) {
+                alert('請先登入才能留言');
+                window.location.href = 'member.html';
+                return;
+            }
+
+            const rating = parseInt(document.getElementById('rating').value);
+            const comment = document.getElementById('comment').value.trim();
+
+            if (!rating || rating < 1 || rating > 5) {
+                alert('請選擇評分（1-5星）');
+                return;
+            }
+
+            if (!comment) {
+                alert('請輸入評論內容');
+                return;
+            }
+
+            const review = {
+                productId: currentProductId,
+                username: currentUser.username,
+                rating: rating,
+                comment: comment,
+                date: new Date().toISOString()
+            };
+
+            if (database.addProductReview(review)) {
+                alert('評論已成功提交！');
+                document.getElementById('reviewForm').reset();
+                // 重置星星評分
+                const stars = document.querySelectorAll('.star');
+                stars.forEach(star => {
+                    star.textContent = '☆';
+                    star.style.color = '#ddd';
+                });
+                document.getElementById('review-rating-text').textContent = '請選擇評分';
+                document.getElementById('review-rating-text').style.color = '#666';
+                loadProductReviews(); // 這會自動更新評分顯示
+            } else {
+                alert('提交失敗，請稍後再試');
+            }
+        }
+
+        // 綁定事件
+        document.addEventListener('DOMContentLoaded', function () {
+            // 載入留言和更新評分
+            loadProductReviews();
+
+            // 綁定表單提交事件
+            const reviewForm = document.getElementById('reviewForm');
+            if (reviewForm) {
+                reviewForm.addEventListener('submit', submitReview);
+            }
+
+            // 加入購物車功能
+            const addToCartBtn = document.getElementById('add-to-cart');
+            if (addToCartBtn) {
+                addToCartBtn.addEventListener('click', function () {
+                    const quantity = parseInt(document.getElementById('quantity').value) || 1;
+                    const product = {
+                        id: '1',
+                        name: '皮卡丘 (Pikachu) VMAX',
+                        price: 1500,
+                        quantity: quantity
+                    };
+
+                    addToCart(product);
+                    alert('已加入購物車！');
+                });
+            }
+
+            // 星星評分功能
+            initStarRating();
+        });
+    </script>
+</body>
+
+</html>

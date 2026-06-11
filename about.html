@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PTCG Card Team</title>
+    <link rel="stylesheet" href="about.css">
+
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="image/PTCG head.jpg" alt="網站標誌">
+                <h1>PTCG卡包商城</h1>
+            </div>
+            <div class="nav-right">
+                <div class="search-bar">
+                    <input type="text" placeholder="你想查詢甚麼相關商品?" id="searchInput">
+                    <button onclick="performSearch()">🔍</button>
+                </div>
+                <div class="member-section" id="memberSection">
+                    <a href="member.html" id="memberLink">
+                        <img src="image/images__1_-removebg-preview.png" alt="會員圖示">
+                        <span id="memberStatus">登入</span>
+                    </a>
+                </div>
+                <a href="shop.html">
+                    <img src="image/be1d7df358f8dbc9336c5d88403c38c7-removebg-preview.png" alt="購物車圖示">
+                </a>
+            </div>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="card.html">單卡</a></li>
+                <li><a href="card box.html">卡盒</a></li>
+                <li><a href="card periphery.html">卡片周邊商品</a></li>
+                <li><a href="special.html">特別商品</a></li>
+                <li><a href="help.html">服務中心</a></li>
+                <li><a href="about.html">關於我們</a></li>
+                <li><a href="member_area.html">會員專區</a></li>
+                <li><a href="message_board.html">留言板</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <section id="about" class="about">
+        <div class="team-grid">
+            <div class="team-member">
+                <img src="" alt="Member 1">
+                <h3>蔡旻瑾</h3>
+                <p>Founder & CEO</p>
+            </div>
+            <div class="team-member">
+                <img src="" alt="Member 2">
+                <h3>吳紘在</h3>
+                <p>Card Specialist</p>
+            </div>
+            <div class="team-member">
+                <img src="image/S__6520835.jpg" alt="Member 3">
+                <h3>蘇奕安</h3>
+                <p>Community Manager</p>
+            </div>
+
+            <!-- ✅ 新增同學開始 -->
+            <div class="team-member">
+                <img src="" alt="Member 4">
+                <h3>李維駿</h3>
+                <p>Member</p>
+            </div>
+            <!-- ✅ 新增同學結束 -->
+        </div>
+
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <form>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 PTCG卡包商城. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

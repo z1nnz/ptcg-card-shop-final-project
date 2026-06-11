@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卡片周邊商品</title>
+    <link rel="stylesheet" href="card periphery.css">
+    <script src="database.js"></script>
+    <style>
+        .product-box img {
+            display: block;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 300px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="image/PTCG head.jpg" alt="網站標誌">
+                <h1>PTCG卡包商城</h1>
+            </div>
+            <div class="nav-right">
+                <div class="search-bar">
+                    <input type="text" placeholder="你想查詢甚麼相關商品?" id="searchInput">
+                    <button onclick="performSearch()">🔍</button>
+                </div>
+                <div class="member-section" id="memberSection">
+                    <a href="member.html" id="memberLink">
+                        <img src="image/images__1_-removebg-preview.png" alt="會員圖示">
+                        <span id="memberStatus">登入</span>
+                    </a>
+                </div>
+                <a href="shop.html">
+                    <img src="image/be1d7df358f8dbc9336c5d88403c38c7-removebg-preview.png" alt="購物車圖示">
+                </a>
+            </div>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="card.html">單卡</a></li>
+                <li><a href="card box.html">卡盒</a></li>
+                <li><a href="card periphery.html">卡片周邊商品</a></li>
+                <li><a href="special.html">特別商品</a></li>
+                <li><a href="help.html">服務中心</a></li>
+                <li><a href="about.html">關於我們</a></li>
+                <li><a href="member_area.html">會員專區</a></li>
+                <li><a href="message_board.html">留言板</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="product-boxes" id="peripheryContainer">
+            <!-- 產品將動態載入 -->
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 PTCG卡包商城. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            loadPeripheryProducts();
+        });
+
+        function loadPeripheryProducts() {
+            const products = window.mockDB.getProducts('periphery');
+            const container = document.getElementById('peripheryContainer');
+
+            container.innerHTML = products.map((product, index) => `
+                <div class="product-box" data-id="${product.id}">
+                    <a href="cp${index + 1}.html">
+                        <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/200'">
+                        <h3>${escapeHtml(product.name)}</h3>
+                        <p class="price">NT$ ${product.price}</p>
+                        <p class="stock ${product.stock <= 10 ? 'low-stock' : ''}">
+                            庫存: ${product.stock}
+                            ${product.stock <= 10 ? ' (剩餘不多)' : ''}
+                        </p>
+                    </a>
+                    <div class="product-actions">
+                        <button class="add-to-cart-btn" onclick="addToCart('${product.id}')" ${product.stock === 0 ? 'disabled' : ''}>
+                            ${product.stock === 0 ? '缺貨' : '加入購物車'}
+                        </button>
+                        <button class="favorite-btn" onclick="toggleFavorite('${product.id}')" title="加入收藏">
+                            <i class="heart-icon">🤍</i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            updateFavoriteButtons();
+        }
+
+        function addToCart(productId) {
+            const product = window.mockDB.getProductById(productId);
+            if (!product || product.stock === 0) {
+                alert('商品缺貨或不存在！');
+                return;
+            }
+
+            const cartItem = {
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                quantity: 1,
+                image: product.image
+            };
+
+            // 添加到購物車
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                if (existingItem.quantity < product.stock) {
+                    existingItem.quantity += 1;
+                } else {
+                    alert('已達到該商品的最大庫存數量！');
+                    return;
+                }
+            } else {
+                cart.push(cartItem);
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert('商品已添加到購物車！');
+
+            // 視覺更新庫存
+            updateProductDisplay(productId);
+        }
+
+        function updateProductDisplay(productId) {
+            const productBox = document.querySelector(`[data-id="${productId}"]`);
+            if (productBox) {
+                const stockElement = productBox.querySelector('.stock');
+                const addToCartBtn = productBox.querySelector('.add-to-cart-btn');
+
+                // 不實際減少數據庫庫存，只是視覺更新
+                const currentStock = parseInt(stockElement.textContent.match(/\d+/)[0]);
+                const newStock = Math.max(0, currentStock - 1);
+
+                stockElement.innerHTML = `庫存: ${newStock}${newStock <= 10 ? ' (剩餘不多)' : ''}`;
+                stockElement.className = `stock ${newStock <= 10 ? 'low-stock' : ''}`;
+
+                if (newStock === 0) {
+                    addToCartBtn.textContent = '缺貨';
+                    addToCartBtn.disabled = true;
+                }
+            }
+        }
+
+        function performSearch() {
+            const query = sanitizeInput(document.getElementById('searchInput').value);
+            if (query.trim()) {
+                localStorage.setItem('searchQuery', query);
+                window.location.href = 'search_results.html';
+            }
+        }
+
+        // 監聽搜索框回車事件
+        document.getElementById('searchInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // 切換收藏狀態
+        function toggleFavorite(productId) {
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            const product = window.mockDB.getProductById(productId);
+            const existingIndex = favorites.findIndex(fav => fav.id === productId);
+
+            if (existingIndex >= 0) {
+                favorites.splice(existingIndex, 1);
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                alert('已從收藏中移除！');
+            } else {
+                if (product) {
+                    favorites.push({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        image: product.image,
+                        category: product.category,
+                        dateAdded: new Date().toISOString()
+                    });
+                    localStorage.setItem('favorites', JSON.stringify(favorites));
+                    alert('已加入收藏！');
+                }
+            }
+
+            updateFavoriteButtons();
+        }
+
+        // 更新收藏按鈕顯示
+        function updateFavoriteButtons() {
+            const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            const favoriteIds = favorites.map(fav => fav.id);
+
+            document.querySelectorAll('.product-box').forEach(productBox => {
+                const productId = productBox.getAttribute('data-id');
+                const favoriteBtn = productBox.querySelector('.favorite-btn .heart-icon');
+
+                if (favoriteIds.includes(productId)) {
+                    favoriteBtn.textContent = '❤️';
+                    favoriteBtn.closest('.favorite-btn').style.color = '#e74c3c';
+                } else {
+                    favoriteBtn.textContent = '🤍';
+                    favoriteBtn.closest('.favorite-btn').style.color = '#666';
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

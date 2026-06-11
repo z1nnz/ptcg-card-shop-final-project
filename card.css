@@ -1,0 +1,459 @@
+:root {
+    --header-bg: #003da5; /* 標題欄藍色背景 */
+    --text-color: white; /* 標題文字白色 */
+    --search-bg: #ffffff; /* 搜尋欄背景顏色 */
+    --search-border: #cccccc; /* 搜尋欄邊框顏色 */
+    --search-placeholder: #888888; /* 搜尋欄占位文字顏色 */
+    --search-button-bg: #ffffff; /* 搜尋按鈕背景顏色 */
+    --search-button-color: white; /* 搜尋按鈕文字顏色 */
+    --divider-color: #e0e0e0; /* 分隔線顏色 */
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9; /* 淺灰背景 */
+}
+
+.header-container {
+    display: flex;
+    justify-content: center; /* LOGO 和店名置中 */
+    align-items: center; /* 垂直居中 */
+    padding: 10px 20px;
+    background-color: var(--header-bg);
+    color: var(--text-color);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative; /* 使右側圖示可以絕對定位 */
+}
+
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* LOGO 和標題間距 */
+}
+
+.logo img {
+    height: 40px; /* LOGO 尺寸 */
+    border-radius: 50%;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+}
+
+/* 右側會員和購物車圖示 */
+.nav-right {
+    position: absolute;
+    top: 50%;
+    right: 20px; /* 靠右對齊 */
+    transform: translateY(-50%);
+    display: flex;
+    gap: 40px; /* 增大圖示之間的間距 */
+}
+
+.nav-right a img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+/* 分類導航樣式 */
+.nav-menu {
+    background-color: var(--nav-bg);
+    padding: 15px 0;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-menu {
+    animation: fadeInDown 1s ease-in-out;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.nav-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.nav-menu ul li a {
+    color: var(--nav-text-color);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 5px 15px;
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    transition: all 0.4s ease; /* ✨加這行 */
+
+    /* 可選：初始陰影淡淡的 */
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.05);
+}
+
+.nav-menu ul li a:hover {
+    transform: scale(1.1) rotate(-1deg); /* ✨加這行：微放大並旋轉 */
+    text-shadow: 0 0 8px rgba(0, 61, 165, 0.6), 0 0 16px rgba(0, 61, 165, 0.4); /* ✨加這行：閃光感 */
+}
+
+
+.nav-menu ul li a::after {
+    content: '';
+    position: absolute;
+    left: -100%;
+    bottom: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #00c3ff, #003da5); /* ✨更酷的底線漸層 */
+    transform: skewX(-20deg);
+    transition: all 0.4s ease; /* ✨更滑順 */
+}
+
+.nav-menu ul li a:hover::after {
+    left: 0; /* ✨底線滑入動畫 */
+}
+
+
+.nav-menu ul li a:hover::after {
+    transform: scaleX(1); /* 展開底線 */
+    transform-origin: left;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+}
+
+.search-bar input {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px 0 0 4px;
+    outline: none;
+    width: 250px;
+}
+
+.search-bar button {
+    padding: 8px 12px;
+    background-color: #fff;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    border-left: 1px solid #ddd;
+}
+
+
+
+/* 會員下拉選單樣式 */
+.member-section {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.member-section a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+}
+
+.member-section a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.member-section span {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.member-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.member-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.member-info:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    min-width: 160px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 8px 0;
+    margin-top: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1001;
+}
+
+.member-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 12px 16px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f8f9fa;
+    color: #003da5;
+}
+/* 主要內容 */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+.container h1 {
+    text-align: center;
+    color: #0066ff;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+/* 產品網格 */
+.card-boxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* ✅ 更穩定響應式 */
+    gap: 2rem;
+    margin: 2rem auto;
+    max-width: 1200px;
+  }
+  
+
+
+/* 產品卡片 */
+.card-box {
+    min-height: 460px; /* 或根據你圖片和按鈕總高度調整 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+
+.card-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
+
+.card-box a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.card-box img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover; /* ✅ 建議保留 cover */
+    object-position: top; /* ✅ 裁切靠上，頭會被保留 */
+    display: block;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+
+
+.card-box:hover img {
+    transform: scale(1.05);
+}
+
+.card-box h3 {
+    padding: 1rem 1rem 0.5rem;
+    color: #333;
+    font-size: 1.2rem;
+    font-weight: bold;
+    line-height: 1.4;
+}
+
+.card-box .price {
+    padding: 0 1rem 0.5rem;
+    color: #0066ff;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.card-box .stock {
+    padding: 0 1rem 1rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.card-box .stock.low-stock {
+    color: #2f77e3;
+    font-weight: bold;
+}
+
+/* 卡片動作區域 */
+.card-actions {
+    padding: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.add-to-cart-btn {
+    flex: 1;
+    background-color: #0066ff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #0066ff;
+    transform: translateY(-2px);
+}
+
+.add-to-cart-btn:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.add-to-cart-btn:disabled:hover {
+    background-color: #ccc;
+    transform: none;
+}
+
+.favorite-btn {
+    background: none;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    color: #666;
+}
+
+.favorite-btn:hover {
+    border-color: #0066ff;
+    background-color: #0066ff;
+    color: white;
+    transform: scale(1.1);
+}
+
+.heart-icon {
+    font-size: 1.5rem;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+    margin-top: 3rem;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .nav-menu ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-menu li {
+        margin: 0.5rem;
+    }
+
+    .search-bar input {
+        width: 200px;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+
+    .card-boxes {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+
+    .container h1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-boxes {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-box h3 {
+        font-size: 1.1rem;
+    }
+
+    .card-box .price {
+        font-size: 1.2rem;
+    }
+
+    .search-bar input {
+        width: 150px;
+    }
+
+    .nav-menu a {
+        padding: 0.5rem 0;
+        font-size: 0.9rem;
+    }
+}
+

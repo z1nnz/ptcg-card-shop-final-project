@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品展示網站</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="database.js"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="image/PTCG head.jpg" alt="網站標誌">
+                <a href="card1.html"></a>
+                <h1>PTCG卡包商城</h1>
+            </div>
+            <div class="nav-right">
+                <div class="search-bar">
+                    <input type="text" placeholder="你想查詢甚麼相關商品?" id="searchInput">
+                    <button onclick="performSearch()">🔍</button>
+                </div>
+                <div class="member-section" id="memberSection">
+                    <a href="member.html" id="memberLink">
+                        <img src="image/images__1_-removebg-preview.png" alt="會員圖示">
+                        <span id="memberStatus">登入</span>
+                    </a>
+                </div>
+                <a href="shop.html">
+                    <img src="image/be1d7df358f8dbc9336c5d88403c38c7-removebg-preview.png" alt="購物車圖示">
+                </a>
+            </div>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="card.html">單卡</a></li>
+                <li><a href="card box.html">卡盒</a></li>
+                <li><a href="card periphery.html">卡片周邊商品</a></li>
+                <li><a href="special.html">特別商品</a></li>
+                <li><a href="help.html">服務中心</a></li>
+                <li><a href="about.html">關於我們</a></li>
+                <li><a href="member_area.html">會員專區</a></li>
+                <li><a href="message_board.html">留言板</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <!-- Hero Banner -->
+    <section class="hero-banner">
+        <div class="hero-content">
+            <h1>POKEMON CARDS</h1>
+            <p>中原第一家PTCG卡牌商城!</p>
+            <a href="card.html" class="btn-limited">開逛!</a>
+        </div>
+    </section>
+
+    <!-- 動態廣告區 -->
+    <section class="dynamic-ad">
+        <div class="ad-container">
+            <button class="ad-nav left" onclick="prevAd()">&#8249;</button>
+            <div class="ad-content">
+                <a id="ad-link" href="card.html">
+                    <img id="ad-image" src="image/cb_img8.jpg" alt="廣告圖片">
+                </a>
+                <p id="ad-text"></p>
+            </div>
+            <button class="ad-nav right" onclick="nextAd()">&#8250;</button>
+        </div>
+    </section>
+
+    <!-- 即時消息廣告板 -->
+    <section class="announcement-board">
+        <div class="container">
+            <h2>最新消息</h2>
+            <div class="announcements" id="announcements">
+                <div class="announcement-item">
+                    <span class="announcement-badge">新品</span>
+                    <span class="announcement-text">2026年最新寶可夢卡牌卡已上架！限時優惠中！</span>
+                </div>
+                <div class="announcement-item">
+                    <span class="announcement-badge">促銷</span>
+                    <span class="announcement-text">購買任意卡盒商品滿$3000免運費！</span>
+                </div>
+                <div class="announcement-item">
+                    <span class="announcement-badge">活動</span>
+                    <span class="announcement-text">會員介紹朋友註冊即可獲得100元購物金！</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 網站統計信息 -->
+    <section class="site-stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3 id="visitCount">0</h3>
+                    <p>總訪問次數</p>
+                </div>
+                <div class="stat-item">
+                    <h3 id="productCount">0</h3>
+                    <p>商品種類</p>
+                </div>
+                <div class="stat-item">
+                    <h3 id="memberCount">2</h3>
+                    <p>註冊會員</p>
+                </div>
+                <div class="stat-item">
+                    <h3 id="messageCount">0</h3>
+                    <p>客戶留言</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 會員介紹連結 -->
+    <section class="member-intro">
+        <div class="container">
+            <h2>會員專區</h2>
+            <div class="member-benefits">
+                <div class="benefit-item">
+                    <img src="image/shopping.webp" alt="會員優惠"
+                        onerror="this.src='https://via.placeholder.com/100'">
+                    <h3>💎 專屬優惠</h3>
+                    <p>會員享有專屬折扣和優先購買權</p>
+                </div>
+                <div class="benefit-item">
+                    <img src="image/cb_img8.jpg" alt="生日優惠"
+                        onerror="this.src='https://via.placeholder.com/100'">
+                    <h3>🎂 生日優惠</h3>
+                    <p>生日月份享有特別折扣和生日禮品</p>
+                </div>
+            </div>
+            <div class="member-actions">
+                <a href="member.html" class="btn-member">會員登入</a>
+                <a href="Registered member.html" class="btn-register">立即註冊</a>
+                <a href="member_area.html" class="btn-intro">會員介紹</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // 廣告輪播功能
+        const ads = [
+            { image: "image/cb_img8.jpg", text: "限量版25週年黃金盒現正熱賣中！", link: "card box.html" },
+            { image: "image/cb_img1.jpg", text: "新會員註冊即享88折優惠！", link: "card box.html" },
+            { image: "image/c_img1.png", text: "經典人氣單卡重新上架！", link: "card.html" }
+        ];
+
+        let currentAdIndex = 0;
+        const adImage = document.getElementById("ad-image");
+        const adText = document.getElementById("ad-text");
+        const adLink = document.getElementById("ad-link");
+
+        function updateAd() {
+            adImage.src = ads[currentAdIndex].image;
+            adText.textContent = ads[currentAdIndex].text;
+            if (adLink) {
+                adLink.href = ads[currentAdIndex].link;
+            }
+        }
+
+        function nextAd() {
+            currentAdIndex = (currentAdIndex + 1) % ads.length;
+            updateAd();
+        }
+
+        function prevAd() {
+            currentAdIndex = (currentAdIndex - 1 + ads.length) % ads.length;
+            updateAd();
+        }
+
+        // 自動輪播廣告
+        setInterval(() => {
+            nextAd();
+        }, 5000); // 每 5 秒自動切換
+
+        // 搜索功能
+        function performSearch() {
+            const query = sanitizeInput(document.getElementById('searchInput').value);
+            if (query.trim()) {
+                localStorage.setItem('searchQuery', query);
+                window.location.href = 'search_results.html';
+            }
+        }
+
+        // 監聽搜索框回車事件
+        document.getElementById('searchInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // 頁面加載時更新統計信息
+        document.addEventListener('DOMContentLoaded', async function () {
+            await updateSiteStats();
+            updateAd();
+            await updateMemberStatus();
+        });
+
+        async function updateSiteStats() {
+            const stats = await window.api.refreshStats();
+            document.getElementById('visitCount').textContent = stats.visitCount;
+            document.getElementById('productCount').textContent = stats.productCount;
+            document.getElementById('memberCount').textContent = stats.memberCount;
+            document.getElementById('messageCount').textContent = stats.messageCount;
+        }
+
+        // 更新會員狀態顯示
+        async function updateMemberStatus() {
+            const currentUser = await window.api.refreshCurrentUser();
+            const isLoggedIn = !!currentUser;
+            const memberSection = document.getElementById('memberSection');
+            const memberLink = document.getElementById('memberLink');
+            const memberStatus = document.getElementById('memberStatus');
+
+            if (isLoggedIn) {
+                // 更新為已登入狀態
+                memberStatus.textContent = currentUser.name || '會員';
+
+                // 修改點擊行為
+                memberLink.href = 'member_area.html';
+
+                // 添加登出選項
+                memberSection.innerHTML = `
+                    <div class="member-dropdown">
+                        <a href="member_area.html" class="member-info">
+                            <img src="image/images__1_-removebg-preview.png" alt="會員圖示">
+                            <span>${currentUser.name || '會員'}</span>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="member_area.html">會員專區</a>
+                            ${currentUser.role === 'admin' ? '<a href="admin_panel.html">管理面板</a>' : ''}
+                            <a href="#" onclick="logout()">登出</a>
+                        </div>
+                    </div>
+                `;
+            } else {
+                memberStatus.textContent = '登入';
+                memberLink.href = 'member.html';
+            }
+        }
+
+        // 登出功能
+        async function logout() {
+            if (confirm('確定要登出嗎？')) {
+                await window.api.logout();
+                await updateMemberStatus();
+                alert('已成功登出');
+            }
+        }
+    </script>
+
+    <div class="cookie-bar" id="cookieBar">
+        <div class="cookie-bar-content">
+            <h3 class="cookie-bar-title">我們重視您的隱私</h3>
+            <p class="cookie-bar-text">
+                我們使用 Cookie 來提升您的瀏覽體驗，投放個人化廣告或內容，並分析我們的流量。點擊「接受」即表示您同意使用 Cookie。
+            </p>
+        </div>
+        <div class="cookie-bar-actions">
+            <button class="cookie-btn-outline" id="rejectCookies">拒絕</button>
+            <button class="cookie-btn-primary" id="acceptCookies">接受</button>
+        </div>
+    </div>
+</body>
+
+</html>

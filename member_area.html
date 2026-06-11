@@ -1,0 +1,550 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員專區 - PTCG卡包商城</title>
+    <link rel="stylesheet" href="member_area.css">
+    <script src="database.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="image/PTCG head.jpg" alt="網站標誌">
+                <h1>PTCG卡包商城</h1>
+            </div>
+            <div class="nav-right">
+                <div class="search-bar">
+                    <input type="text" placeholder="你想查詢甚麼相關商品?" id="searchInput">
+                    <button onclick="performSearch()">🔍</button>
+                </div>
+                <div class="member-section" id="memberSection">
+                    <a href="member.html" id="memberLink">
+                        <img src="image/images__1_-removebg-preview.png" alt="會員圖示">
+                        <span id="memberStatus">登入</span>
+                    </a>
+                </div>
+                <a href="shop.html">
+                    <img src="image/be1d7df358f8dbc9336c5d88403c38c7-removebg-preview.png" alt="購物車圖示">
+                </a>
+            </div>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="card.html">單卡</a></li>
+                <li><a href="card box.html">卡盒</a></li>
+                <li><a href="card periphery.html">卡片周邊商品</a></li>
+                <li><a href="special.html">特別商品</a></li>
+                <li><a href="help.html">服務中心</a></li>
+                <li><a href="about.html">關於我們</a></li>
+                <li><a href="member_area.html">會員專區</a></li>
+                <li><a href="message_board.html">留言板</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- 歡迎區域 -->
+        <div class="welcome-section">
+            <h1>會員專區</h1>
+            <div class="member-info">
+                <div class="member-avatar">
+                    <img src="image/images__1_-removebg-preview.png" alt="會員頭像">
+                </div>
+                <div class="member-details">
+                    <h2>歡迎回來！</h2>
+                    <p>會員編號：<span class="member-id">PTCG001</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="quick-actions">
+            <h2>快速操作</h2>
+            <div class="action-grid">
+                <div class="action-card">
+                    <div class="action-icon">📝</div>
+                    <h3>修改資料</h3>
+                    <p>更新個人資訊</p>
+                    <button class="btn-primary" onclick="showEditForm()">修改</button>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">📦</div>
+                    <h3>訂單查詢</h3>
+                    <p>查看購買記錄</p>
+                    <button class="btn-primary" onclick="showOrderHistory()">查看</button>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">🎁</div>
+                    <h3>會員優惠</h3>
+                    <p>專屬優惠券</p>
+                    <button class="btn-primary" onclick="showCoupons()">查看</button>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">⭐</div>
+                    <h3>收藏清單</h3>
+                    <p>我的最愛商品</p>
+                    <button class="btn-primary" onclick="showFavorites()">查看</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 修改資料表單 (隱藏) -->
+        <div class="section" id="editForm" style="display: none;">
+            <h3>修改個人資料</h3>
+            <form id="updateForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">姓名</label>
+                        <input type="text" id="name" name="name" value="王小明" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">電子郵件</label>
+                        <input type="email" id="email" name="email" value="member@example.com" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">電話</label>
+                        <input type="tel" id="phone" name="phone" value="0912-345-678" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="birthday">生日</label>
+                        <input type="date" id="birthday" name="birthday" value="1990-01-01" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address">地址</label>
+                    <input type="text" id="address" name="address" value="台北市信義區信義路五段7號" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">更新資料</button>
+                    <button type="button" class="btn-secondary" onclick="hideEditForm()">取消</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 購物記錄 (隱藏) -->
+        <div class="section" id="orderHistory" style="display: none;">
+            <h3>購物記錄</h3>
+            <div class="order-list" id="orderListContainer">
+                <!-- 訂單將動態載入 -->
+            </div>
+        </div>
+
+        <!-- 會員優惠 (隱藏) -->
+        <div class="section" id="coupons" style="display: none;">
+            <h3>🎁 專屬優惠券</h3>
+            <div class="coupon-grid">
+                <!-- VIP專屬優惠券 -->
+                <div class="coupon-card vip">
+                    <div class="coupon-label">VIP專屬</div>
+                    <div class="coupon-discount">NT$ 300</div>
+                    <div class="coupon-info">
+                        <h4>首購禮</h4>
+                        <p>新會員專屬，首次購物立減</p>
+                        <p class="coupon-code">代碼：FIRST</p>
+                        <p class="coupon-expire">有效期限：2025-03-31</p>
+                    </div>
+                    <button class="coupon-btn" onclick="copyCoupon('FIRST')">複製代碼</button>
+                </div>
+
+                <div class="coupon-card premium">
+                    <div class="coupon-label">限時優惠</div>
+                    <div class="coupon-discount">NT$ 200</div>
+                    <div class="coupon-info">
+                        <h4>特別優惠</h4>
+                        <p>全館商品滿千可用</p>
+                        <p class="coupon-code">代碼：SAVE200</p>
+                        <p class="coupon-expire">有效期限：2025-02-28</p>
+                    </div>
+                    <button class="coupon-btn" onclick="copyCoupon('SAVE200')">複製代碼</button>
+                </div>
+
+                <div class="coupon-card PTCG">
+                    <div class="coupon-label">PTCG專屬</div>
+                    <div class="coupon-discount">NT$ 150</div>
+                    <div class="coupon-info">
+                        <h4>PTCG玩家優惠</h4>
+                        <p>所有PTCG商品適用</p>
+                        <p class="coupon-code">代碼：PTCG2024</p>
+                        <p class="coupon-expire">有效期限：2025-06-30</p>
+                    </div>
+                    <button class="coupon-btn" onclick="copyCoupon('PTCG2024')">複製代碼</button>
+                </div>
+
+                <div class="coupon-card regular">
+                    <div class="coupon-label">會員優惠</div>
+                    <div class="coupon-discount">NT$ 100</div>
+                    <div class="coupon-info">
+                        <h4>卡片愛好者</h4>
+                        <p>單卡及卡盒商品適用</p>
+                        <p class="coupon-code">代碼：CARD100</p>
+                        <p class="coupon-expire">有效期限：2025-04-30</p>
+                    </div>
+                    <button class="coupon-btn" onclick="copyCoupon('CARD100')">複製代碼</button>
+                </div>
+
+                <div class="coupon-card welcome">
+                    <div class="coupon-label">新手禮</div>
+                    <div class="coupon-discount">NT$ 100</div>
+                    <div class="coupon-info">
+                        <h4>新會員禮</h4>
+                        <p>歡迎加入我們的大家庭</p>
+                        <p class="coupon-code">代碼：WELCOME10</p>
+                        <p class="coupon-expire">有效期限：2025-12-31</p>
+                    </div>
+                    <button class="coupon-btn" onclick="copyCoupon('WELCOME10')">複製代碼</button>
+                </div>
+
+                <div class="coupon-card special">
+                    <div class="coupon-label">VIP專屬</div>
+                    <div class="coupon-discount">NT$ 50</div>
+                    <div class="coupon-info">
+                        <h4>VIP會員優惠</h4>
+                        <p>所有商品均可使用</p>
+                        <p class="coupon-code">代碼：VIP50</p>
+                        <p class="coupon-expire">有效期限：2025-05-31</p>
+                    </div>
+                    <button class="coupon-btn" onclick="copyCoupon('VIP50')">複製代碼</button>
+                </div>
+            </div>
+
+            <div class="coupon-tips">
+                <h4>💡 優惠券使用說明</h4>
+                <ul>
+                    <li>點擊「複製代碼」可複製優惠碼到剪貼簿</li>
+                    <li>結帳時在優惠碼欄位貼上即可使用</li>
+                    <li>每筆訂單限用一張優惠券</li>
+                    <li>部分優惠券有最低消費限制</li>
+                    <li>過期優惠券將自動失效</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 收藏清單 (隱藏) -->
+        <div class="section" id="favorites" style="display: none;">
+            <h3>我的收藏</h3>
+            <div class="favorites-grid">
+                <!-- 收藏商品將動態載入 -->
+            </div>
+        </div>
+
+        <!-- 返回按鈕 -->
+        <div class="back-section">
+            <a href="index.html" class="back-to-home">← 回到首頁</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 PTCG卡包商城. 版權所有.</p>
+    </footer>
+
+    <script>
+        // 檢查登入狀態並更新頁面顯示
+        document.addEventListener('DOMContentLoaded', async function () {
+            await checkLoginStatus();
+        });
+
+        async function checkLoginStatus() {
+            const currentUser = await window.api.refreshCurrentUser();
+
+            if (!currentUser) {
+                // 如果未登入，顯示登入提示
+                showLoginPrompt();
+            } else {
+                // 如果已登入，顯示會員資訊
+                updateMemberInfo(currentUser);
+            }
+        }
+
+        function showLoginPrompt() {
+            const welcomeSection = document.querySelector('.welcome-section');
+            welcomeSection.innerHTML = `
+                <h1>會員專區</h1>
+                <div class="login-prompt">
+                    <div class="prompt-icon">🔒</div>
+                    <h2>請先登入會員</h2>
+                    <p>登入後即可享受會員專屬功能</p>
+                    <div class="prompt-actions">
+                        <a href="member.html" class="btn-primary">會員登入</a>
+                        <a href="Registered member.html" class="btn-secondary">立即註冊</a>
+                    </div>
+                </div>
+            `;
+
+            // 禁用所有會員功能按鈕
+            disableMemberFeatures();
+        }
+
+        function updateMemberInfo(user) {
+            const memberInfo = document.querySelector('.member-details');
+            if (memberInfo) {
+                memberInfo.innerHTML = `
+                    <h2>歡迎回來，${user.name || '會員'}！</h2>
+                    <p>會員編號：<span class="member-id">${user.id || 'PTCG001'}</span></p>
+                    <p>註冊日期：<span>${user.joinDate ? new Date(user.joinDate).toLocaleDateString('zh-TW') : '2024-01-01'}</span></p>
+                `;
+            }
+        }
+
+        function disableMemberFeatures() {
+            const actionCards = document.querySelectorAll('.action-card button');
+            actionCards.forEach(button => {
+                button.disabled = true;
+                button.onclick = function () {
+                    alert('請先登入會員才能使用此功能');
+                    window.location.href = 'member.html';
+                };
+            });
+        }
+
+        function showEditForm() {
+            hideAllSections();
+            document.getElementById('editForm').style.display = 'block';
+        }
+
+        async function showOrderHistory() {
+            hideAllSections();
+            document.getElementById('orderHistory').style.display = 'block';
+            await loadOrderHistory();
+        }
+
+        async function loadOrderHistory() {
+            const container = document.getElementById('orderListContainer');
+            let myOrders = [];
+            try {
+                myOrders = await window.api.myOrders();
+            } catch (error) {
+                container.innerHTML = `<p style="color:#c41f33;">${escapeHtml(error.message || '無法載入訂單')}</p>`;
+                return;
+            }
+            
+            if (myOrders.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-favorites" style="text-align:center; padding: 2rem;">
+                        <div class="empty-icon" style="font-size:3rem; margin-bottom:1rem;">📦</div>
+                        <h4>目前沒有購物記錄</h4>
+                        <p style="color:#666;">快去逛逛商城，把喜歡的卡片帶回家吧！</p>
+                        <a href="shop.html" class="btn-primary" style="margin-top:1rem; display:inline-block; padding:0.5rem 1rem; text-decoration:none;">前往商城</a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = myOrders.map(order => {
+                const dateStr = new Date(order.orderDate).toLocaleDateString('zh-TW');
+                const itemsHtml = (order.items || []).map(item => `
+                    <div class="order-content" style="display:flex; gap:1rem; margin-bottom: 1rem;">
+                        <img src="${item.image}" alt="商品圖片" style="width:80px; height:80px; object-fit:cover; border-radius:8px;" onerror="this.src='https://via.placeholder.com/80'">
+                        <div class="order-details">
+                            <h4 style="margin-bottom:0.3rem;">${escapeHtml(item.name)}</h4>
+                            <p style="color:#666; font-size:0.9rem;">數量：${item.quantity}</p>
+                            <p class="order-price" style="color:#c41f33; font-weight:bold; margin-top:0.3rem;">單價：NT$ ${item.price.toLocaleString()}</p>
+                        </div>
+                    </div>
+                `).join('');
+
+                return `
+                <div class="order-item" style="background:#f8f9fa; border-radius:10px; padding:1.5rem; margin-bottom:1.5rem;">
+                    <div class="order-header" style="display:flex; justify-content:space-between; flex-wrap:wrap; gap: 1rem; border-bottom: 1px solid #ddd; padding-bottom: 1rem; margin-bottom: 1rem;">
+                        <div>
+                            <span class="order-date" style="font-weight:bold; color:#333;">訂購日期：${dateStr}</span>
+                            <br><span style="font-size:0.9rem; color:#666; margin-top:0.3rem; display:inline-block;">訂單編號：${order.id}</span>
+                        </div>
+                        <div style="text-align: right;">
+                            <span class="order-status" style="font-weight:bold; padding:0.3rem 0.8rem; background:#d4edda; color:#155724; border-radius:15px; font-size:0.9rem;">${order.status || '處理中'}</span>
+                            <br><span style="font-size:1.2rem; color:#c41f33; font-weight:bold; margin-top:0.5rem; display:inline-block;">總計：${order.totalAmountText || ('NT$ ' + Number(order.totalAmount || 0).toLocaleString())}</span>
+                        </div>
+                    </div>
+                    ${itemsHtml}
+                </div>
+                `;
+            }).join('');
+        }
+
+        function showCoupons() {
+            hideAllSections();
+            document.getElementById('coupons').style.display = 'block';
+        }
+
+        function showFavorites() {
+            hideAllSections();
+            document.getElementById('favorites').style.display = 'block';
+            loadFavorites();
+        }
+
+        function loadFavorites() {
+            const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            const container = document.querySelector('#favorites .favorites-grid');
+
+            if (favorites.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-favorites">
+                        <div class="empty-icon">💔</div>
+                        <h4>還沒有收藏商品</h4>
+                        <p>快去逛逛商城，收藏您喜愛的商品吧！</p>
+                        <a href="card.html" class="btn-primary">開始逛逛</a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = favorites.map(item => `
+                <div class="favorite-item" data-id="${item.id}">
+                    <img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/200'">
+                    <div class="favorite-info">
+                        <h4>${escapeHtml(item.name)}</h4>
+                        <p class="favorite-price">NT$ ${item.price.toLocaleString()}</p>
+                        <p class="favorite-category">${getCategoryName(item.category)}</p>
+                        <div class="favorite-actions">
+                            <button class="btn-primary" onclick="addFavoriteToCart('${item.id}')">加入購物車</button>
+                            <button class="btn-secondary" onclick="removeFavorite('${item.id}')">移除收藏</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getCategoryName(category) {
+            const categoryNames = {
+                'card': '單卡',
+                'cardbox': '卡盒',
+                'periphery': '周邊商品',
+                'special': '特別商品'
+            };
+            return categoryNames[category] || category;
+        }
+
+        function addFavoriteToCart(productId) {
+            const product = window.mockDB.getProductById(productId);
+            if (!product || product.stock === 0) {
+                alert('商品缺貨或不存在！');
+                return;
+            }
+
+            const cartItem = {
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                quantity: 1,
+                image: product.image
+            };
+
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                if (existingItem.quantity < product.stock) {
+                    existingItem.quantity += 1;
+                    alert('商品數量已增加！');
+                } else {
+                    alert('已達到該商品的最大庫存數量！');
+                    return;
+                }
+            } else {
+                cart.push(cartItem);
+                alert('商品已加入購物車！');
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function removeFavorite(productId) {
+            if (confirm('確定要從收藏中移除此商品嗎？')) {
+                let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+                favorites = favorites.filter(fav => fav.id !== productId);
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                loadFavorites();
+                alert('已從收藏中移除！');
+            }
+        }
+
+        function hideEditForm() {
+            document.getElementById('editForm').style.display = 'none';
+        }
+
+        function hideAllSections() {
+            document.getElementById('editForm').style.display = 'none';
+            document.getElementById('orderHistory').style.display = 'none';
+            document.getElementById('coupons').style.display = 'none';
+            document.getElementById('favorites').style.display = 'none';
+        }
+
+        document.getElementById('updateForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('資料已更新成功！');
+            hideEditForm();
+        });
+
+        // 複製優惠碼功能
+        function copyCoupon(couponCode) {
+            // 創建臨時文字區域來複製文字
+            const textArea = document.createElement('textarea');
+            textArea.value = couponCode;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                // 複製到剪貼簿
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showCopySuccess(couponCode);
+                } else {
+                    showCopyFallback(couponCode);
+                }
+            } catch (err) {
+                showCopyFallback(couponCode);
+            }
+
+            document.body.removeChild(textArea);
+        }
+
+        // 顯示複製成功訊息
+        function showCopySuccess(couponCode) {
+            // 創建提示訊息
+            const notification = document.createElement('div');
+            notification.className = 'copy-notification success';
+            notification.innerHTML = `
+                <span class="copy-icon">✅</span>
+                <span>優惠碼 "${couponCode}" 已複製到剪貼簿！</span>
+            `;
+
+            document.body.appendChild(notification);
+
+            // 3秒後移除提示
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 3000);
+        }
+
+        // 複製失敗時的備用方案
+        function showCopyFallback(couponCode) {
+            alert(`請手動複製優惠碼：${couponCode}`);
+        }
+
+        // 安全處理函數
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function (m) { return map[m]; });
+        }
+    </script>
+</body>
+
+</html>

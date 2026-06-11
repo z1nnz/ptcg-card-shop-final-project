@@ -1,0 +1,18 @@
+{
+  "name": "ptcg-card-shop-backend",
+  "version": "1.0.0",
+  "description": "PTCG card shop final project with Express backend and SQLite database.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "check": "node --check server.js && node --check database.js && node --check card.js && node --check star-rating.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "express": "^5.1.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索結果 - PTCG卡包商城</title>
+    <link rel="stylesheet" href="search_results.css">
+    <script src="database.js"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="image/PTCG head.jpg" alt="網站標誌">
+                <h1>PTCG卡包商城</h1>
+            </div>
+            <div class="nav-right">
+                <div class="search-bar">
+                    <input type="text" placeholder="你想查詢甚麼相關商品?" id="searchInput">
+                    <button onclick="performSearch()">🔍</button>
+                </div>
+                <div class="member-section" id="memberSection">
+                    <a href="member.html" id="memberLink">
+                        <img src="image/images__1_-removebg-preview.png" alt="會員圖示">
+                        <span id="memberStatus">登入</span>
+                    </a>
+                </div>
+                <a href="shop.html">
+                    <img src="image/be1d7df358f8dbc9336c5d88403c38c7-removebg-preview.png" alt="購物車圖示">
+                </a>
+            </div>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="card.html">單卡</a></li>
+                <li><a href="card box.html">卡盒</a></li>
+                <li><a href="card periphery.html">卡片周邊商品</a></li>
+                <li><a href="special.html">特別商品</a></li>
+                <li><a href="help.html">服務中心</a></li>
+                <li><a href="about.html">關於我們</a></li>
+                <li><a href="member_area.html">會員專區</a></li>
+                <li><a href="message_board.html">留言板</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="search-container">
+        <div class="container">
+            <div class="search-header">
+                <h1>搜索結果</h1>
+                <p class="search-info">搜索關鍵字: "<span id="searchKeyword"></span>"</p>
+                <p class="result-count">找到 <span id="resultCount">0</span> 個結果</p>
+            </div>
+
+            <div class="search-results" id="searchResults">
+                <!-- 搜索結果將動態顯示在這裡 -->
+            </div>
+
+            <div class="no-results" id="noResults" style="display: none;">
+                <h3>抱歉，沒有找到相關產品</h3>
+                <p>請嘗試其他關鍵字或瀏覽我們的商品分類</p>
+                <div class="suggestions">
+                    <h4>推薦分類：</h4>
+                    <a href="card.html" class="category-link">單卡</a>
+                    <a href="card box.html" class="category-link">卡盒</a>
+                    <a href="card periphery.html" class="category-link">周邊商品</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 PTCG卡包商城. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            performInitialSearch();
+        });
+
+        function performInitialSearch() {
+            const searchQuery = localStorage.getItem('searchQuery');
+            if (searchQuery) {
+                document.getElementById('searchInput').value = searchQuery;
+                document.getElementById('searchKeyword').textContent = searchQuery;
+                displaySearchResults(searchQuery);
+            }
+        }
+
+        function displaySearchResults(query) {
+            const sanitizedQuery = sanitizeInput(query);
+            const results = window.mockDB.searchProducts(sanitizedQuery);
+            const resultsContainer = document.getElementById('searchResults');
+            const noResultsDiv = document.getElementById('noResults');
+            const resultCountSpan = document.getElementById('resultCount');
+
+            resultCountSpan.textContent = results.length;
+
+            if (results.length === 0) {
+                resultsContainer.style.display = 'none';
+                noResultsDiv.style.display = 'block';
+                return;
+            }
+
+            noResultsDiv.style.display = 'none';
+            resultsContainer.style.display = 'grid';
+
+            resultsContainer.innerHTML = results.map(product => `
+                <div class="product-card" data-id="${product.id}">
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/200'">
+                        ${product.stock <= 5 ? '<span class="low-stock">庫存不足</span>' : ''}
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">${escapeHtml(product.name)}</h3>
+                        <p class="product-price">NT$ ${product.price}</p>
+                        <p class="product-stock">庫存: ${product.stock}</p>
+                        <div class="product-actions">
+                            <button class="add-to-cart-btn" onclick="addToCart('${product.id}')" ${product.stock === 0 ? 'disabled' : ''}>
+                                ${product.stock === 0 ? '缺貨' : '加入購物車'}
+                            </button>
+                            <button class="view-detail-btn" onclick="viewProductDetail('${product.id}')">查看詳情</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(productId) {
+            const product = window.mockDB.getProductById(productId);
+            if (!product || product.stock === 0) {
+                alert('商品缺貨或不存在！');
+                return;
+            }
+
+            const cartItem = {
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                quantity: 1,
+                image: product.image
+            };
+
+            // 添加到購物車
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                if (existingItem.quantity < product.stock) {
+                    existingItem.quantity += 1;
+                } else {
+                    alert('已達到該商品的最大庫存數量！');
+                    return;
+                }
+            } else {
+                cart.push(cartItem);
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert('商品已添加到購物車！');
+
+            // 更新顯示的庫存（模擬減少）
+            updateProductDisplay(productId);
+        }
+
+        function viewProductDetail(productId) {
+            // 根據產品類別跳轉到相應的詳細頁面
+            const product = window.mockDB.getProductById(productId);
+            if (product.category === 'card') {
+                window.location.href = `card${productId}.html`;
+            } else if (product.category === 'cardbox') {
+                window.location.href = `cb${productId.replace('cb', '')}.html`;
+            } else if (product.category === 'periphery') {
+                window.location.href = `cp${productId.replace('cp', '')}.html`;
+            }
+        }
+
+        function updateProductDisplay(productId) {
+            const productCard = document.querySelector(`[data-id="${productId}"]`);
+            if (productCard) {
+                const product = window.mockDB.getProductById(productId);
+                const stockElement = productCard.querySelector('.product-stock');
+                const addToCartBtn = productCard.querySelector('.add-to-cart-btn');
+
+                // 不實際減少數據庫庫存，只是視覺更新
+                const currentStock = parseInt(stockElement.textContent.match(/\d+/)[0]);
+                const newStock = Math.max(0, currentStock - 1);
+
+                stockElement.textContent = `庫存: ${newStock}`;
+
+                if (newStock === 0) {
+                    addToCartBtn.textContent = '缺貨';
+                    addToCartBtn.disabled = true;
+                } else if (newStock <= 5) {
+                    const lowStockSpan = productCard.querySelector('.low-stock') || document.createElement('span');
+                    lowStockSpan.className = 'low-stock';
+                    lowStockSpan.textContent = '庫存不足';
+                    productCard.querySelector('.product-image').appendChild(lowStockSpan);
+                }
+            }
+        }
+
+        function performSearch() {
+            const query = sanitizeInput(document.getElementById('searchInput').value);
+            if (query.trim()) {
+                localStorage.setItem('searchQuery', query);
+                document.getElementById('searchKeyword').textContent = query;
+                displaySearchResults(query);
+            }
+        }
+
+        // 監聽搜索框回車事件
+        document.getElementById('searchInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    </script>
+</body>
+
+</html>

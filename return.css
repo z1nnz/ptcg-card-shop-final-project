@@ -1,0 +1,190 @@
+/* 基礎樣式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft JhengHei', Arial, sans-serif;
+    background-color: #f5f5f5;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* Header樣式 */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #0066ff;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 50px;
+    margin-right: 15px;
+}
+
+.logo h1 {
+    color: white;
+    font-size: 1.5rem;
+}
+
+/* 導航菜單 */
+.nav-menu {
+    background: linear-gradient(90deg, #1a365d 0%, #2c5282 50%, #1a365d 100%);
+    padding: 1rem 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+/* 主要內容 */
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #0066ff;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+h1::before {
+    content: '📦';
+    display: block;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+p {
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-size: 1rem;
+}
+
+ul {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+}
+
+ul li {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+a {
+    color: #0066ff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #0066ff;
+}
+
+.back-link {
+    display: block;
+    margin-top: 2rem;
+    text-align: center;
+    padding: 12px 24px;
+    background-color: #0066ff;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    background-color: #0066ff;
+    transform: translateY(-2px);
+    color: white;
+    text-decoration: none;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+    margin-top: 3rem;
+    border-radius: 10px 10px 0 0;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .container {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h1::before {
+        font-size: 2rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    .back-link {
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 1.3rem;
+    }
+
+    h1::before {
+        font-size: 1.8rem;
+    }
+
+    p {
+        font-size: 0.9rem;
+    }
+
+    .back-link {
+        font-size: 0.9rem;
+        padding: 10px 20px;
+    }
+}
