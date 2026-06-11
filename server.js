@@ -158,8 +158,8 @@ function seedData() {
   `);
   const adminHash = bcrypt.hashSync('admin123', 12);
   const userHash = bcrypt.hashSync('user123', 12);
-  insertUser.run('系統管理員', 'admin@ptcg.com', adminHash, 'admin', 'image/admin-avatar.png', '0900000000', '後台管理');
-  insertUser.run('PTCG玩家', 'user@ptcg.com', userHash, 'user', 'image/user-avatar.png', '0912345678', '台北市信義區');
+  insertUser.run('系統管理員', 'admin@ptcg.com', adminHash, 'admin', 'image/PTCG head.jpg', '0900000000', '後台管理');
+  insertUser.run('PTCG玩家', 'user@ptcg.com', userHash, 'user', 'image/images__1_-removebg-preview.png', '0912345678', '台北市信義區');
 
   const messageCount = db.prepare('SELECT COUNT(*) AS count FROM messages').get().count;
   if (messageCount === 0) {
@@ -183,7 +183,7 @@ function publicUser(user) {
     birthday: user.birthday || '',
     address: user.address || '',
     role: user.role,
-    avatar: user.avatar || 'image/default-avatar.png',
+    avatar: user.avatar || 'image/images__1_-removebg-preview.png',
     joinDate: user.created_at,
     username: user.name
   };
@@ -370,7 +370,7 @@ app.post('/api/auth/register', async (req, res) => {
   const passwordHash = await bcrypt.hash(String(password), 12);
   const result = db.prepare(`
     INSERT INTO users (name, email, password_hash, phone, birthday, address, role, avatar, agree_newsletter)
-    VALUES (?, ?, ?, ?, ?, ?, 'user', 'image/default-avatar.png', ?)
+    VALUES (?, ?, ?, ?, ?, ?, 'user', 'image/images__1_-removebg-preview.png', ?)
   `).run(cleanName, cleanEmail, passwordHash, phone || '', birthday || '', address || '', agreeNewsletter ? 1 : 0);
 
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(result.lastInsertRowid);

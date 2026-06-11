@@ -315,11 +315,67 @@ function initCookieNotice() {
     };
 }
 
+function injectMobileSafetyStyles() {
+    if (document.getElementById('ptcg-mobile-safety-style')) return;
+    const style = document.createElement('style');
+    style.id = 'ptcg-mobile-safety-style';
+    style.textContent = `
+        @media (max-width: 600px) {
+            header .header-container {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 0.75rem !important;
+            }
+
+            header .logo {
+                justify-content: center !important;
+                text-align: center !important;
+            }
+
+            header .nav-right {
+                position: static !important;
+                transform: none !important;
+                top: auto !important;
+                right: auto !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                justify-content: center !important;
+                flex-wrap: wrap !important;
+                gap: 0.5rem !important;
+            }
+
+            header .search-bar {
+                width: min(100%, 320px) !important;
+                max-width: 100% !important;
+                flex: 1 1 220px !important;
+            }
+
+            header .search-bar input {
+                width: 100% !important;
+                min-width: 0 !important;
+            }
+
+            header .nav-menu ul {
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+                gap: 0.35rem 0.5rem !important;
+            }
+
+            .admin-panel,
+            .admin-content {
+                overflow-x: auto !important;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
 window.api = new PtcgApiClient();
 window.database = window.api;
 window.mockDB = window.api;
 
 document.addEventListener('DOMContentLoaded', async function () {
+    injectMobileSafetyStyles();
     initCookieNotice();
     await window.api.hydrate();
     updateGlobalMemberHeader(window.api.getCurrentUser());
