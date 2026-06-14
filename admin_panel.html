@@ -16,8 +16,11 @@
 
         body {
             font-family: 'Microsoft JhengHei', Arial, sans-serif;
-            background: #f5f6fa;
-            color: #333;
+            background:
+                radial-gradient(circle at 10% 0%, rgba(247, 201, 72, 0.22), transparent 28rem),
+                linear-gradient(180deg, #f7faff 0%, #edf3fb 100%);
+            color: #172033;
+            min-height: 100vh;
         }
 
         .admin-container {
@@ -27,12 +30,25 @@
         }
 
         .admin-header {
-            background: linear-gradient(135deg, #0066ff 0%, #0066ff 100%);
+            background: linear-gradient(135deg, #083b91 0%, #0b57d0 62%, #2f7df6 100%);
             color: white;
             padding: 2rem;
-            border-radius: 15px;
+            border-radius: 14px;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 15px rgba(196, 31, 51, 0.2);
+            box-shadow: 0 18px 40px rgba(8, 59, 145, 0.22);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-header::after {
+            content: "";
+            position: absolute;
+            right: -4rem;
+            top: -5rem;
+            width: 14rem;
+            height: 14rem;
+            border-radius: 999px;
+            background: rgba(247, 201, 72, 0.22);
         }
 
         .admin-header h1 {
@@ -54,6 +70,8 @@
             float: right;
             margin-top: -3rem;
             transition: background 0.3s;
+            position: relative;
+            z-index: 1;
         }
 
         .logout-btn:hover {
@@ -70,20 +88,27 @@
         .stat-card {
             background: white;
             padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 14px 34px rgba(23, 32, 51, 0.08);
+            border: 1px solid #dfe6f3;
+            text-align: left;
         }
 
         .stat-icon {
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
+            width: 3.2rem;
+            height: 3.2rem;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: #eaf2ff;
         }
 
         .stat-number {
             font-size: 2rem;
             font-weight: bold;
-            color: #0066ff;
+            color: #0b57d0;
             margin-bottom: 0.5rem;
         }
 
@@ -94,14 +119,15 @@
 
         .admin-content {
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 14px;
+            box-shadow: 0 18px 44px rgba(23, 32, 51, 0.1);
+            border: 1px solid #dfe6f3;
             overflow: hidden;
         }
 
         .admin-nav {
             display: flex;
-            background: #f8f9fa;
+            background: #f8fbff;
             border-bottom: 1px solid #e0e0e0;
         }
 
@@ -110,6 +136,8 @@
             cursor: pointer;
             transition: all 0.3s;
             border-bottom: 3px solid transparent;
+            font-weight: 700;
+            color: #4c5870;
         }
 
         .nav-item:hover {
@@ -118,8 +146,8 @@
 
         .nav-item.active {
             background: white;
-            border-bottom-color: #0066ff;
-            color: #0066ff;
+            border-bottom-color: #f7c948;
+            color: #0b57d0;
         }
 
         .admin-panel {
@@ -139,6 +167,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 1rem;
+            min-width: 760px;
         }
 
         .data-table th,
@@ -146,12 +175,13 @@
             padding: 0.8rem;
             text-align: left;
             border-bottom: 1px solid #e0e0e0;
+            vertical-align: middle;
         }
 
         .data-table th {
             background: #f8f9fa;
             font-weight: 600;
-            color: #0066ff;
+            color: #0b57d0;
         }
 
         .data-table tr:hover {
@@ -170,6 +200,122 @@
             font-weight: 600;
             transition: all 0.3s;
             box-shadow: 0 4px 15px rgba(196, 31, 51, 0.3);
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .toolbar p {
+            color: #657086;
+            line-height: 1.7;
+        }
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .status-select,
+        .product-input {
+            width: 100%;
+            max-width: 130px;
+            padding: 0.45rem 0.55rem;
+            border: 1px solid #cbd7ea;
+            border-radius: 8px;
+            background: #fff;
+            color: #172033;
+            font: inherit;
+        }
+
+        .action-btn {
+            border: 0;
+            border-radius: 8px;
+            padding: 0.52rem 0.8rem;
+            background: #0b57d0;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .action-btn.secondary {
+            background: #172033;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 4.5rem;
+            padding: 0.28rem 0.65rem;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            background: #eaf2ff;
+            color: #0b57d0;
+        }
+
+        .status-pill.done {
+            background: #e7f7ef;
+            color: #16734a;
+        }
+
+        .status-pill.cancel {
+            background: #fdecec;
+            color: #b42318;
+        }
+
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0 1.5rem;
+        }
+
+        .report-box {
+            background: #f8fbff;
+            border: 1px solid #dfe6f3;
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .report-box h4 {
+            color: #657086;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .report-box strong {
+            color: #172033;
+            font-size: 1.45rem;
+        }
+
+        .notice {
+            padding: 0.85rem 1rem;
+            border-radius: 10px;
+            margin: 0 0 1rem;
+            display: none;
+            background: #eaf2ff;
+            color: #083b91;
+            border: 1px solid #c7dcff;
+        }
+
+        .notice.error {
+            background: #fdecec;
+            color: #b42318;
+            border-color: #fac5c1;
+        }
+
+        .empty-row {
+            text-align: center;
+            color: #657086;
+            padding: 2rem !important;
         }
 
         .home-btn:hover {
@@ -200,9 +346,15 @@
                 display: block;
                 text-align: center;
             }
+
+            .logout-btn {
+                float: none;
+                margin-top: 1rem;
+            }
         }
     </style>
 
+    <link rel="stylesheet" href="ui-polish.css">
 </head>
 
 <body>
@@ -215,22 +367,22 @@
 
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-icon">👥</div>
+                <div class="stat-icon"></div>
                 <div class="stat-number" id="userCount">0</div>
                 <div class="stat-label">註冊會員</div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon">📦</div>
+                <div class="stat-icon"></div>
                 <div class="stat-number" id="totalOrdersCount">0</div>
                 <div class="stat-label">總訂單數</div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon">💰</div>
+                <div class="stat-icon"></div>
                 <div class="stat-number" id="totalRevenueAmount">NT$ 0</div>
                 <div class="stat-label">總營收</div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon">⭐</div>
+                <div class="stat-icon"></div>
                 <div class="stat-number">4.8</div>
                 <div class="stat-label">平均評分</div>
             </div>
@@ -238,79 +390,126 @@
 
         <div class="admin-content">
             <div class="admin-nav">
-                <div class="nav-item active" onclick="showPanel('users')">會員管理</div>
-                <div class="nav-item" onclick="showPanel('orders')">訂單管理</div>
-                <div class="nav-item" onclick="showPanel('products')">商品管理</div>
-                <div class="nav-item" onclick="showPanel('reports')">報告分析</div>
+                <div class="nav-item active" onclick="showPanel('users', this)">會員管理</div>
+                <div class="nav-item" onclick="showPanel('orders', this)">訂單管理</div>
+                <div class="nav-item" onclick="showPanel('products', this)">商品管理</div>
+                <div class="nav-item" onclick="showPanel('reports', this)">報告分析</div>
             </div>
 
             <div class="admin-panel">
                 <div id="users" class="panel active">
-                    <h3>會員管理</h3>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>會員ID</th>
-                                <th>姓名</th>
-                                <th>電子郵件</th>
-                                <th>註冊日期</th>
-                                <th>狀態</th>
-                            </tr>
-                        </thead>
-                        <tbody id="userTableBody">
-                            <!-- 動態載入會員資料 -->
-                        </tbody>
-                    </table>
+                    <div class="toolbar">
+                        <div>
+                            <h3>會員管理</h3>
+                            <p>查看註冊會員與管理員身份，方便 demo 時說明會員資料由後端管理。</p>
+                        </div>
+                    </div>
+                    <div id="adminNotice" class="notice"></div>
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>會員ID</th>
+                                    <th>姓名</th>
+                                    <th>電子郵件</th>
+                                    <th>註冊日期</th>
+                                    <th>狀態</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userTableBody">
+                                <!-- 動態載入會員資料 -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div id="orders" class="panel">
-                    <h3>訂單管理</h3>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>訂單編號</th>
-                                <th>會員</th>
-                                <th>商品</th>
-                                <th>金額</th>
-                                <th>狀態</th>
-                                <th>日期</th>
-                            </tr>
-                        </thead>
-                        <tbody id="orderTableBody">
-                            <!-- 動態載入訂單資料 -->
-                        </tbody>
-                    </table>
+                    <div class="toolbar">
+                        <div>
+                            <h3>訂單管理</h3>
+                            <p>管理員可更新訂單狀態，會員專區會同步看到最新進度。</p>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>訂單編號</th>
+                                    <th>會員</th>
+                                    <th>商品</th>
+                                    <th>金額</th>
+                                    <th>狀態</th>
+                                    <th>更新狀態</th>
+                                    <th>日期</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderTableBody">
+                                <!-- 動態載入訂單資料 -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div id="products" class="panel">
-                    <h3>商品管理</h3>
-                    <p>商品數量統計：</p>
-                    <ul
-                        style="margin: 1rem 0; line-height: 1.8; list-style: disc inside; padding-left: 0; color: #444; font-size: 15px;">
-                        <li>卡盒商品：8 種</li>
-                        <li>周邊商品：5 種</li>
-                        <li>特別商品：5 種</li>
-                        <li>單卡商品：10 種</li>
-                    </ul>
-
-                    <p style="color: #666;">商品資料由後端 SQLite 資料庫管理，訂單成立時會自動扣除庫存。</p>
+                    <div class="toolbar">
+                        <div>
+                            <h3>商品管理</h3>
+                            <p>可調整商品價格與庫存，訂單成立會自動扣庫存。</p>
+                        </div>
+                        <button class="action-btn secondary" onclick="loadProductData()">重新整理</button>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>商品</th>
+                                    <th>分類</th>
+                                    <th>價格</th>
+                                    <th>庫存</th>
+                                    <th>狀態</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productTableBody">
+                                <!-- 動態載入商品資料 -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div id="reports" class="panel">
                     <h3>報告分析</h3>
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 1rem 0;">
-                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px;">
-                            <h4>本月銷售</h4>
-                            <p style="font-size: 1.5rem; color: #c41f33; margin: 0.5rem 0;">NT$ 18,500</p>
-                            <p style="color: #28a745;">▲ 15.3% 相較上月</p>
+                    <div class="report-grid">
+                        <div class="report-box">
+                            <h4>平均客單價</h4>
+                            <strong id="averageOrderValue">NT$ 0</strong>
                         </div>
-                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px;">
-                            <h4>熱門商品</h4>
-                            <p>1. 寶可夢 25週年黃金紀念盒</p>
-                            <p>2. 高透加厚卡片保護套</p>
-                            <p>3. 寶可夢 劍／盾 擴充包盒</p>
+                        <div class="report-box">
+                            <h4>處理中訂單</h4>
+                            <strong id="pendingOrders">0</strong>
                         </div>
+                        <div class="report-box">
+                            <h4>低庫存商品</h4>
+                            <strong id="lowStockCount">0</strong>
+                        </div>
+                        <div class="report-box">
+                            <h4>已完成訂單</h4>
+                            <strong id="completedOrders">0</strong>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>熱門商品</th>
+                                    <th>售出數量</th>
+                                    <th>銷售額</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bestSellerTableBody">
+                                <!-- 動態載入熱門商品 -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -320,20 +519,42 @@
     <a href="index.html" class="home-btn">返回首頁</a>
 
     <script>
+        const orderStatuses = ['處理中', '已確認', '已出貨', '已完成', '已取消'];
+        let adminProducts = [];
+
         // 頁面載入時檢查權限
         document.addEventListener('DOMContentLoaded', async function () {
-            const allowed = await checkAdminPermission();
-            if (!allowed) return;
-            await loadUserData();
-            await loadAllOrders();
+            try {
+                const allowed = await checkAdminPermission();
+                if (!allowed) return;
+                await Promise.all([
+                    loadUserData(),
+                    loadAllOrders(),
+                    loadProductData()
+                ]);
+                await loadReports();
+            } catch (error) {
+                showAdminNotice(error.message || '後台資料載入失敗', true);
+            }
         });
 
         // 檢查管理員權限
         async function checkAdminPermission() {
-            const currentUser = await window.api.refreshCurrentUser();
+            let currentUser;
+            try {
+                currentUser = await window.api.refreshCurrentUser();
+            } catch (error) {
+                showAdminNotice(error.message || '無法確認登入狀態，請先登入管理員帳號', true);
+                setTimeout(() => {
+                    window.location.href = 'member.html';
+                }, 1200);
+                return false;
+            }
             if (!currentUser || currentUser.role !== 'admin') {
-                alert('您沒有權限訪問此頁面');
-                window.location.href = 'member.html';
+                showAdminNotice('您沒有權限訪問此頁面，請使用管理員帳號登入', true);
+                setTimeout(() => {
+                    window.location.href = 'member.html';
+                }, 1200);
                 return false;
             }
             return true;
@@ -387,27 +608,143 @@
             const tableBody = document.getElementById('orderTableBody');
             if (!tableBody) return;
             tableBody.innerHTML = '';
+
+            if (allOrders.length === 0) {
+                tableBody.innerHTML = '<tr><td class="empty-row" colspan="7">目前沒有訂單，完成一次結帳後這裡會出現資料。</td></tr>';
+                await loadReports(summary);
+                return;
+            }
             
             allOrders.forEach(order => {
                 const dateStr = new Date(order.orderDate).toLocaleDateString('zh-TW');
                 const itemNames = (order.items || []).map(i => escapeHtml(i.name)).join(', ');
+                const statusClass = order.status === '已完成' ? 'done' : order.status === '已取消' ? 'cancel' : '';
+                const statusOptions = orderStatuses.map(status => `
+                    <option value="${status}" ${status === order.status ? 'selected' : ''}>${status}</option>
+                `).join('');
                 
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${order.id}</td>
+                    <td><strong>${order.id}</strong></td>
                     <td>${escapeHtml(order.customerName || order.userId || 'Guest')}</td>
                     <td>${itemNames}</td>
                     <td>${order.totalAmountText || ('NT$ ' + Number(order.totalAmount || 0).toLocaleString())}</td>
-                    <td style="color: #28a745;">${order.status || '處理中'}</td>
+                    <td><span class="status-pill ${statusClass}">${order.status || '處理中'}</span></td>
+                    <td>
+                        <select class="status-select" data-order-id="${order.id}">
+                            ${statusOptions}
+                        </select>
+                    </td>
                     <td>${dateStr}</td>
                 `;
                 tableBody.appendChild(row);
             });
+
+            tableBody.querySelectorAll('.status-select').forEach(select => {
+                select.addEventListener('change', async function () {
+                    await updateOrderStatus(this.dataset.orderId, this.value);
+                });
+            });
+
+            await loadReports(summary);
+        }
+
+        async function updateOrderStatus(orderId, status) {
+            try {
+                await window.api.updateOrderStatus(orderId, status);
+                showAdminNotice(`訂單 ${orderId} 已更新為「${status}」`);
+                await loadAllOrders();
+            } catch (error) {
+                showAdminNotice(error.message || '訂單狀態更新失敗', true);
+            }
+        }
+
+        async function loadProductData() {
+            await window.api.refreshProducts();
+            adminProducts = window.api.getProducts();
+            const tableBody = document.getElementById('productTableBody');
+            if (!tableBody) return;
+
+            tableBody.innerHTML = adminProducts.map(product => {
+                const stockClass = product.stock <= 0 ? 'cancel' : product.stock <= 3 ? '' : 'done';
+                const stockText = product.stock <= 0 ? '缺貨' : product.stock <= 3 ? '低庫存' : '正常';
+                return `
+                    <tr>
+                        <td>
+                            <strong>${escapeHtml(product.name)}</strong>
+                            <div style="color:#657086; font-size:0.85rem;">${escapeHtml(product.id)}</div>
+                        </td>
+                        <td>${categoryName(product.category)}</td>
+                        <td><input class="product-input" id="price-${product.id}" type="number" min="0" value="${product.price}"></td>
+                        <td><input class="product-input" id="stock-${product.id}" type="number" min="0" value="${product.stock}"></td>
+                        <td><span class="status-pill ${stockClass}">${stockText}</span></td>
+                        <td><button class="action-btn" onclick="saveProduct('${product.id}')">儲存</button></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function saveProduct(productId) {
+            const price = Number(document.getElementById(`price-${productId}`).value);
+            const stock = Number(document.getElementById(`stock-${productId}`).value);
+            try {
+                await window.api.updateProduct(productId, { price, stock });
+                showAdminNotice(`商品 ${productId} 已更新`);
+                await loadProductData();
+                await loadReports();
+            } catch (error) {
+                showAdminNotice(error.message || '商品更新失敗', true);
+            }
+        }
+
+        async function loadReports(existingSummary = null) {
+            const summary = existingSummary || await window.api.adminSummary();
+            document.getElementById('averageOrderValue').textContent = 'NT$ ' + Number(summary.averageOrderValue || 0).toLocaleString();
+            document.getElementById('pendingOrders').textContent = summary.pendingOrders || 0;
+            document.getElementById('lowStockCount').textContent = summary.lowStockCount || 0;
+            document.getElementById('completedOrders').textContent = summary.completedOrders || 0;
+
+            const bestSellerBody = document.getElementById('bestSellerTableBody');
+            const bestSellers = summary.bestSellers || [];
+            if (!bestSellers.length) {
+                bestSellerBody.innerHTML = '<tr><td class="empty-row" colspan="3">目前還沒有銷售資料。</td></tr>';
+                return;
+            }
+            bestSellerBody.innerHTML = bestSellers.map(item => `
+                <tr>
+                    <td>${escapeHtml(item.name)}</td>
+                    <td>${item.quantity}</td>
+                    <td>NT$ ${Number(item.revenue || 0).toLocaleString()}</td>
+                </tr>
+            `).join('');
+        }
+
+        function categoryName(category) {
+            const names = {
+                card: '單卡',
+                cardbox: '卡盒',
+                periphery: '周邊',
+                special: '特別商品'
+            };
+            return names[category] || category;
+        }
+
+        function showAdminNotice(message, isError = false) {
+            const notice = document.getElementById('adminNotice');
+            if (!notice) return;
+            notice.textContent = message;
+            notice.className = `notice ${isError ? 'error' : ''}`;
+            notice.style.display = 'block';
+            clearTimeout(showAdminNotice.timer);
+            showAdminNotice.timer = setTimeout(() => {
+                notice.style.display = 'none';
+            }, 3500);
         }
 
         // 安全處理函數
         function escapeHtml(text) {
-            if (!text) return '';
+            if (text === null || text === undefined) return '';
+            text = String(text);
             const map = {
                 '&': '&amp;',
                 '<': '&lt;',
@@ -419,7 +756,7 @@
         }
 
         // 切換面板
-        function showPanel(panelId) {
+        function showPanel(panelId, clickedItem = null) {
             // 隱藏所有面板
             const panels = document.querySelectorAll('.panel');
             panels.forEach(panel => panel.classList.remove('active'));
@@ -432,7 +769,11 @@
             document.getElementById(panelId).classList.add('active');
 
             // 設置對應導航項目為活躍
-            event.target.classList.add('active');
+            const targetItem = clickedItem || document.querySelector(`.nav-item[onclick*="'${panelId}'"]`);
+            if (targetItem) targetItem.classList.add('active');
+
+            if (panelId === 'products') loadProductData();
+            if (panelId === 'reports') loadReports();
         }
 
         // 登出

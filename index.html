@@ -7,6 +7,7 @@
     <title>商品展示網站</title>
     <link rel="stylesheet" href="index.css">
     <script src="database.js"></script>
+    <link rel="stylesheet" href="ui-polish.css">
 </head>
 
 <body>
@@ -21,7 +22,7 @@
             <div class="nav-right">
                 <div class="search-bar">
                     <input type="text" placeholder="你想查詢甚麼相關商品?" id="searchInput">
-                    <button onclick="performSearch()">🔍</button>
+                    <button class="icon-button search-button" onclick="performSearch()" aria-label="搜尋"><span class="ui-icon icon-search"></span><span class="search-text">搜尋</span></button>
                 </div>
                 <div class="member-section" id="memberSection">
                     <a href="member.html" id="memberLink">
@@ -126,13 +127,13 @@
                 <div class="benefit-item">
                     <img src="image/shopping.webp" alt="會員優惠"
                         onerror="this.src='https://via.placeholder.com/100'">
-                    <h3>💎 專屬優惠</h3>
+                    <h3> 專屬優惠</h3>
                     <p>會員享有專屬折扣和優先購買權</p>
                 </div>
                 <div class="benefit-item">
                     <img src="image/cb_img8.jpg" alt="生日優惠"
                         onerror="this.src='https://via.placeholder.com/100'">
-                    <h3>🎂 生日優惠</h3>
+                    <h3> 生日優惠</h3>
                     <p>生日月份享有特別折扣和生日禮品</p>
                 </div>
             </div>

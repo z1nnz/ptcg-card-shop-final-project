@@ -7,6 +7,7 @@
     <title>訂單確認 - PTCG卡包商城</title>
     <link rel="stylesheet" href="confirm the order.css">
     <script src="database.js"></script>
+    <link rel="stylesheet" href="ui-polish.css">
 </head>
 
 <body>
@@ -20,7 +21,7 @@
             <div class="nav-right">
                 <div class="search-bar">
                     <input type="text" placeholder="你想查詢甚麼相關商品?" id="searchInput">
-                    <button onclick="performSearch()">🔍</button>
+                    <button class="icon-button search-button" onclick="performSearch()" aria-label="搜尋"><span class="ui-icon icon-search"></span><span class="search-text">搜尋</span></button>
                 </div>
                 <div class="member-section" id="memberSection">
                     <a href="member.html" id="memberLink">
@@ -51,7 +52,7 @@
     <main>
         <!-- 成功圖示和標題 -->
         <div class="success-header">
-            <div class="success-icon">✅</div>
+            <div class="success-icon"></div>
             <h1>訂單確認成功！</h1>
             <p>感謝您的購買，我們已收到您的訂單</p>
             <div class="order-number">
@@ -63,11 +64,11 @@
         <div class="confirmation-container">
             <!-- 左側：訂單資訊 -->
             <div class="order-info-section">
-                <h2>📋 訂單資訊</h2>
+                <h2> 訂單資訊</h2>
 
                 <!-- 收件資訊 -->
                 <div class="info-card">
-                    <h3>👤 收件資訊</h3>
+                    <h3> 收件資訊</h3>
                     <div class="info-content">
                         <p><strong>收件人：</strong><span id="customerName">-</span></p>
                         <p><strong>聯絡電話：</strong><span id="customerPhone">-</span></p>
@@ -78,7 +79,7 @@
 
                 <!-- 配送資訊 -->
                 <div class="info-card">
-                    <h3>🚚 配送資訊</h3>
+                    <h3> 配送資訊</h3>
                     <div class="info-content">
                         <p><strong>配送方式：</strong><span id="deliveryMethod">-</span></p>
                         <p><strong>預計送達：</strong><span id="estimatedDelivery">-</span></p>
@@ -88,7 +89,7 @@
 
                 <!-- 付款資訊 -->
                 <div class="info-card">
-                    <h3>💳 付款資訊</h3>
+                    <h3> 付款資訊</h3>
                     <div class="info-content">
                         <p><strong>付款方式：</strong><span id="paymentMethod">-</span></p>
                         <p><strong>付款狀態：</strong><span class="status pending">處理中</span></p>
@@ -98,7 +99,7 @@
 
             <!-- 右側：訂單摘要 -->
             <div class="order-summary-section">
-                <h2>🛒 訂單明細</h2>
+                <h2> 訂單明細</h2>
 
                 <!-- 商品清單 -->
                 <div class="items-list" id="orderItems">
@@ -129,15 +130,15 @@
                 <!-- 下一步按鈕 -->
                 <div class="action-buttons">
                     <button class="btn-primary" onclick="completeOrder()">
-                        <span class="btn-icon">🎉</span>
+                        <span class="btn-icon"></span>
                         完成訂購
                     </button>
                     <a href="index.html" class="btn-secondary">
-                        <span class="btn-icon">🏠</span>
+                        <span class="btn-icon"></span>
                         返回首頁
                     </a>
                     <button class="btn-outline" onclick="printOrder()">
-                        <span class="btn-icon">🖨️</span>
+                        <span class="btn-icon"></span>
                         列印訂單
                     </button>
                 </div>
@@ -146,25 +147,25 @@
 
         <!-- 後續步驟說明 -->
         <div class="next-steps">
-            <h2>📢 後續步驟</h2>
+            <h2> 後續步驟</h2>
             <div class="steps-grid">
                 <div class="step-card">
-                    <div class="step-icon">📧</div>
+                    <div class="step-icon"></div>
                     <h3>確認郵件</h3>
                     <p>我們將發送訂單確認郵件至您的信箱</p>
                 </div>
                 <div class="step-card">
-                    <div class="step-icon">📦</div>
+                    <div class="step-icon"></div>
                     <h3>商品準備</h3>
                     <p>我們將在1-2個工作天內為您準備商品</p>
                 </div>
                 <div class="step-card">
-                    <div class="step-icon">🚚</div>
+                    <div class="step-icon"></div>
                     <h3>出貨通知</h3>
                     <p>商品出貨時會發送物流追蹤資訊</p>
                 </div>
                 <div class="step-card">
-                    <div class="step-icon">✨</div>
+                    <div class="step-icon"></div>
                     <h3>收貨完成</h3>
                     <p>請確認商品無誤，有問題請聯絡客服</p>
                 </div>
@@ -321,7 +322,7 @@
             localStorage.removeItem('cart');
 
             // 顯示完成訊息
-            alert('🎉 訂單處理完成！感謝您的購買！');
+            alert(' 訂單處理完成！感謝您的購買！');
 
             // 重定向到首頁
             window.location.href = 'index.html';

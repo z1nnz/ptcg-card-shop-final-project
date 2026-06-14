@@ -7,6 +7,7 @@
     <title>購物車</title>
     <link rel="stylesheet" href="shop.css">
     <script src="database.js"></script>
+    <link rel="stylesheet" href="ui-polish.css">
 </head>
 
 <body>
@@ -19,7 +20,7 @@
             <div class="nav-right">
                 <div class="search-bar">
                     <input type="text" placeholder="你想查詢甚麼相關商品?" id="searchInput">
-                    <button onclick="performSearch()">🔍</button>
+                    <button class="icon-button search-button" onclick="performSearch()" aria-label="搜尋"><span class="ui-icon icon-search"></span><span class="search-text">搜尋</span></button>
                 </div>
                 <div class="member-section" id="memberSection">
                     <a href="member.html" id="memberLink">
@@ -49,7 +50,7 @@
 
     <div class="cart-container">
         <div class="cart-header">
-            <h2><i class="cart-icon">🛒</i> 我的購物車</h2>
+            <h2><i class="cart-icon"></i> 我的購物車</h2>
             <div class="cart-actions">
                 <button class="clear-cart-btn" onclick="clearCart()">清空購物車</button>
                 <a href="card.html" class="continue-shopping-btn">繼續購物</a>
@@ -58,7 +59,7 @@
 
         <!-- 空購物車狀態 -->
         <div class="empty-cart" id="emptyCart" style="display: none;">
-            <div class="empty-cart-icon">🛒</div>
+            <div class="empty-cart-icon"></div>
             <h3>您的購物車是空的</h3>
             <p>快去選購您喜愛的PTCG卡片吧！</p>
             <a href="card.html" class="continue-shopping-btn">開始購物</a>
@@ -89,10 +90,10 @@
                     </div>
                     <div class="checkout-actions">
                         <button class="checkout-btn" onclick="completeOrder(event)">
-                            <i class="checkout-icon">💳</i>
+                            <i class="checkout-icon"></i>
                             立即結帳
                         </button>
-                        <p class="secure-note">🔒 安全結帳，您的資料受到保護</p>
+                        <p class="secure-note"> 安全結帳，您的資料受到保護</p>
                     </div>
                 </div>
             </div>
@@ -138,10 +139,10 @@
                         <p class="item-price">單價: NT$ ${item.price.toLocaleString()}</p>
                         <div class="item-actions">
                             <button class="favorite-btn" onclick="addToFavorites('${item.id}')" title="加入收藏">
-                                <i class="heart-icon">🤍</i>
+                                <i class="heart-icon"></i>
                             </button>
                             <button class="remove-btn" onclick="removeItem('${item.id}')" title="移除商品">
-                                <i class="remove-icon">🗑️</i>
+                                <i class="remove-icon"></i>
                             </button>
                         </div>
                     </div>
@@ -232,9 +233,9 @@
                 localStorage.setItem('favorites', JSON.stringify(favorites));
 
                 // 視覺反饋
-                event.target.closest('.favorite-btn').innerHTML = '<i class="heart-icon">❤️</i>';
+                event.target.closest('.favorite-btn').innerHTML = '<i class="heart-icon"></i>';
                 setTimeout(() => {
-                    event.target.closest('.favorite-btn').innerHTML = '<i class="heart-icon">🤍</i>';
+                    event.target.closest('.favorite-btn').innerHTML = '<i class="heart-icon"></i>';
                 }, 2000);
 
                 alert('商品已加入收藏！');

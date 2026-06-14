@@ -108,4 +108,4 @@ function resetStarRating() {
     if (window.starRatingInstance) {
         window.starRatingInstance.reset();
     }
-} 
+}

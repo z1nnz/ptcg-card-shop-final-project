@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "check": "node --check server.js && node --check database.js && node --check card.js && node --check star-rating.js"
+    "reset-db": "node reset-db.js",
+    "check": "node --check server.js && node --check database.js && node --check card.js && node --check star-rating.js && node --check reset-db.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",

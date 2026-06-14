@@ -7,6 +7,7 @@
     <title>會員登入 - PTCG卡包商城</title>
     <link rel="stylesheet" href="member.css">
     <script src="database.js"></script>
+    <link rel="stylesheet" href="ui-polish.css">
 </head>
 
 <body>
@@ -31,19 +32,19 @@
                     <p>登入您的帳戶，探索最新的PTCG卡片收藏</p>
                     <div class="features">
                         <div class="feature-item">
-                            <span class="feature-icon">✨</span>
+                            <span class="feature-icon ui-icon icon-card"></span>
                             <span>正版PTCG卡片</span>
                         </div>
                         <div class="feature-item">
-                            <span class="feature-icon">🎁</span>
+                            <span class="feature-icon ui-icon icon-gift"></span>
                             <span>會員專屬優惠</span>
                         </div>
                         <div class="feature-item">
-                            <span class="feature-icon">🚚</span>
+                            <span class="feature-icon ui-icon icon-truck"></span>
                             <span>快速配送服務</span>
                         </div>
                         <div class="feature-item">
-                            <span class="feature-icon">💎</span>
+                            <span class="feature-icon ui-icon icon-star"></span>
                             <span>限量收藏品</span>
                         </div>
                     </div>
@@ -62,7 +63,7 @@
                 <form id="loginForm" onsubmit="handleLogin(event)">
                     <div class="input-group">
                         <label for="email">
-                            <span class="input-icon">📧</span>
+                            <span class="input-icon ui-icon icon-mail"></span>
                             電子郵件
                         </label>
                         <input type="email" id="email" name="email" placeholder="請輸入您的電子郵件" required>
@@ -71,13 +72,14 @@
 
                     <div class="input-group">
                         <label for="password">
-                            <span class="input-icon">🔒</span>
+                            <span class="input-icon ui-icon icon-lock"></span>
                             密碼
                         </label>
                         <div class="password-input">
                             <input type="password" id="password" name="password" placeholder="請輸入您的密碼" required>
                             <button type="button" class="toggle-password" onclick="togglePassword()">
-                                <span id="toggleIcon">👁️</span>
+                                <span class="toggle-icon ui-icon icon-eye" aria-hidden="true"></span>
+                                <span id="toggleIcon">顯示</span>
                             </button>
                         </div>
                         <div class="input-error" id="passwordError"></div>
@@ -106,11 +108,11 @@
 
                 <div class="social-login">
                     <button class="social-btn google-btn" onclick="socialLogin('google')">
-                        <span class="social-icon">🎯</span>
+                        <span class="social-icon ui-icon icon-search"></span>
                         使用 Google 登入
                     </button>
                     <button class="social-btn facebook-btn" onclick="socialLogin('facebook')">
-                        <span class="social-icon">📘</span>
+                        <span class="social-icon ui-icon icon-user"></span>
                         使用 Facebook 登入
                     </button>
                 </div>
@@ -163,7 +165,7 @@
 
     <!-- 返回首頁按鈕 -->
     <a href="index.html" class="back-home">
-        <span class="back-icon">🏠</span>
+        <span class="back-icon ui-icon icon-home"></span>
         返回首頁
     </a>
 
@@ -317,10 +319,10 @@
 
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                toggleIcon.textContent = '🙈';
+                toggleIcon.textContent = '隱藏';
             } else {
                 passwordInput.type = 'password';
-                toggleIcon.textContent = '👁️';
+                toggleIcon.textContent = '顯示';
             }
         }
 

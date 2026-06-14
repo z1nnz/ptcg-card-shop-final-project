@@ -7,6 +7,7 @@
     <title>結帳頁面 - PTCG卡包商城</title>
     <link rel="stylesheet" href="checkout page.css">
     <script src="database.js"></script>
+    <link rel="stylesheet" href="ui-polish.css">
 </head>
 
 <body>
@@ -20,7 +21,7 @@
             <div class="nav-right">
                 <div class="search-bar">
                     <input type="text" placeholder="你想查詢甚麼相關商品?" id="searchInput">
-                    <button onclick="performSearch()">🔍</button>
+                    <button class="icon-button search-button" onclick="performSearch()" aria-label="搜尋"><span class="ui-icon icon-search"></span><span class="search-text">搜尋</span></button>
                 </div>
                 <div class="member-section" id="memberSection">
                     <a href="member.html" id="memberLink">
@@ -50,7 +51,7 @@
 
     <main>
         <div class="page-title">
-            <h1>🛒 結帳頁面</h1>
+            <h1> 結帳頁面</h1>
             <p>請填寫您的訂單資訊</p>
         </div>
 
@@ -59,7 +60,7 @@
             <div class="checkout-form">
                 <!-- 收件資訊 -->
                 <section class="form-section">
-                    <h3 class="section-title">📋 收件資訊</h3>
+                    <h3 class="section-title"> 收件資訊</h3>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="name">收件人姓名 *</label>
@@ -82,7 +83,7 @@
 
                 <!-- 配送方式 -->
                 <section class="form-section">
-                    <h3 class="section-title">🚚 配送方式</h3>
+                    <h3 class="section-title"> 配送方式</h3>
                     <div class="delivery-options">
                         <div class="delivery-option">
                             <input type="radio" id="homeDelivery" name="delivery" value="home" checked>
@@ -119,13 +120,13 @@
 
                 <!-- 付款方式 -->
                 <section class="form-section">
-                    <h3 class="section-title">💳 付款方式</h3>
+                    <h3 class="section-title"> 付款方式</h3>
                     <div class="payment-options">
                         <div class="payment-option">
                             <input type="radio" id="creditCard" name="payment" value="credit" checked>
                             <label for="creditCard">
                                 <div class="option-info">
-                                    <h4>💳 信用卡</h4>
+                                    <h4> 信用卡</h4>
                                     <p>支援Visa、MasterCard、JCB</p>
                                 </div>
                             </label>
@@ -134,7 +135,7 @@
                             <input type="radio" id="bankTransfer" name="payment" value="bank">
                             <label for="bankTransfer">
                                 <div class="option-info">
-                                    <h4>🏦 銀行轉帳</h4>
+                                    <h4> 銀行轉帳</h4>
                                     <p>確認轉帳後3個工作天出貨</p>
                                 </div>
                             </label>
@@ -143,7 +144,7 @@
                             <input type="radio" id="cod" name="payment" value="cod">
                             <label for="cod">
                                 <div class="option-info">
-                                    <h4>💰 貨到付款</h4>
+                                    <h4> 貨到付款</h4>
                                     <p>收貨時現金付款</p>
                                 </div>
                             </label>
@@ -153,7 +154,7 @@
 
                 <!-- 優惠碼 -->
                 <section class="form-section">
-                    <h3 class="section-title">🎫 優惠碼</h3>
+                    <h3 class="section-title"> 優惠碼</h3>
                     <div class="coupon-section">
                         <div class="form-group">
                             <input type="text" id="couponCode" placeholder="請輸入優惠碼">
@@ -176,7 +177,7 @@
 
                 <!-- 備註 -->
                 <section class="form-section">
-                    <h3 class="section-title">📝 訂單備註</h3>
+                    <h3 class="section-title"> 訂單備註</h3>
                     <div class="form-group">
                         <textarea id="orderNote" placeholder="有任何特殊需求請在此說明（選填）" rows="3"></textarea>
                     </div>
@@ -185,7 +186,7 @@
 
             <!-- 右側：訂單摘要 -->
             <div class="order-summary">
-                <h3 class="section-title">📄 訂單摘要</h3>
+                <h3 class="section-title"> 訂單摘要</h3>
 
                 <div class="order-items" id="orderItems">
                     <!-- 商品項目將動態載入 -->
@@ -212,12 +213,12 @@
                 </div>
 
                 <button class="checkout-btn" onclick="processOrder()">
-                    <span class="btn-icon">💳</span>
+                    <span class="btn-icon"></span>
                     確認訂購
                 </button>
 
                 <div class="security-notice">
-                    <p>🔒 您的個人資料將受到完整保護</p>
+                    <p> 您的個人資料將受到完整保護</p>
                 </div>
             </div>
         </div>
@@ -324,36 +325,36 @@
             switch (couponCode) {
                 case 'WELCOME10':
                     discount = 100;
-                    messageElement.textContent = '✅ 新會員優惠：折扣 NT$ 100';
+                    messageElement.textContent = ' 新會員優惠：折扣 NT$ 100';
                     messageElement.classList.add('success');
                     break;
                 case 'SAVE200':
                     discount = 200;
-                    messageElement.textContent = '✅ 特別優惠：折扣 NT$ 200';
+                    messageElement.textContent = ' 特別優惠：折扣 NT$ 200';
                     messageElement.classList.add('success');
                     break;
                 case 'VIP50':
                     discount = 50;
-                    messageElement.textContent = '✅ VIP優惠：折扣 NT$ 50';
+                    messageElement.textContent = ' VIP優惠：折扣 NT$ 50';
                     messageElement.classList.add('success');
                     break;
                 case 'PTCG2024':
                     discount = 150;
-                    messageElement.textContent = '✅ PTCG玩家優惠：折扣 NT$ 150';
+                    messageElement.textContent = ' PTCG玩家優惠：折扣 NT$ 150';
                     messageElement.classList.add('success');
                     break;
                 case 'FIRST':
                     discount = 300;
-                    messageElement.textContent = '✅ 首購優惠：折扣 NT$ 300';
+                    messageElement.textContent = ' 首購優惠：折扣 NT$ 300';
                     messageElement.classList.add('success');
                     break;
                 case 'CARD100':
                     discount = 100;
-                    messageElement.textContent = '✅ 卡片愛好者優惠：折扣 NT$ 100';
+                    messageElement.textContent = ' 卡片愛好者優惠：折扣 NT$ 100';
                     messageElement.classList.add('success');
                     break;
                 default:
-                    messageElement.textContent = '❌ 優惠碼無效或已過期';
+                    messageElement.textContent = ' 優惠碼無效或已過期';
                     messageElement.classList.add('error');
                     discountRow.style.display = 'none';
                     // 儲存折扣金額到全域變數
@@ -443,7 +444,7 @@
             } catch (error) {
                 alert(error.message || '訂單建立失敗，請稍後再試');
                 checkoutBtn.disabled = false;
-                checkoutBtn.innerHTML = '<span class="btn-icon">💳</span>確認訂購';
+                checkoutBtn.innerHTML = '<span class="btn-icon"></span>確認訂購';
             }
         }
 

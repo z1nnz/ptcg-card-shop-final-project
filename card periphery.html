@@ -18,6 +18,7 @@
             border-radius: 8px;
         }
     </style>
+    <link rel="stylesheet" href="ui-polish.css">
 </head>
 
 <body>
@@ -32,7 +33,7 @@
             <div class="nav-right">
                 <div class="search-bar">
                     <input type="text" placeholder="你想查詢甚麼相關商品?" id="searchInput">
-                    <button onclick="performSearch()">🔍</button>
+                    <button class="icon-button search-button" onclick="performSearch()" aria-label="搜尋"><span class="ui-icon icon-search"></span><span class="search-text">搜尋</span></button>
                 </div>
                 <div class="member-section" id="memberSection">
                     <a href="member.html" id="memberLink">
@@ -94,7 +95,7 @@
                             ${product.stock === 0 ? '缺貨' : '加入購物車'}
                         </button>
                         <button class="favorite-btn" onclick="toggleFavorite('${product.id}')" title="加入收藏">
-                            <i class="heart-icon">🤍</i>
+                            <i class="heart-icon"></i>
                         </button>
                     </div>
                 </div>
@@ -213,11 +214,13 @@
                 const favoriteBtn = productBox.querySelector('.favorite-btn .heart-icon');
 
                 if (favoriteIds.includes(productId)) {
-                    favoriteBtn.textContent = '❤️';
+                    favoriteBtn.closest('.favorite-btn').classList.add('is-favorite');
                     favoriteBtn.closest('.favorite-btn').style.color = '#e74c3c';
+                    favoriteBtn.closest('.favorite-btn').setAttribute('title', '取消收藏');
                 } else {
-                    favoriteBtn.textContent = '🤍';
+                    favoriteBtn.closest('.favorite-btn').classList.remove('is-favorite');
                     favoriteBtn.closest('.favorite-btn').style.color = '#666';
+                    favoriteBtn.closest('.favorite-btn').setAttribute('title', '加入收藏');
                 }
             });
         }

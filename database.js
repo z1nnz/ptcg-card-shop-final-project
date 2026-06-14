@@ -39,17 +39,26 @@ class PtcgApiClient {
     }
 
     async request(path, options = {}) {
-        const response = await fetch(path, {
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                ...(options.headers || {})
-            },
-            ...options
-        });
+        let response;
+        try {
+            response = await fetch(path, {
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(options.headers || {})
+                },
+                ...options
+            });
+        } catch (error) {
+            throw new Error('無法連接後端，請確認已執行 npm start，並用 http://localhost:3000 開啟網站。');
+        }
+
         const data = await response.json().catch(() => ({}));
         if (!response.ok) {
-            throw new Error(data.error || '伺服器發生錯誤');
+            const fallback = response.status >= 500
+                ? '伺服器發生錯誤，請查看終端機 npm start 的錯誤訊息。'
+                : `操作失敗 (${response.status})`;
+            throw new Error(data.error || fallback);
         }
         return data;
     }
@@ -156,6 +165,23 @@ class PtcgApiClient {
 
     async adminSummary() {
         return this.request('/api/admin/summary');
+    }
+
+    async updateOrderStatus(orderId, status) {
+        const data = await this.request(`/api/admin/orders/${encodeURIComponent(orderId)}/status`, {
+            method: 'PATCH',
+            body: JSON.stringify({ status })
+        });
+        return data.order;
+    }
+
+    async updateProduct(productId, productData) {
+        const data = await this.request(`/api/admin/products/${encodeURIComponent(productId)}`, {
+            method: 'PATCH',
+            body: JSON.stringify(productData)
+        });
+        await this.refreshProducts();
+        return data.product;
     }
 
     getProducts(category = null) {
@@ -320,16 +346,23 @@ function injectMobileSafetyStyles() {
     const style = document.createElement('style');
     style.id = 'ptcg-mobile-safety-style';
     style.textContent = `
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             header .header-container {
                 flex-direction: column !important;
                 align-items: stretch !important;
-                gap: 0.75rem !important;
+                gap: 0.85rem !important;
+                padding: 0.85rem !important;
             }
 
             header .logo {
                 justify-content: center !important;
                 text-align: center !important;
+                width: 100% !important;
+            }
+
+            header .logo h1 {
+                font-size: clamp(1.2rem, 5vw, 1.55rem) !important;
+                line-height: 1.2 !important;
             }
 
             header .nav-right {
@@ -341,24 +374,48 @@ function injectMobileSafetyStyles() {
                 max-width: 100% !important;
                 justify-content: center !important;
                 flex-wrap: wrap !important;
-                gap: 0.5rem !important;
+                gap: 0.55rem !important;
             }
 
             header .search-bar {
-                width: min(100%, 320px) !important;
+                width: 100% !important;
                 max-width: 100% !important;
-                flex: 1 1 220px !important;
+                flex: 0 0 100% !important;
+                justify-content: center !important;
             }
 
             header .search-bar input {
-                width: 100% !important;
+                width: min(100%, 300px) !important;
                 min-width: 0 !important;
+                flex: 1 1 auto !important;
+            }
+
+            header .member-section,
+            header .nav-right > a {
+                flex: 0 0 auto !important;
+            }
+
+            header .member-section a,
+            header .member-info {
+                color: #fff !important;
+                padding: 0.35rem 0.55rem !important;
             }
 
             header .nav-menu ul {
                 flex-wrap: wrap !important;
                 justify-content: center !important;
-                gap: 0.35rem 0.5rem !important;
+                gap: 0.25rem 0.45rem !important;
+                padding: 0 0.45rem !important;
+            }
+
+            header .nav-menu ul li {
+                margin: 0 !important;
+            }
+
+            header .nav-menu ul li a {
+                font-size: 0.95rem !important;
+                padding: 0.45rem 0.6rem !important;
+                white-space: nowrap !important;
             }
 
             .admin-panel,
@@ -370,14 +427,60 @@ function injectMobileSafetyStyles() {
     document.head.appendChild(style);
 }
 
+function injectDemoPolishStyles() {
+    if (document.getElementById('ptcg-demo-polish-style')) return;
+    const style = document.createElement('style');
+    style.id = 'ptcg-demo-polish-style';
+    style.textContent = `
+        .ptcg-toast {
+            position: fixed;
+            right: 1rem;
+            bottom: 1rem;
+            z-index: 9999;
+            max-width: min(420px, calc(100vw - 2rem));
+            padding: 0.9rem 1rem;
+            border-radius: 10px;
+            background: #172033;
+            color: #fff;
+            box-shadow: 0 18px 40px rgba(23, 32, 51, 0.22);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .ptcg-toast.error {
+            background: #b42318;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+function showGlobalToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `ptcg-toast ${type}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 5200);
+}
+
 window.api = new PtcgApiClient();
 window.database = window.api;
 window.mockDB = window.api;
 
 document.addEventListener('DOMContentLoaded', async function () {
+    if (document.querySelector('header')) {
+        document.body.classList.add('ptcg-has-header');
+    }
+    injectDemoPolishStyles();
     injectMobileSafetyStyles();
     initCookieNotice();
     await window.api.hydrate();
     updateGlobalMemberHeader(window.api.getCurrentUser());
     window.dispatchEvent(new CustomEvent('ptcg:api-ready'));
+});
+
+window.addEventListener('unhandledrejection', function (event) {
+    const message = event.reason?.message || '';
+    if (message.includes('後端') || message.includes('伺服器') || message.includes('API')) {
+        showGlobalToast(message, 'error');
+    }
 });

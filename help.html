@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>服務中心 - PTCG卡包商城</title>
     <link rel="stylesheet" href="help.css">
+    <link rel="stylesheet" href="ui-polish.css">
 </head>
 
 <body>
@@ -18,7 +19,7 @@
             <div class="nav-right">
                 <div class="search-bar">
                     <input type="text" placeholder="你想查詢甚麼相關商品?" id="searchInput">
-                    <button onclick="performSearch()">🔍</button>
+                    <button class="icon-button search-button" onclick="performSearch()" aria-label="搜尋"><span class="ui-icon icon-search"></span><span class="search-text">搜尋</span></button>
                 </div>
                 <div class="member-section" id="memberSection">
                     <a href="member.html" id="memberLink">
@@ -52,28 +53,28 @@
         <!-- 幫助分類 -->
         <div class="help-categories">
             <div class="help-category">
-                <span class="category-icon">❓</span>
+                <span class="category-icon"></span>
                 <h3>常見問題</h3>
                 <p>查看最常遇到的問題及解答，快速找到您需要的幫助。</p>
                 <a href="faq.html" class="learn-more">查看詳情</a>
             </div>
 
             <div class="help-category">
-                <span class="category-icon">📦</span>
+                <span class="category-icon"></span>
                 <h3>訂單追蹤</h3>
                 <p>了解如何追蹤您的訂單狀態，查看配送進度。</p>
                 <a href="faq.html" class="learn-more">查看詳情</a>
             </div>
 
             <div class="help-category">
-                <span class="category-icon">🔄</span>
+                <span class="category-icon"></span>
                 <h3>退換貨服務</h3>
                 <p>了解我們的退換貨政策和流程，保障您的購物權益。</p>
                 <a href="return.html" class="learn-more">查看詳情</a>
             </div>
 
             <div class="help-category">
-                <span class="category-icon">💰</span>
+                <span class="category-icon"></span>
                 <h3>優惠活動</h3>
                 <p>查看最新的優惠碼和促銷活動，享受更多購物優惠。</p>
                 <a href="faq.html" class="learn-more">查看詳情</a>
@@ -122,19 +123,19 @@
             <h2>聯絡我們</h2>
             <div class="contact-methods">
                 <div class="contact-method">
-                    <span class="icon">📞</span>
+                    <span class="icon"></span>
                     <h3>客服電話</h3>
                     <p>0800-123-456<br>服務時間：09:00-18:00</p>
                 </div>
 
                 <div class="contact-method">
-                    <span class="icon">✉️</span>
+                    <span class="icon"></span>
                     <h3>電子信箱</h3>
                     <p>service@ptcgcard.com<br>24小時內回覆</p>
                 </div>
 
                 <div class="contact-method">
-                    <span class="icon">💬</span>
+                    <span class="icon"></span>
                     <h3>LINE客服</h3>
                     <p>@ptcgcard<br>即時線上客服</p>
                 </div>

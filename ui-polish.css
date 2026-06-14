@@ -1,0 +1,572 @@
+:root {
+    --ptcg-blue: #0b57d0;
+    --ptcg-blue-dark: #083b91;
+    --ptcg-ink: #172033;
+    --ptcg-muted: #657086;
+    --ptcg-line: #dfe6f3;
+    --ptcg-soft: #f4f7fc;
+    --ptcg-yellow: #f7c948;
+    --ptcg-red: #d9232e;
+}
+
+body.ptcg-has-header {
+    color: var(--ptcg-ink);
+    background:
+        linear-gradient(135deg, rgba(11, 87, 208, 0.04) 25%, transparent 25%) 0 0 / 22px 22px,
+        linear-gradient(225deg, rgba(247, 201, 72, 0.08) 25%, transparent 25%) 0 0 / 22px 22px,
+        #f7faff !important;
+}
+
+header .header-container {
+    background: linear-gradient(135deg, #083b91 0%, #0b57d0 64%, #2f7df6 100%) !important;
+    border-bottom: 5px solid var(--ptcg-yellow);
+    box-shadow: 0 12px 30px rgba(8, 59, 145, 0.24) !important;
+}
+
+header .logo h1 {
+    color: #fff;
+    text-shadow: 0 2px 0 rgba(8, 59, 145, 0.35);
+}
+
+header .nav-menu {
+    background: rgba(255, 255, 255, 0.96) !important;
+    border-bottom: 1px solid var(--ptcg-line);
+}
+
+header .nav-menu ul li a {
+    color: var(--ptcg-ink) !important;
+    border-radius: 999px;
+}
+
+header .nav-menu ul li a:hover,
+header .nav-menu ul li a.active {
+    color: var(--ptcg-blue) !important;
+    background: #eaf2ff;
+    text-shadow: none !important;
+}
+
+.ui-icon {
+    position: relative;
+    display: inline-flex;
+    width: 1.15em;
+    height: 1.15em;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    color: currentColor;
+    vertical-align: -0.16em;
+}
+
+.ui-icon::before,
+.ui-icon::after {
+    content: "";
+    position: absolute;
+    box-sizing: border-box;
+}
+
+.icon-search::before {
+    width: 0.72em;
+    height: 0.72em;
+    border: 2px solid currentColor;
+    border-radius: 999px;
+    top: 0.12em;
+    left: 0.12em;
+}
+
+.icon-search::after {
+    width: 0.45em;
+    height: 2px;
+    border-radius: 999px;
+    background: currentColor;
+    right: 0.08em;
+    bottom: 0.17em;
+    transform: rotate(45deg);
+    transform-origin: center;
+}
+
+.icon-eye::before {
+    width: 1.05em;
+    height: 0.68em;
+    border: 2px solid currentColor;
+    border-radius: 999px 999px 999px 999px / 780px 780px 780px 780px;
+    transform: rotate(-8deg);
+}
+
+.icon-eye::after {
+    width: 0.26em;
+    height: 0.26em;
+    border-radius: 999px;
+    background: currentColor;
+}
+
+.icon-user::before {
+    width: 0.4em;
+    height: 0.4em;
+    border: 2px solid currentColor;
+    border-radius: 999px;
+    top: 0.06em;
+}
+
+.icon-user::after {
+    width: 0.86em;
+    height: 0.48em;
+    border: 2px solid currentColor;
+    border-top-left-radius: 999px;
+    border-top-right-radius: 999px;
+    border-bottom: 0;
+    bottom: 0.05em;
+}
+
+.icon-lock::before {
+    width: 0.76em;
+    height: 0.58em;
+    border: 2px solid currentColor;
+    border-radius: 0.14em;
+    bottom: 0.08em;
+}
+
+.icon-lock::after {
+    width: 0.48em;
+    height: 0.44em;
+    border: 2px solid currentColor;
+    border-bottom: 0;
+    border-radius: 999px 999px 0 0;
+    top: 0.03em;
+}
+
+.icon-mail::before {
+    inset: 0.16em 0.06em;
+    border: 2px solid currentColor;
+    border-radius: 0.16em;
+}
+
+.icon-mail::after {
+    width: 0.72em;
+    height: 0.72em;
+    border-left: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    top: 0.2em;
+    transform: rotate(-45deg);
+}
+
+.icon-card::before {
+    inset: 0.16em 0.06em;
+    border: 2px solid currentColor;
+    border-radius: 0.16em;
+}
+
+.icon-card::after {
+    left: 0.2em;
+    right: 0.2em;
+    top: 0.42em;
+    height: 2px;
+    background: currentColor;
+}
+
+.icon-box::before {
+    width: 0.86em;
+    height: 0.7em;
+    border: 2px solid currentColor;
+    border-radius: 0.12em;
+    bottom: 0.08em;
+}
+
+.icon-box::after {
+    width: 0.56em;
+    height: 0.56em;
+    border-top: 2px solid currentColor;
+    border-left: 2px solid currentColor;
+    top: 0.14em;
+    transform: rotate(45deg);
+}
+
+.icon-truck::before {
+    width: 0.72em;
+    height: 0.48em;
+    border: 2px solid currentColor;
+    border-radius: 0.1em;
+    left: 0.04em;
+    bottom: 0.24em;
+}
+
+.icon-truck::after {
+    width: 0.95em;
+    height: 0.22em;
+    border-left: 0.16em solid currentColor;
+    border-right: 0.16em solid currentColor;
+    border-radius: 999px;
+    bottom: 0.08em;
+}
+
+.icon-star::before {
+    width: 0.9em;
+    height: 0.9em;
+    background: currentColor;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 56%, 79% 91%, 50% 69%, 21% 91%, 32% 56%, 2% 35%, 39% 35%);
+}
+
+.icon-gift::before {
+    inset: 0.34em 0.12em 0.1em;
+    border: 2px solid currentColor;
+    border-radius: 0.12em;
+}
+
+.icon-gift::after {
+    width: 2px;
+    height: 0.82em;
+    background: currentColor;
+    top: 0.2em;
+    box-shadow: -0.32em 0.14em 0 -0.02em currentColor, 0.32em 0.14em 0 -0.02em currentColor;
+}
+
+.icon-check::before {
+    width: 0.78em;
+    height: 0.42em;
+    border-left: 3px solid currentColor;
+    border-bottom: 3px solid currentColor;
+    transform: rotate(-45deg);
+}
+
+.icon-x::before,
+.icon-x::after {
+    width: 0.86em;
+    height: 2px;
+    background: currentColor;
+}
+
+.icon-x::before {
+    transform: rotate(45deg);
+}
+
+.icon-x::after {
+    transform: rotate(-45deg);
+}
+
+.icon-home::before {
+    width: 0.82em;
+    height: 0.62em;
+    border: 2px solid currentColor;
+    border-top: 0;
+    bottom: 0.1em;
+}
+
+.icon-home::after {
+    width: 0.72em;
+    height: 0.72em;
+    border-left: 2px solid currentColor;
+    border-top: 2px solid currentColor;
+    transform: rotate(45deg);
+    top: 0.08em;
+}
+
+.icon-list::before {
+    inset: 0.08em 0.08em;
+    border-top: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    box-shadow: 0 0.36em 0 -1px currentColor;
+}
+
+.icon-money::before {
+    width: 0.88em;
+    height: 0.88em;
+    border: 2px solid currentColor;
+    border-radius: 999px;
+}
+
+.icon-money::after {
+    content: "$";
+    position: static;
+    font-size: 0.72em;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.icon-info::before {
+    width: 0.9em;
+    height: 0.9em;
+    border: 2px solid currentColor;
+    border-radius: 999px;
+}
+
+.icon-info::after {
+    content: "i";
+    position: static;
+    font-size: 0.74em;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.heart-icon:empty {
+    display: inline-flex;
+    width: 18px;
+    height: 18px;
+    align-items: center;
+    justify-content: center;
+    color: currentColor;
+}
+
+.heart-icon:empty::before {
+    content: "";
+    width: 13px;
+    height: 13px;
+    border: 2px solid currentColor;
+    border-radius: 4px;
+    transform: rotate(45deg);
+    background: transparent;
+}
+
+.favorite-btn.is-favorite .heart-icon:empty::before {
+    background: currentColor;
+}
+
+.icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+}
+
+.search-button {
+    min-width: 42px;
+    color: var(--ptcg-blue-dark);
+}
+
+.search-button .search-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+.input-icon:empty,
+.feature-icon:empty,
+.section-icon:empty,
+.benefit-icon:empty,
+.category-icon:empty,
+.stat-icon:empty,
+.action-icon:empty,
+.empty-icon:empty,
+.copy-icon:empty,
+.btn-icon:empty,
+.step-icon:empty,
+.cart-icon:empty,
+.checkout-icon:empty,
+.success-icon:empty,
+.back-icon:empty,
+.social-icon:empty {
+    position: relative;
+    display: inline-flex;
+    width: 1.1em;
+    height: 1.1em;
+    flex: 0 0 auto;
+    color: currentColor;
+    vertical-align: -0.16em;
+}
+
+.input-icon:empty::before,
+.feature-icon:empty::before,
+.section-icon:empty::before,
+.benefit-icon:empty::before,
+.category-icon:empty::before,
+.stat-icon:empty::before,
+.action-icon:empty::before,
+.empty-icon:empty::before,
+.copy-icon:empty::before,
+.btn-icon:empty::before,
+.step-icon:empty::before,
+.cart-icon:empty::before,
+.checkout-icon:empty::before,
+.success-icon:empty::before,
+.back-icon:empty::before,
+.social-icon:empty::before {
+    content: "";
+    position: absolute;
+    inset: 0.18em;
+    border: 2px solid currentColor;
+    border-radius: 0.22em;
+    transform: rotate(45deg);
+}
+
+.feature-icon:empty,
+.benefit-icon:empty,
+.stat-icon:empty,
+.action-icon:empty,
+.category-icon:empty {
+    color: var(--ptcg-yellow);
+}
+
+.section-title::before,
+.order-info-section h2::before,
+.order-summary-section h2::before,
+.next-steps h2::before {
+    content: "";
+    display: inline-block;
+    width: 0.82em;
+    height: 0.82em;
+    margin-right: 0.45rem;
+    border: 2px solid currentColor;
+    border-radius: 0.2em;
+    transform: rotate(45deg);
+    vertical-align: -0.04em;
+}
+
+.product-card,
+.card-box,
+.product-box,
+.action-card,
+.help-category,
+.message-item,
+.coupon-card,
+.info-card,
+.step-card {
+    border: 1px solid rgba(223, 230, 243, 0.95) !important;
+    box-shadow: 0 12px 28px rgba(23, 32, 51, 0.08) !important;
+}
+
+.btn-primary,
+.checkout-btn,
+.coupon-btn,
+.login-btn,
+.register-btn,
+.add-to-cart,
+.continue-shopping-btn,
+.learn-more,
+.apply-btn {
+    background: linear-gradient(180deg, #ffe66f 0%, var(--ptcg-yellow) 100%) !important;
+    color: #172033 !important;
+    border: 1px solid #d9a900 !important;
+    box-shadow: 0 5px 0 #b88900, 0 12px 20px rgba(184, 137, 0, 0.18) !important;
+    font-weight: 800 !important;
+}
+
+.btn-primary:hover,
+.checkout-btn:hover,
+.coupon-btn:hover,
+.login-btn:hover,
+.register-btn:hover,
+.add-to-cart:hover,
+.continue-shopping-btn:hover,
+.learn-more:hover,
+.apply-btn:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 0 #b88900, 0 14px 24px rgba(184, 137, 0, 0.22) !important;
+}
+
+.btn-secondary,
+.btn-outline,
+.clear-cart-btn {
+    border: 1px solid var(--ptcg-blue) !important;
+    color: var(--ptcg-blue) !important;
+    background: #fff !important;
+}
+
+@media (max-width: 768px) {
+    .cookie-bar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.85rem !important;
+        padding: 1rem !important;
+    }
+
+    .cookie-bar-content {
+        max-width: 100% !important;
+    }
+
+    .cookie-bar-actions {
+        width: 100% !important;
+        justify-content: stretch !important;
+    }
+
+    .cookie-bar-actions button {
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+    }
+
+    .login-prompt > div:last-child {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.8rem !important;
+        width: 100% !important;
+    }
+
+    .login-prompt > div:last-child a,
+    .login-prompt > div:last-child button {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+    }
+
+    header .header-container {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.85rem !important;
+        padding: 0.85rem !important;
+    }
+
+    header .logo {
+        justify-content: center !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+
+    header .logo h1 {
+        font-size: clamp(1.2rem, 5vw, 1.55rem) !important;
+        line-height: 1.2 !important;
+    }
+
+    header .nav-right {
+        position: static !important;
+        transform: none !important;
+        top: auto !important;
+        right: auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+        gap: 0.55rem !important;
+    }
+
+    header .search-bar {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+        justify-content: center !important;
+    }
+
+    header .search-bar input {
+        width: min(100%, 300px) !important;
+        min-width: 0 !important;
+        flex: 1 1 auto !important;
+    }
+
+    header .member-section,
+    header .nav-right > a {
+        flex: 0 0 auto !important;
+    }
+
+    header .member-section a,
+    header .member-info {
+        color: #fff !important;
+        padding: 0.35rem 0.55rem !important;
+    }
+
+    header .nav-menu ul {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 0.25rem 0.45rem !important;
+        padding: 0 0.45rem !important;
+    }
+
+    header .nav-menu ul li {
+        margin: 0 !important;
+    }
+
+    header .nav-menu ul li a {
+        font-size: 0.95rem !important;
+        padding: 0.45rem 0.6rem !important;
+        white-space: nowrap !important;
+    }
+}

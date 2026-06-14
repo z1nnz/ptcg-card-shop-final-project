@@ -10,6 +10,7 @@ const PORT = Number(process.env.PORT || 3000);
 const DB_DIR = path.join(__dirname, 'data');
 const DB_PATH = path.join(DB_DIR, 'app.db');
 const SESSION_DAYS = 7;
+const ORDER_STATUSES = ['處理中', '已確認', '已出貨', '已完成', '已取消'];
 
 fs.mkdirSync(DB_DIR, { recursive: true });
 
@@ -137,6 +138,17 @@ function initSchema() {
   `);
 }
 
+function ensureColumn(table, column, definition) {
+  const columns = db.prepare(`PRAGMA table_info(${table})`).all().map((row) => row.name);
+  if (!columns.includes(column)) {
+    db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+  }
+}
+
+function migrateSchema() {
+  ensureColumn('orders', 'status', "TEXT NOT NULL DEFAULT '處理中'");
+}
+
 function seedData() {
   const insertProduct = db.prepare(`
     INSERT INTO products (id, name, price, stock, image, category, page)
@@ -160,6 +172,18 @@ function seedData() {
   const userHash = bcrypt.hashSync('user123', 12);
   insertUser.run('系統管理員', 'admin@ptcg.com', adminHash, 'admin', 'image/PTCG head.jpg', '0900000000', '後台管理');
   insertUser.run('PTCG玩家', 'user@ptcg.com', userHash, 'user', 'image/images__1_-removebg-preview.png', '0912345678', '台北市信義區');
+  db.prepare('UPDATE users SET avatar = ? WHERE email = ? AND avatar IN (?, ?)').run(
+    'image/PTCG head.jpg',
+    'admin@ptcg.com',
+    '',
+    'image/admin-avatar.png'
+  );
+  db.prepare('UPDATE users SET avatar = ? WHERE email = ? AND avatar IN (?, ?)').run(
+    'image/images__1_-removebg-preview.png',
+    'user@ptcg.com',
+    '',
+    'image/user-avatar.png'
+  );
 
   const messageCount = db.prepare('SELECT COUNT(*) AS count FROM messages').get().count;
   if (messageCount === 0) {
@@ -293,10 +317,15 @@ function getDiscount(coupon) {
 }
 
 initSchema();
+migrateSchema();
 seedData();
 
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
+
+function asyncHandler(handler) {
+  return (req, res, next) => Promise.resolve(handler(req, res, next)).catch(next);
+}
 
 app.use((req, res, next) => {
   if (req.path.startsWith('/api/')) {
@@ -349,7 +378,7 @@ app.get('/api/products/:id', (req, res) => {
   res.json({ product });
 });
 
-app.post('/api/auth/register', async (req, res) => {
+app.post('/api/auth/register', asyncHandler(async (req, res) => {
   const { firstName, lastName, name, email, password, phone, birthday, address, agreeNewsletter } = req.body;
   const cleanEmail = String(email || '').trim().toLowerCase();
   const cleanName = String(name || `${firstName || ''} ${lastName || ''}`).trim();
@@ -375,9 +404,9 @@ app.post('/api/auth/register', async (req, res) => {
 
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(result.lastInsertRowid);
   res.status(201).json({ user: publicUser(user) });
-});
+}));
 
-app.post('/api/auth/login', async (req, res) => {
+app.post('/api/auth/login', asyncHandler(async (req, res) => {
   const email = String(req.body.email || '').trim().toLowerCase();
   const password = String(req.body.password || '');
   const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
@@ -390,7 +419,7 @@ app.post('/api/auth/login', async (req, res) => {
   db.prepare('INSERT INTO sessions (id, user_id, expires_at) VALUES (?, ?, ?)').run(sessionId, user.id, expiresAt);
   setSessionCookie(res, sessionId, expiresAt);
   res.json({ user: publicUser(user) });
-});
+}));
 
 app.post('/api/auth/logout', (req, res) => {
   const sessionId = parseCookies(req.headers.cookie || '').ptcg_session;
@@ -427,7 +456,7 @@ app.post('/api/messages', (req, res) => {
 
 app.post('/api/orders', (req, res) => {
   const user = getSessionUser(req);
-  const { customerInfo = {}, delivery = 'home', payment = 'credit', coupon = '', note = '', items = [] } = req.body;
+  const { customerInfo = {}, delivery = 'home', payment = 'credit', coupon = '', note = '', items = [] } = req.body || {};
   const customerName = String(customerInfo.name || '').trim();
   const customerPhone = String(customerInfo.phone || '').trim();
   const customerEmail = String(customerInfo.email || '').trim();
@@ -529,7 +558,54 @@ app.get('/api/admin/summary', requireAdmin, (req, res) => {
   const totalOrders = db.prepare('SELECT COUNT(*) AS count FROM orders').get().count;
   const totalRevenue = db.prepare('SELECT COALESCE(SUM(total_amount), 0) AS total FROM orders').get().total;
   const productCount = db.prepare('SELECT COUNT(*) AS count FROM products').get().count;
-  res.json({ userCount, totalOrders, totalRevenue, productCount });
+  const pendingOrders = db.prepare("SELECT COUNT(*) AS count FROM orders WHERE status IN ('處理中', '已確認')").get().count;
+  const completedOrders = db.prepare("SELECT COUNT(*) AS count FROM orders WHERE status = '已完成'").get().count;
+  const lowStockCount = db.prepare('SELECT COUNT(*) AS count FROM products WHERE stock <= 3').get().count;
+  const bestSellers = db.prepare(`
+    SELECT product_name AS name, SUM(quantity) AS quantity, SUM(subtotal) AS revenue
+    FROM order_items
+    GROUP BY product_id, product_name
+    ORDER BY quantity DESC, revenue DESC
+    LIMIT 5
+  `).all();
+  res.json({
+    userCount,
+    totalOrders,
+    totalRevenue,
+    productCount,
+    pendingOrders,
+    completedOrders,
+    lowStockCount,
+    averageOrderValue: totalOrders ? Math.round(totalRevenue / totalOrders) : 0,
+    bestSellers
+  });
+});
+
+app.patch('/api/admin/orders/:id/status', requireAdmin, (req, res) => {
+  const status = String(req.body.status || '').trim();
+  if (!ORDER_STATUSES.includes(status)) {
+    return res.status(400).json({ error: '訂單狀態不正確' });
+  }
+
+  const result = db.prepare('UPDATE orders SET status = ? WHERE id = ?').run(status, req.params.id);
+  if (result.changes === 0) return res.status(404).json({ error: '找不到訂單' });
+
+  const order = db.prepare('SELECT * FROM orders WHERE id = ?').get(req.params.id);
+  res.json({ order: normalizeOrder(order) });
+});
+
+app.patch('/api/admin/products/:id', requireAdmin, (req, res) => {
+  const product = db.prepare('SELECT * FROM products WHERE id = ?').get(req.params.id);
+  if (!product) return res.status(404).json({ error: '找不到商品' });
+
+  const price = Number.parseInt(req.body.price ?? product.price, 10);
+  const stock = Number.parseInt(req.body.stock ?? product.stock, 10);
+  if (!Number.isInteger(price) || price < 0) return res.status(400).json({ error: '商品價格不正確' });
+  if (!Number.isInteger(stock) || stock < 0) return res.status(400).json({ error: '商品庫存不正確' });
+
+  db.prepare('UPDATE products SET price = ?, stock = ? WHERE id = ?').run(price, stock, req.params.id);
+  const updated = db.prepare('SELECT id, name, price, stock, image, category, page FROM products WHERE id = ?').get(req.params.id);
+  res.json({ product: updated });
 });
 
 app.use(express.static(__dirname, {
@@ -546,6 +622,14 @@ app.use((req, res) => {
     return res.status(404).json({ error: 'API 不存在' });
   }
   res.status(404).sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.use((error, req, res, next) => {
+  if (req.path.startsWith('/api/')) {
+    console.error(error);
+    return res.status(500).json({ error: '伺服器發生錯誤，請查看終端機 npm start 的錯誤訊息' });
+  }
+  next(error);
 });
 
 app.listen(PORT, () => {

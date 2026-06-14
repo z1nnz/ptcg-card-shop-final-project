@@ -100,15 +100,15 @@ body {
     position: relative;
     overflow: hidden;
     display: inline-block;
-    transition: all 0.4s ease; /* ✨加這行 */
+    transition: all 0.4s ease; /* 加這行 */
 
     /* 可選：初始陰影淡淡的 */
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.05);
 }
 
 .nav-menu ul li a:hover {
-    transform: scale(1.1) rotate(-1deg); /* ✨加這行：微放大並旋轉 */
-    text-shadow: 0 0 8px rgba(0, 61, 165, 0.6), 0 0 16px rgba(0, 61, 165, 0.4); /* ✨加這行：閃光感 */
+    transform: scale(1.1) rotate(-1deg); /* 加這行：微放大並旋轉 */
+    text-shadow: 0 0 8px rgba(0, 61, 165, 0.6), 0 0 16px rgba(0, 61, 165, 0.4); /* 加這行：閃光感 */
 }
 
 
@@ -119,13 +119,13 @@ body {
     bottom: 0;
     width: 100%;
     height: 3px;
-    background: linear-gradient(90deg, #00c3ff, #003da5); /* ✨更酷的底線漸層 */
+    background: linear-gradient(90deg, #00c3ff, #003da5); /* 更酷的底線漸層 */
     transform: skewX(-20deg);
-    transition: all 0.4s ease; /* ✨更滑順 */
+    transition: all 0.4s ease; /* 更滑順 */
 }
 
 .nav-menu ul li a:hover::after {
-    left: 0; /* ✨底線滑入動畫 */
+    left: 0; /* 底線滑入動畫 */
 }
 
 

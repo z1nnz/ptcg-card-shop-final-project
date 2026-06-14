@@ -7,6 +7,7 @@
     <title>會員註冊 - PTCG卡包商城</title>
     <link rel="stylesheet" href="Register member.css">
     <script src="database.js"></script>
+    <link rel="stylesheet" href="ui-polish.css">
 </head>
 
 <body>
@@ -30,14 +31,14 @@
                 <form id="registerForm" onsubmit="handleRegister(event)">
                     <!-- 個人基本資訊 -->
                     <div class="form-section-title">
-                        <span class="section-icon">👤</span>
+                        <span class="section-icon"></span>
                         個人基本資訊
                     </div>
 
                     <div class="form-row">
                         <div class="input-group">
                             <label for="firstName">
-                                <span class="input-icon">📝</span>
+                                <span class="input-icon ui-icon icon-user"></span>
                                 姓氏
                             </label>
                             <input type="text" id="firstName" name="firstName" placeholder="請輸入您的姓氏" required>
@@ -45,7 +46,7 @@
                         </div>
                         <div class="input-group">
                             <label for="lastName">
-                                <span class="input-icon">📝</span>
+                                <span class="input-icon ui-icon icon-user"></span>
                                 名字
                             </label>
                             <input type="text" id="lastName" name="lastName" placeholder="請輸入您的名字" required>
@@ -55,7 +56,7 @@
 
                     <div class="input-group">
                         <label for="email">
-                            <span class="input-icon">📧</span>
+                            <span class="input-icon ui-icon icon-mail"></span>
                             電子郵件
                         </label>
                         <input type="email" id="email" name="email" placeholder="請輸入您的電子郵件" required>
@@ -66,7 +67,7 @@
                     <div class="form-row">
                         <div class="input-group">
                             <label for="phone">
-                                <span class="input-icon">📱</span>
+                                <span class="input-icon ui-icon icon-card"></span>
                                 手機號碼
                             </label>
                             <input type="tel" id="phone" name="phone" placeholder="09XXXXXXXX" required>
@@ -74,7 +75,7 @@
                         </div>
                         <div class="input-group">
                             <label for="birthday">
-                                <span class="input-icon">🎂</span>
+                                <span class="input-icon ui-icon icon-card"></span>
                                 生日
                             </label>
                             <input type="date" id="birthday" name="birthday" required>
@@ -84,19 +85,20 @@
 
                     <!-- 帳戶安全 -->
                     <div class="form-section-title">
-                        <span class="section-icon">🔐</span>
+                        <span class="section-icon ui-icon icon-lock"></span>
                         帳戶安全
                     </div>
 
                     <div class="input-group">
                         <label for="password">
-                            <span class="input-icon">🔒</span>
+                            <span class="input-icon ui-icon icon-lock"></span>
                             密碼
                         </label>
                         <div class="password-input">
                             <input type="password" id="password" name="password" placeholder="請設定您的密碼" required>
                             <button type="button" class="toggle-password" onclick="togglePassword('password')">
-                                <span id="passwordToggleIcon">👁️</span>
+                                <span class="toggle-icon ui-icon icon-eye" aria-hidden="true"></span>
+                                <span id="passwordToggleIcon">顯示</span>
                             </button>
                         </div>
                         <div class="password-strength" id="passwordStrength"></div>
@@ -106,13 +108,14 @@
 
                     <div class="input-group">
                         <label for="confirmPassword">
-                            <span class="input-icon">🔒</span>
+                            <span class="input-icon ui-icon icon-lock"></span>
                             確認密碼
                         </label>
                         <div class="password-input">
                             <input type="password" id="confirmPassword" name="confirmPassword" placeholder="請再次輸入密碼" required>
                             <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">
-                                <span id="confirmPasswordToggleIcon">👁️</span>
+                                <span class="toggle-icon ui-icon icon-eye" aria-hidden="true"></span>
+                                <span id="confirmPasswordToggleIcon">顯示</span>
                             </button>
                         </div>
                         <div class="input-error" id="confirmPasswordError"></div>
@@ -120,14 +123,14 @@
 
                     <!-- 收貨地址 -->
                     <div class="form-section-title">
-                        <span class="section-icon">🏠</span>
+                        <span class="section-icon ui-icon icon-home"></span>
                         收貨地址
                     </div>
 
                     <div class="form-row">
                         <div class="input-group">
                             <label for="city">
-                                <span class="input-icon">🏙️</span>
+                                <span class="input-icon ui-icon icon-list"></span>
                                 縣市
                             </label>
                             <select id="city" name="city" onchange="updateDistricts()" required>
@@ -143,7 +146,7 @@
                         </div>
                         <div class="input-group">
                             <label for="district">
-                                <span class="input-icon">🏘️</span>
+                                <span class="input-icon ui-icon icon-list"></span>
                                 區域
                             </label>
                             <select id="district" name="district" required>
@@ -155,7 +158,7 @@
 
                     <div class="input-group">
                         <label for="address">
-                            <span class="input-icon">📍</span>
+                            <span class="input-icon ui-icon icon-home"></span>
                             詳細地址
                         </label>
                         <input type="text" id="address" name="address" placeholder="請輸入詳細地址" required>
@@ -164,7 +167,7 @@
 
                     <!-- 服務條款 -->
                     <div class="form-section-title">
-                        <span class="section-icon">📋</span>
+                        <span class="section-icon ui-icon icon-list"></span>
                         服務條款
                     </div>
 
@@ -220,35 +223,35 @@
                     <h2>會員專屬權益</h2>
                     <div class="benefits">
                         <div class="benefit-item">
-                            <span class="benefit-icon">🎁</span>
+                            <span class="benefit-icon ui-icon icon-gift"></span>
                             <div class="benefit-text">
                                 <h3>首購優惠</h3>
                                 <p>新會員專享300元折價券</p>
                             </div>
                         </div>
                         <div class="benefit-item">
-                            <span class="benefit-icon">💎</span>
+                            <span class="benefit-icon ui-icon icon-star"></span>
                             <div class="benefit-text">
                                 <h3>會員專屬商品</h3>
                                 <p>限量卡片優先購買權</p>
                             </div>
                         </div>
                         <div class="benefit-item">
-                            <span class="benefit-icon">🎂</span>
+                            <span class="benefit-icon ui-icon icon-gift"></span>
                             <div class="benefit-text">
                                 <h3>生日驚喜</h3>
                                 <p>生日當月特別優惠</p>
                             </div>
                         </div>
                         <div class="benefit-item">
-                            <span class="benefit-icon">🚚</span>
+                            <span class="benefit-icon ui-icon icon-truck"></span>
                             <div class="benefit-text">
                                 <h3>免運優惠</h3>
                                 <p>滿千元免運費</p>
                             </div>
                         </div>
                         <div class="benefit-item">
-                            <span class="benefit-icon">⭐</span>
+                            <span class="benefit-icon ui-icon icon-star"></span>
                             <div class="benefit-text">
                                 <h3>VIP服務</h3>
                                 <p>專屬客服快速響應</p>
@@ -320,7 +323,7 @@
 
     <!-- 返回首頁按鈕 -->
     <a href="index.html" class="back-home">
-        <span class="back-icon">🏠</span>
+        <span class="back-icon ui-icon icon-home"></span>
         返回首頁
     </a>
 
@@ -425,10 +428,10 @@
             
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                toggleIcon.textContent = '🙈';
+                toggleIcon.textContent = '隱藏';
             } else {
                 passwordInput.type = 'password';
-                toggleIcon.textContent = '👁️';
+                toggleIcon.textContent = '顯示';
             }
         }
 

@@ -7,6 +7,7 @@
     <title>會員專區 - PTCG卡包商城</title>
     <link rel="stylesheet" href="member_area.css">
     <script src="database.js"></script>
+    <link rel="stylesheet" href="ui-polish.css">
 </head>
 
 <body>
@@ -19,7 +20,7 @@
             <div class="nav-right">
                 <div class="search-bar">
                     <input type="text" placeholder="你想查詢甚麼相關商品?" id="searchInput">
-                    <button onclick="performSearch()">🔍</button>
+                    <button class="icon-button search-button" onclick="performSearch()" aria-label="搜尋"><span class="ui-icon icon-search"></span><span class="search-text">搜尋</span></button>
                 </div>
                 <div class="member-section" id="memberSection">
                     <a href="member.html" id="memberLink">
@@ -67,25 +68,25 @@
             <h2>快速操作</h2>
             <div class="action-grid">
                 <div class="action-card">
-                    <div class="action-icon">📝</div>
+                    <div class="action-icon"></div>
                     <h3>修改資料</h3>
                     <p>更新個人資訊</p>
                     <button class="btn-primary" onclick="showEditForm()">修改</button>
                 </div>
                 <div class="action-card">
-                    <div class="action-icon">📦</div>
+                    <div class="action-icon"></div>
                     <h3>訂單查詢</h3>
                     <p>查看購買記錄</p>
                     <button class="btn-primary" onclick="showOrderHistory()">查看</button>
                 </div>
                 <div class="action-card">
-                    <div class="action-icon">🎁</div>
+                    <div class="action-icon"></div>
                     <h3>會員優惠</h3>
                     <p>專屬優惠券</p>
                     <button class="btn-primary" onclick="showCoupons()">查看</button>
                 </div>
                 <div class="action-card">
-                    <div class="action-icon">⭐</div>
+                    <div class="action-icon"></div>
                     <h3>收藏清單</h3>
                     <p>我的最愛商品</p>
                     <button class="btn-primary" onclick="showFavorites()">查看</button>
@@ -138,7 +139,7 @@
 
         <!-- 會員優惠 (隱藏) -->
         <div class="section" id="coupons" style="display: none;">
-            <h3>🎁 專屬優惠券</h3>
+            <h3> 專屬優惠券</h3>
             <div class="coupon-grid">
                 <!-- VIP專屬優惠券 -->
                 <div class="coupon-card vip">
@@ -215,7 +216,7 @@
             </div>
 
             <div class="coupon-tips">
-                <h4>💡 優惠券使用說明</h4>
+                <h4> 優惠券使用說明</h4>
                 <ul>
                     <li>點擊「複製代碼」可複製優惠碼到剪貼簿</li>
                     <li>結帳時在優惠碼欄位貼上即可使用</li>
@@ -267,7 +268,7 @@
             welcomeSection.innerHTML = `
                 <h1>會員專區</h1>
                 <div class="login-prompt">
-                    <div class="prompt-icon">🔒</div>
+                    <div class="prompt-icon"></div>
                     <h2>請先登入會員</h2>
                     <p>登入後即可享受會員專屬功能</p>
                     <div class="prompt-actions">
@@ -327,7 +328,7 @@
             if (myOrders.length === 0) {
                 container.innerHTML = `
                     <div class="empty-favorites" style="text-align:center; padding: 2rem;">
-                        <div class="empty-icon" style="font-size:3rem; margin-bottom:1rem;">📦</div>
+                        <div class="empty-icon" style="font-size:3rem; margin-bottom:1rem;"></div>
                         <h4>目前沒有購物記錄</h4>
                         <p style="color:#666;">快去逛逛商城，把喜歡的卡片帶回家吧！</p>
                         <a href="shop.html" class="btn-primary" style="margin-top:1rem; display:inline-block; padding:0.5rem 1rem; text-decoration:none;">前往商城</a>
@@ -385,7 +386,7 @@
             if (favorites.length === 0) {
                 container.innerHTML = `
                     <div class="empty-favorites">
-                        <div class="empty-icon">💔</div>
+                        <div class="empty-icon"></div>
                         <h4>還沒有收藏商品</h4>
                         <p>快去逛逛商城，收藏您喜愛的商品吧！</p>
                         <a href="card.html" class="btn-primary">開始逛逛</a>
@@ -514,7 +515,7 @@
             const notification = document.createElement('div');
             notification.className = 'copy-notification success';
             notification.innerHTML = `
-                <span class="copy-icon">✅</span>
+                <span class="copy-icon"></span>
                 <span>優惠碼 "${couponCode}" 已複製到剪貼簿！</span>
             `;
 
