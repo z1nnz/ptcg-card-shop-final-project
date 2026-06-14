@@ -347,60 +347,6 @@ function injectMobileSafetyStyles() {
     style.id = 'ptcg-mobile-safety-style';
     style.textContent = `
         @media (max-width: 768px) {
-            header .header-container {
-                flex-direction: column !important;
-                align-items: stretch !important;
-                gap: 0.85rem !important;
-                padding: 0.85rem !important;
-            }
-
-            header .logo {
-                justify-content: center !important;
-                text-align: center !important;
-                width: 100% !important;
-            }
-
-            header .logo h1 {
-                font-size: clamp(1.2rem, 5vw, 1.55rem) !important;
-                line-height: 1.2 !important;
-            }
-
-            header .nav-right {
-                position: static !important;
-                transform: none !important;
-                top: auto !important;
-                right: auto !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                justify-content: center !important;
-                flex-wrap: wrap !important;
-                gap: 0.55rem !important;
-            }
-
-            header .search-bar {
-                width: 100% !important;
-                max-width: 100% !important;
-                flex: 0 0 100% !important;
-                justify-content: center !important;
-            }
-
-            header .search-bar input {
-                width: min(100%, 300px) !important;
-                min-width: 0 !important;
-                flex: 1 1 auto !important;
-            }
-
-            header .member-section,
-            header .nav-right > a {
-                flex: 0 0 auto !important;
-            }
-
-            header .member-section a,
-            header .member-info {
-                color: #fff !important;
-                padding: 0.35rem 0.55rem !important;
-            }
-
             header .nav-menu ul {
                 flex-wrap: wrap !important;
                 justify-content: center !important;
